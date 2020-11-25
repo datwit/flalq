@@ -7,7 +7,8 @@ Tables: offices
 
 from flask import Flask, jsonify, request
 from sqlalchemy import create_engine, Table, MetaData, select, insert, update, delete
-# from sqlalchemy import Column, Integer, Text, , 
+from models import offices, employees
+
 
 app = Flask(__name__)
 
@@ -17,16 +18,16 @@ connection = engine.connect()
 metadata = MetaData()
 
 
-# GET ALL
 @app.route('/offices/', methods=['GET'])
 def alloffices():
-    r = Table('offices', metadata, autoload=True, autoload_with=engine)
-    stm = select([r])
-    result = connection.execute(stm).fetchall()
-    if len(result) == 0:
+    table = Table('offices', metadata, autoload=True, autoload_with=engine)
+    stm = select([table])
+    result = connection.execute(stm)
+    rows = result.fetchall()
+    if len(rows) == 0:
         return jsonify("empty table")
     else:
-        return jsonify("resultado pendiente de extraer")
+        return str(rows)
 
 
 @app.route('/offices/', methods=['POST'])
@@ -40,8 +41,7 @@ def postoffices():
     country = request.json['country']
     postalCode = request.json['postalCode']
     territory = request.json['territory']
-    r = Table('offices', metadata, autoload=True, autoload_with=engine)
-    stm = insert(r).values(officeCode=officeCode, city=city, phone=phone, addressLine1=addressLine1, addressLine2=addressLine2, state=state, country=country, postalCode=postalCode, territory=territory)
+    stm = offices.insert().values(officeCode=officeCode, city=city, phone=phone, addressLine1=addressLine1, addressLine2=addressLine2, state=state, country=country, postalCode=postalCode, territory=territory)
     result = connection.execute(stm)
     return jsonify("Inserted data")
 
@@ -49,8 +49,7 @@ def postoffices():
 @app.route('/offices/<string:officeCode>', methods=['GET'])
 def getoffices(officeCode):
     found = officeCode
-    r = Table('offices', metadata, autoload=True, autoload_with=engine)
-    stm = select([r]).where(r.columns.officeCode == found)
+    stm = offices.select().where(offices.columns.officeCode == found)
     result = connection.execute(stm)
     c = result.rowcount
     if c == 0:
@@ -61,7 +60,7 @@ def getoffices(officeCode):
             return jsonify(d)
 
 
-@app.route('/offices/<string:officeCode>', methods=['PUT'])
+@app.route('/offices/<string:officeCode>', methods=['PATCH'])
 def putoffices(officeCode):
     found = officeCode
     officeCode = request.json['officeCode']
@@ -73,20 +72,81 @@ def putoffices(officeCode):
     country = request.json['country']
     postalCode = request.json['postalCode']
     territory = request.json['territory']
-    r = Table('offices', metadata, autoload=True, autoload_with=engine)
-    stm = update(r).values(officeCode=officeCode, city=city, phone=phone, addressLine1=addressLine1, addressLine2=addressLine2, state=state, country=country, postalCode=postalCode, territory=territory)
-    up_stm = stm.where(r.columns.officeCode == found)
+    stm = offices.update().values(officeCode=officeCode, city=city, phone=phone, addressLine1=addressLine1, addressLine2=addressLine2, state=state, country=country, postalCode=postalCode, territory=territory)
+    up_stm = stm.where(offices.columns.officeCode == found)
     result = connection.execute(up_stm)
     return jsonify("Updated data")
 
 @app.route('/offices/<string:officeCode>', methods=['DELETE'])
 def deloffices(officeCode):
     found = officeCode
-    r = Table('offices', metadata, autoload=True, autoload_with=engine)
-    stm = delete(r).where(r.columns.officeCode == found)
+    stm = offices.delete().where(offices.columns.officeCode == found)
     result = connection.execute(stm)
     return jsonify("Deleted rows")
 
+@app.route('/employees/', methods=['GET'])
+def allemployees():
+    table = Table('employees', metadata, autoload=True, autoload_with=engine)
+    stm = select([table])
+    result = connection.execute(stm)
+    rows = result.fetchall()
+    if len(rows) == 0:
+        return jsonify("empty table")
+    else:
+        return str(rows)
+
+
+@app.route('/employees/', methods=['POST'])
+def postemployees():
+    employeeNumber = request.json['employeeNumber']
+    lastName = request.json['lastName']
+    firstName = request.json['firstName']
+    extension = request.json['extension']
+    email = request.json['email']
+    officeCode = request.json['officeCode']
+    reportsTo = request.json['reportsTo']
+    jobTitle = request.json['jobTitle']
+    stm = employees.insert().values(employeeNumber=employeeNumber, lastName=lastName, firstName=firstName, extension=extension, email=email, officeCode=officeCode, reportsTo=reportsTo, jobTitle=jobTitle)
+    result = connection.execute(stm)
+    return jsonify("Inserted data")
+
+
+@app.route('/employees/<int:employeeNumber>', methods=['GET'])
+def getemployee(employeeNumber):
+    found = employeeNumber
+    stm = employees.select().where(employees.columns.employeeNumber == found)
+    result = connection.execute(stm)
+    c = result.rowcount
+    if c == 0:
+        return jsonify("Employee no exist")
+    else:
+        for row in result:
+            d = dict(row)
+            return jsonify(d)
+
+
+@app.route('/employees/<int:employeeNumber>', methods=['PATCH'])
+def putemployee(employeeNumber):
+    found = employeeNumber
+    employeeNumber = request.json['employeeNumber']
+    lastName = request.json['lastName']
+    firstName = request.json['firstName']
+    extension = request.json['extension']
+    email = request.json['email']
+    officeCode = request.json['officeCode']
+    reportsTo = request.json['reportsTo']
+    jobTitle = request.json['jobTitle']
+    stm = employees.update().values(employeeNumber=employeeNumber, lastName=lastName, firstName=firstName, extension=extension, email=email, officeCode=officeCode, reportsTo=reportsTo, jobTitle=jobTitle)
+    up_stm = stm.where(employees.columns.employeeNumber == found)
+    result = connection.execute(up_stm)
+    return jsonify("Updated data")
+
+@app.route('/employees/<int:employeeNumber>', methods=['DELETE'])
+def delemployee(employeeNumber):
+    found = employeeNumber
+    stm = employees.delete().where(employees.columns.employeeNumber == found)
+    result = connection.execute(stm)
+    return jsonify("Deleted rows")
 
 if __name__ == '__main__':
     app.run(host='localhost', port=4000, debug=True)

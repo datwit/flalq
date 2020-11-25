@@ -2,15 +2,15 @@
 ConfigDB with "sqlalchemy" --> danay meneses november 2020
 DB: classicmodels
 Tables: all
+
 """
 
 from sqlalchemy import create_engine
 from sqlalchemy import MetaData, ForeignKey, Table, Column, String, Integer, SmallInteger,  DECIMAL, Date, BLOB, Text
 
-engine = create_engine('mysql+pymysql://root:@localhost/pruebadanay')
+engine = create_engine('mysql+pymysql://root:@localhost/pruebadanay', encoding='latin1')    #encoding in tables?
 metadata = MetaData()
 
-## No esta incorporado el "charset=utf8mb4" de mysql
 offices = Table('offices', metadata,
         Column('officeCode', String(10), primary_key=True),
         Column('city', String(50), nullable=False),
