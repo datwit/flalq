@@ -6,9 +6,9 @@ Tables: all
 """
 
 from sqlalchemy import create_engine
-from sqlalchemy import MetaData, ForeignKey, Table, Column, String, Integer, SmallInteger,  DECIMAL, Date, BLOB, Text
+from sqlalchemy import MetaData, ForeignKey, Table, Column, String, Integer, SmallInteger, FLOAT, DECIMAL, Date, BLOB, Text, CheckConstraint
 
-engine = create_engine('mysql+pymysql://root:@localhost/pruebadanay', encoding='latin1')    #encoding in tables?
+engine = create_engine('mysql+pymysql://root:@localhost/pruebadanay')    #  , encoding='latin1')
 metadata = MetaData()
 
 offices = Table('offices', metadata,
@@ -24,7 +24,7 @@ offices = Table('offices', metadata,
 )
 
 employees = Table('employees', metadata,
-        Column('employeeNumber', Integer, primary_key=True),  # this make the field auto-incremented automatically in DB
+        Column('employeeNumber', Integer, primary_key=True),    # this make the field auto-incremented automatically in table structure
         Column('lastName', String(50), nullable=False),
         Column('firstName', String(50), nullable=False),
         Column('extension', String(10), nullable=False),
@@ -35,7 +35,7 @@ employees = Table('employees', metadata,
 )
 
 customers = Table('customers', metadata,
-        Column('customerNumber', Integer, primary_key=True),
+        Column('customerNumber', Integer, primary_key=True),    # this make the field auto-incremented automatically in table structure
         Column('customerName', String(50), nullable=False),
         Column('contactLastName', String(50), nullable=False),
         Column('contactFirstName', String(50), nullable=False),
@@ -47,7 +47,7 @@ customers = Table('customers', metadata,
         Column('postalCode', String(15)),
         Column('country', String(50), nullable=False),
         Column('salesRepEmployeeNumber', Integer, ForeignKey('employees.employeeNumber')),
-        Column('creditLimit', DECIMAL(10,2))
+        Column('creditLimit', FLOAT(10,2))
 )
 
 payments = Table('payments', metadata,
@@ -59,10 +59,10 @@ payments = Table('payments', metadata,
 
 orders = Table('orders', metadata,
         Column('orderNumber', Integer, primary_key=True),
-        Column('orderDate', Date, nullable=False),
+        Column('orderDate', Date, default=Date, nullable=False),
         Column('requiredDate', Date, nullable=False),
         Column('shippedDate', Date),
-        Column('status', String(15), nullable=False),
+        Column('status', String(15), nullable=False),   # make this like schedule with many options by default -- ó -- Column('shipped', Boolean(), default=False)
         Column('comments', Text),
         Column('customerNumber', Integer, ForeignKey('customers.customerNumber'), nullable=False,)
 )
@@ -91,7 +91,8 @@ products = Table('products', metadata,
         Column('productDescription', Text, nullable=False),
         Column('quantityInStock', SmallInteger, nullable=False),
         Column('buyPrice', DECIMAL(10,2), nullable=False),
-        Column('MSRP', DECIMAL(10,2), nullable=False)
+        Column('MSRP', DECIMAL(10,2), nullable=False),
+        CheckConstraint('quantityInStock >= 0', name='quantityInStock_positive')
 )
 
 metadata.create_all(engine)     #The create_all() function uses the engine object to create all the defined table objects and stores the information in metadata.

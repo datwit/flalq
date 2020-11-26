@@ -1,4 +1,4 @@
-# My First Project: Flask MySQL
+# My First Project: Flask-SQLAlchemy project with MySQL example database
 ## Danay Meneses Abad
 
 
