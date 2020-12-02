@@ -10,6 +10,7 @@ from sqlalchemy import create_engine, Table, MetaData, select, insert, update, d
 from models import offices, employees, customers, payments, orders, orderdetails, productlines, products
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
+from decimal import Decimal
 import status
 
 
@@ -30,7 +31,13 @@ def alloffices():
     if len(rows) == 0:
         return jsonify("empty table")
     else:
-        return str(rows)
+        l = []
+        i = 1
+        while i <= (len(rows)):
+            d = {"officeCode": rows[i-1][0], "city": rows[i-1][1], "phone":rows[i-1][2], "addressLine1": rows[i-1][3], "addressLine2": rows[i-1][4], "state": rows[i-1][5], "country": rows[i-1][6], "postalCode": rows[i-1][7], "territory": rows[i-1][8]}
+            l.append(d)
+            i+=1
+        return jsonify(l)               # ¡¡¡ ... I made it! At last! ... !!!
 
 @app.route('/offices/', methods=['POST'])
 def postoffices():
@@ -72,8 +79,8 @@ def getoffices(officeCode):
             d = dict(row)
             return jsonify(d)
 
-@app.route('/offices/<string:officeCode>', methods=['PATCH'])
-def patchoffices(officeCode):
+@app.route('/offices/<string:officeCode>', methods=['PUT'])
+def putoffices(officeCode):
     found = officeCode
     city = request.json['city']
     phone = request.json['phone']
@@ -124,7 +131,13 @@ def allemployees():
     if len(rows) == 0:
         return jsonify("empty table")
     else:
-        return str(rows)
+        l = []
+        i = 1
+        while i <= (len(rows)):
+            d = {"employeeNumber": rows[i-1][0], "lastName": rows[i-1][1], "firstName":rows[i-1][2], "extension": rows[i-1][3], "email": rows[i-1][4], "officeCode": rows[i-1][5], "reportsTo": rows[i-1][6], "jobTitle": rows[i-1][7]}
+            l.append(d)
+            i+=1
+        return jsonify(l)
 
 @app.route('/employees/', methods=['POST'])
 def postemployees():
@@ -165,8 +178,8 @@ def getemployee(employeeNumber):
             d = dict(row)
             return jsonify(d)
 
-@app.route('/employees/<int:employeeNumber>', methods=['PATCH'])
-def patchemployee(employeeNumber):
+@app.route('/employees/<int:employeeNumber>', methods=['PUT'])
+def putemployee(employeeNumber):
     found = employeeNumber
     lastName = request.json['lastName']
     firstName = request.json['firstName']
@@ -215,7 +228,13 @@ def allcustomers():
     if len(rows) == 0:
         return jsonify("empty table")
     else:
-        return str(rows)
+        l = []
+        i = 1
+        while i <= (len(rows)):
+            d = {"customerNumber": rows[i-1][0], "customerName": rows[i-1][1], "contactLastName":rows[i-1][2], "contactFirstName": rows[i-1][3], "phone": rows[i-1][4], "addressLine1": rows[i-1][5], "addressLine2": rows[i-1][6], "city": rows[i-1][7], "state": rows[i-1][8], "postalCode": rows[i-1][9], "country": rows[i-1][10], "salesRepEmployeeNumber": rows[i-1][11], "creditLimit": rows[i-1][12]}
+            l.append(d)
+            i+=1
+        return jsonify(l)
 
 @app.route('/customers/', methods=['POST'])
 def postcustomers():
@@ -266,8 +285,8 @@ def getcustomer(customerNumber):
             d = dict(row)
             return jsonify(d)   #error: Object of type Decimal is not JSON serializable
 
-@app.route('/customers/<int:customerNumber>', methods=['PATCH'])
-def patchcustomer(customerNumber):
+@app.route('/customers/<int:customerNumber>', methods=['PUT'])
+def putcustomer(customerNumber):
     found = customerNumber
     customerName = request.json['customerName']
     contactLastName = request.json['contactLastName']
@@ -326,7 +345,13 @@ def allproductlines():
     if len(rows) == 0:
         return jsonify("empty table")
     else:
-        return str(rows)
+        l = []
+        i = 1
+        while i <= (len(rows)):
+            d = {"productLine": rows[i-1][0], "textDescription": rows[i-1][1], "htmlDescription":rows[i-1][2], "image": rows[i-1][3]}
+            l.append(d)
+            i+=1
+        return jsonify(l)
 
 @app.route('/productlines/', methods=['POST'])
 def postproductlines():
@@ -359,8 +384,8 @@ def getproductlines(productLine):
             d = dict(row)
             return jsonify(d)
 
-@app.route('/productlines/<string:productLine>', methods=['PATCH'])
-def patchproductlines(productLine):
+@app.route('/productlines/<string:productLine>', methods=['PUT'])
+def putproductlines(productLine):
     found = productLine
     textDescription = request.json['textDescription']
     htmlDescription = request.json['htmlDescription']
@@ -401,7 +426,13 @@ def allproducts():
     if len(rows) == 0:
         return jsonify("empty table")
     else:
-        return str(rows)
+        l = []
+        i = 1
+        while i <= (len(rows)):
+            d = {"productCode": rows[i-1][0], "productName": rows[i-1][1], "productLine":rows[i-1][2], "productScale": rows[i-1][3], "productVendor": rows[i-1][4], "productDescription": rows[i-1][5], "quantityInStock": rows[i-1][6], "buyPrice": rows[i-1][7], "MSRP": rows[i-1][8]}
+            l.append(d)
+            i+=1
+        return jsonify(l)
 
 @app.route('/products/', methods=['POST'])
 def postproducts():
@@ -444,8 +475,8 @@ def getproducts(productCode):
             d = dict(row)
             return jsonify(d)
 
-@app.route('/products/<string:productCode>', methods=['PATCH'])
-def patchproducts(productCode):
+@app.route('/products/<string:productCode>', methods=['PUT'])
+def putproducts(productCode):
     found = productCode
     productName = request.json['productName']
     productLine = request.json['productLine']
@@ -496,7 +527,13 @@ def allpayments():
     if len(rows) == 0:
         return jsonify("empty table")
     else:
-        return str(rows)
+        l = []
+        i = 1
+        while i <= (len(rows)):
+            d = {"customerNumber": rows[i-1][0], "checkNumber": rows[i-1][1], "paymentDate":rows[i-1][2], "amount": rows[i-1][3]}
+            l.append(d)
+            i+=1
+        return jsonify(l)
 
 @app.route('/payments/', methods=['POST'])
 def postpayments():
@@ -529,8 +566,8 @@ def getpayments(customerNumber):
             d = dict(row)
             return jsonify(d)
 
-@app.route('/payments/<int:customerNumber>', methods=['PATCH'])
-def patchpayments(customerNumber):
+@app.route('/payments/<int:customerNumber>', methods=['PUT'])
+def putpayments(customerNumber):
     found = customerNumber
     checkNumber = request.json['checkNumber']
     paymentDate = request.json['paymentDate']
@@ -571,7 +608,13 @@ def allorders():
     if len(rows) == 0:
         return jsonify("empty table")
     else:
-        return str(rows)
+        l = []
+        i = 1
+        while i <= (len(rows)):
+            d = {"orderNumber": rows[i-1][0], "orderDate": rows[i-1][1], "requiredDate":rows[i-1][2], "shippedDate": rows[i-1][3], "status": rows[i-1][4], "comments": rows[i-1][5], "customerNumber": rows[i-1][6]}
+            l.append(d)
+            i+=1
+        return jsonify(l)
 
 @app.route('/orders/', methods=['POST'])
 def postorders():
@@ -608,8 +651,8 @@ def getorders(orderNumber):
             d = dict(row)
             return jsonify(d)
 
-@app.route('/orders/<int:orderNumber>', methods=['PATCH'])
-def patchorders(orderNumber):
+@app.route('/orders/<int:orderNumber>', methods=['PUT'])
+def putorders(orderNumber):
     found = orderNumber
     requiredDate = request.json['requiredDate']
     shippedDate = request.json['shippedDate']
@@ -652,7 +695,14 @@ def allorderdetails():
     if len(rows) == 0:
         return jsonify("empty table")
     else:
-        return str(rows)
+        l = []
+        i = 1
+        while i <= (len(rows)):
+            d = {"orderNumber": rows[i-1][0], "productCode": rows[i-1][1], "quantityOrdered":rows[i-1][2], "priceEach": rows[i-1][3], "orderLineNumber": rows[i-1][4]}
+            l.append(d)
+            i+=1
+        return jsonify(l)
+ 
 
 @app.route('/orderdetails/', methods=['POST'])
 def postorderdetails():
@@ -687,8 +737,8 @@ def getorderdetails(orderNumber):
             d = dict(row)
             return jsonify(d)
 
-@app.route('/orderdetails/<int:orderNumber>', methods=['PATCH'])
-def patchorderdetails(orderNumber):
+@app.route('/orderdetails/<int:orderNumber>', methods=['PUT'])
+def putorderdetails(orderNumber):
     found = orderNumber
     productCode = request.json['productCode']
     quantityOrdered = request.json['quantityOrdered']
