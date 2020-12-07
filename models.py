@@ -5,8 +5,8 @@ Tables: all
 
 """
 
-from sqlalchemy import create_engine
-from sqlalchemy import MetaData, ForeignKey, Table, Column, String, Integer, SmallInteger, Numeric, Date, Binary, CheckConstraint
+from sqlalchemy import create_engine, MetaData
+from sqlalchemy import  ForeignKey, Table, Column, String, Integer, SmallInteger, Float, Date, Binary, CheckConstraint
 
 engine = create_engine('mysql+pymysql://root:@localhost/pruebadanay')            #  , encoding='latin1')
 metadata = MetaData()
@@ -47,14 +47,14 @@ customers = Table('customers', metadata,
         Column('postalCode', String(15)),
         Column('country', String(50), nullable=False),
         Column('salesRepEmployeeNumber', Integer, ForeignKey('employees.employeeNumber')),
-        Column('creditLimit', Numeric(10,2))
+        Column('creditLimit', Float(10,2))      # Float: because Object of type Decimal (or Numeric) is not JSON serializable
 )
 
 payments = Table('payments', metadata,
         Column('customerNumber', Integer, ForeignKey('customers.customerNumber'), primary_key=True,),
         Column('checkNumber', String(50), nullable=False, primary_key=True),
         Column('paymentDate', Date, nullable=False),
-        Column('amount', Numeric(10,2), nullable=False),
+        Column('amount', Float(10,2), nullable=False)
 )
 
 orders = Table('orders', metadata,
@@ -71,7 +71,7 @@ orderdetails = Table('orderdetails', metadata,
         Column('orderNumber', Integer, ForeignKey('orders.orderNumber'), primary_key=True),
         Column('productCode', String(15), ForeignKey('products.productCode'), nullable=False, primary_key=True),
         Column('quantityOrdered', Integer, nullable=False),
-        Column('priceEach', Numeric(10,2), nullable=False),
+        Column('priceEach', Float(10,2), nullable=False),
         Column('orderLineNumber', SmallInteger, nullable=False)
 )
 
@@ -90,8 +90,8 @@ products = Table('products', metadata,
         Column('productVendor', String(50), nullable=False),
         Column('productDescription', String(500), nullable=False),
         Column('quantityInStock', SmallInteger, nullable=False),
-        Column('buyPrice', Numeric(10,2), nullable=False),
-        Column('MSRP', Numeric(10,2), nullable=False),
+        Column('buyPrice', Float(10,2), nullable=False),
+        Column('MSRP', Float(10,2), nullable=False),
         CheckConstraint('quantityInStock >= 0', name='quantityInStock_positive')        # I am ensuring that quantityInStock data is always positive
 )
 
