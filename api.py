@@ -5,7 +5,7 @@ from flask import Flask
 from flask import jsonify, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-# from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from datetime import datetime
 from models import Office, Employee, Customer, Payment, Order, Orderdetail, Productline, Product
 from models import OfficeSchema, EmployeeSchema, CustomerSchema, PaymentSchema, OrderSchema, OrderdetailSchema, ProductlineSchema, ProductSchema
@@ -44,8 +44,9 @@ def postoffice():
         row = object_schema.load(data)
         session.add(row)
         session.commit()
-        return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": row}), resp.SUCCESS_201
-    except Exception as e:
+        result = object_schema.dump(data)
+        return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
+    except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400   # 422 ó 400 ... ???
 
@@ -56,10 +57,10 @@ def getoffice(officeCode):
     row = session.query(Office).get(found)
     object_schema = OfficeSchema()
     result = object_schema.dump(row)
-    if len(result) == 0:
-        return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
-    else:
+    if result:
         return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
+    else:
+        return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
 
 # Create a URL route in our application for "/offices/" to update all details of an existing row
 @app.route('/offices/<string:officeCode>', methods=['PUT'])
@@ -72,7 +73,7 @@ def putoffice(officeCode):
         session.query(Office).filter(Office.officeCode==found).update(result)
         session.commit()
         return resp.response_with(resp.SUCCESS_200, value={"Updated Row": result}), resp.SUCCESS_200
-    except Exception as e:
+    except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
@@ -96,7 +97,7 @@ def patchoffice(officeCode):
         object_schema = OfficeSchema()
         result = object_schema.dump(row)
         return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200
-    except Exception as e:
+    except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
@@ -107,7 +108,7 @@ def deloffice(officeCode):
     row = session.query(Office).get(found)
     session.delete(row)
     session.commit()
-    return jsonify("Deleted Row")
+    return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
 
 
 ...

@@ -36,6 +36,22 @@ class Office(Base):
     postalCode = Column(String(15), nullable=False)
     territory = Column(String(10), nullable=False)
 
+    def __init__(self, officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, territory):
+        self.officeCode = officeCode
+        self.city = city
+        self.phone = phone
+        self.addressLine1 = addressLine1
+        self.addressLine2 = addressLine2
+        self.state = state
+        self.country = country
+        self.postalCode = postalCode
+        self.territory = territory
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
+
 # Office schema
 class OfficeSchema(ModelSchema):
     class Meta(ModelSchema.Meta):                               # "???"
@@ -67,6 +83,21 @@ class Employee(Base):
     reportsTo = Column(Integer, ForeignKey('employees.employeeNumber'))
     jobTitle = Column(String(50), nullable=False)
 
+    def __init__(self, employeeNumber, lastName, firstName, extension, email, jobTitle, officeCode=None, reportsTo=None):
+        self.employeeNumber = employeeNumber
+        self.lastName = lastName
+        self.firstName = firstName
+        self.extension = extension
+        self.email = email
+        self.officeCode = officeCode
+        self.reportsTo = reportsTo
+        self.jobTitle = jobTitle
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
+
 # Employee schema
 class EmployeeSchema(ModelSchema):
     class Meta(ModelSchema.Meta):                                                                       # "???"
@@ -92,6 +123,17 @@ class Productline(Base):
     textDescription = Column(String(4000))
     htmlDescription = Column(String(200))                               # validated html format??
     image = Column(Binary)                                              # validate file extension in the path
+
+    def __init__(self, productLine, textDescription, htmlDescription, image):
+        self.productLine = productLine
+        self.textDescription = textDescription
+        self.htmlDescription = htmlDescription
+        self.image = image
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
 
 # Customer schema
 class ProductlineSchema(ModelSchema):
@@ -120,6 +162,22 @@ class Product(Base):
     buyPrice = Column(Float(10,2), nullable=False)
     MSRP = Column(Float(10,2), nullable=False)
     CheckConstraint('quantityInStock >= 0', name='quantityInStock_positive')        # I am ensuring that quantityInStock data is always positive
+
+    def __init__(self, productCode, productName, productScale, productVendor, productDescription, quantityInStock, buyPrice, MSRP, productLine=None):
+        self.productCode = productCode
+        self.productName = productName
+        self.productLine = productLine
+        self.productScale = productScale
+        self.productVendor = productVendor
+        self.productDescription = productDescription
+        self.quantityInStock = quantityInStock
+        self.buyPrice = buyPrice
+        self.MSRP = MSRP
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
 
 # Customer schema
 class ProductSchema(ModelSchema):
@@ -157,6 +215,26 @@ class Customer(Base):
     salesRepEmployeeNumber = Column(Integer, ForeignKey('employees.employeeNumber'))
     creditLimit = Column(Float(10,2))                          # Float --> because Decimal or Numeric type is not JSON serializable
 
+    def __init__(self, customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, addressLine2, city, state, postalCode, country, creditLimit, salesRepEmployeeNumber=None):
+        self.customerName = customerNumber
+        self.customerName = customerName
+        self.contactLastName = contactLastName
+        self.contactFirstName = contactFirstName
+        self.phone = phone
+        self.addressLine1 = addressLine1
+        self.addressLine2 = addressLine2
+        self.city = city
+        self.state = state
+        self.postalCode = postalCode
+        self.country = country
+        self.salesRepEmployeeNumber = salesRepEmployeeNumber
+        self.creditLimit = creditLimit
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
+
 # Customer schema
 class CustomerSchema(ModelSchema):
     class Meta(ModelSchema.Meta):                                       # "???"
@@ -191,6 +269,20 @@ class Order(Base):
     comments = Column(String(500))
     customerNumber = Column(Integer, ForeignKey('customers.customerNumber'), nullable=False,)
 
+    def __init__(self, orderNumber, orderDate, requiredDate, shippedDate, status, comments, customerNumber=None):
+        self.orderNumber = orderNumber
+        self.orderDate = orderDate
+        self.requiredDate = requiredDate
+        self.shippedDate = shippedDate
+        self.state = state
+        self.comments = comments
+        self.customerNumber = customerNumber
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
+
 # Customer schema
 class OrderSchema(ModelSchema):
     class Meta(ModelSchema.Meta):                                # "???"
@@ -217,6 +309,18 @@ class Orderdetail(Base):
     priceEach = Column(Float(10,2), nullable=False)
     orderLineNumber = Column(SmallInteger, nullable=False)
 
+    def __init__(self, quantityInStock, priceEach, orderLineNumber, orderNumber=None, productCode=None):
+        self.orderNumber = orderNumber
+        self.productCode = productCode
+        self.quantityOrdered = quantityInStock
+        self.priceEach = priceEach
+        self.orderLineNumber = orderLineNumber
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
+
 # Customer schema
 class OrderdetailSchema(ModelSchema):
     class Meta(ModelSchema.Meta):                               # "???"
@@ -239,6 +343,17 @@ class Payment(Base):
     checkNumber = Column(String(50), nullable=False, primary_key=True)
     paymentDate = Column(Date, nullable=False)
     amount = Column(Float(10,2), nullable=False)
+
+    def __init__(self, checkNumber, paymentDate, amount, customerNumber=None):
+        self.customerNumber = customerNumber
+        self.checkNumber = checkNumber
+        self.paymentDate = paymentDate
+        self.amount = amount
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
 
 # Customer schema
 class PaymentSchema(ModelSchema):
