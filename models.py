@@ -262,7 +262,7 @@ class Order(Base):
     __tablename__ = "orders"
 
     orderNumber = Column(Integer, primary_key=True)
-    orderDate = Column(DateTime, server_default=func.now(), nullable=False)      # orderDate --> Autocomplete on table in created moment
+    orderDate = Column(DateTime, default=func.now(), nullable=False)      # orderDate --> Autocomplete on table in created moment #  #default=datetime.utcnow on_update=datetime.utcnow
     requiredDate = Column(Date, nullable=False)
     shippedDate = Column(Date)
     status = Column(String(15), nullable=False)     # Status field --> this should be like schedule with many options by default, in other table
@@ -274,7 +274,7 @@ class Order(Base):
         self.orderDate = orderDate
         self.requiredDate = requiredDate
         self.shippedDate = shippedDate
-        self.state = state
+        self.status = status
         self.comments = comments
         self.customerNumber = customerNumber
 
