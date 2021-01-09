@@ -7,8 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from datetime import datetime
-from models import Office, Employee, Customer, Payment, Order, Orderdetail, Productline, Product
-from models import OfficeSchema, EmployeeSchema, CustomerSchema, PaymentSchema, OrderSchema, OrderdetailSchema, ProductlineSchema, ProductSchema
+from api.models import Office, Employee, Customer, Payment, Order, Orderdetail, Productline, Product
+from api.models import OfficeSchema, EmployeeSchema, CustomerSchema, PaymentSchema, OrderSchema, OrderdetailSchema, ProductlineSchema, ProductSchema
 from api.utils import responses as resp
 
 
