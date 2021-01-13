@@ -1,0 +1,55 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float, Date, DateTime, Binary, CheckConstraint
+from marshmallow import fields
+from sqlalchemy.sql import func
+from marshmallow_sqlalchemy import ModelSchema
+from api.utils.database import Base, session
+
+
+# Office class
+class Office(Base):
+    __tablename__ = "offices"
+
+    officeCode = Column(String(10), primary_key=True)
+    city = Column(String(50), nullable=False)
+    phone = Column(String(50), nullable=False, unique=True)         # phone --> validate unique
+    addressLine1 = Column(String(50), nullable=False)
+    addressLine2 = Column(String(50))
+    state = Column(String(50))
+    country = Column(String(50), nullable=False)
+    postalCode = Column(String(15), nullable=False)
+    territory = Column(String(10), nullable=False)
+
+    def __init__(self, officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, territory):
+        self.officeCode = officeCode
+        self.city = city
+        self.phone = phone
+        self.addressLine1 = addressLine1
+        self.addressLine2 = addressLine2
+        self.state = state
+        self.country = country
+        self.postalCode = postalCode
+        self.territory = territory
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
+
+# Office schema
+class OfficeSchema(ModelSchema):
+    class Meta(ModelSchema.Meta):                               # "???"
+        model = Office                                          # "???"
+        sqla_session = session                                  # "???"
+
+    officeCode = fields.String(required=True)       # dump_only=True --> only reading, to Autocompleted primary key, autocreated Date, file path
+    city = fields.String(required=True)
+    phone = fields.String(required=True)
+    addressLine1 = fields.String(required=True)
+    addressLine2 = fields.String(required=True)        # Marshmallow Error: Fields may not be null
+    state = fields.String()
+    country = fields.String(required=True)
+    postalCode = fields.String(required=True)
+    territory = fields.String(required=True)

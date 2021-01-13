@@ -5,28 +5,28 @@ from flask import make_response, jsonify
 
 SUCCESS_200 = {'http_code': 200, 'code': 'success', 'message': 'Showed'}
 
-SUCCESS_201 = {'http_code': 201, 'code': 'success', 'message': 'Created'}
+SUCCESS_201 = {'http_code': 201, 'code': 'success', 'message': 'The request was fulfilled and a new resource has been created'}
 
-SUCCESS_204 = {'http_code': 204,'code': 'success'}
+SUCCESS_204 = {'http_code': 204, 'code': 'success', 'message': 'No Content, no data has been returned'}
 
 
-BAD_REQUEST_400 = {"http_code": 400, "code": "badRequest", "message": "Bad request by the client error"}
+BAD_REQUEST_400 = {"http_code": 400, "code": "bad Request", "message": "The server can’t process the request due to a client error"}
 
-UNAUTHORIZED_401 = {"http_code": 401, "code": "notAuthorized", "message": "Invalid authentication."}
+UNAUTHORIZED_401 = {"http_code": 401, "code": "not Authorized", "message": "Invalid authentication."}
 
-FORBIDDEN_403 = {"http_code": 403, "code": "notAuthorized", "message": "You are not authorized to execute this."}
+FORBIDDEN_403 = {"http_code": 403, "code": "no tAuthorized", "message": "You are not authorized to execute this."}
 
-SERVER_ERROR_404 = {"http_code": 404, "code": "notFound", "message": "Resource not found, doesn't exist"}
+SERVER_ERROR_404 = {"http_code": 404, "code": "not Found", "message": "The requested resource doesn’t exist on the server"}
 
-NOT_FOUND_HANDLER_404 = {"http_code": 404, "code": "notFound", "message": "route not found"}
+NOT_FOUND_HANDLER_404 = {"http_code": 404, "code": "not Found", "message": "Route not found"}
 
-INVALID_FIELD_NAME_SENT_422 = {"http_code": 422, "code": "invalidField", "message": "Invalid fields found"}
+INVALID_FIELD_NAME_SENT_422 = {"http_code": 422, "code": "invalid Field", "message": "Invalid fields found"}
 
-INVALID_INPUT_422 = {"http_code": 422, "code": "invalidInput", "message": "Invalid input by semantic error"}
+INVALID_INPUT_422 = {"http_code": 422, "code": "invalid Input", "message": "Invalid input by semantic error"}
 
-MISSING_PARAMETERS_422 = {"http_code": 422, "code": "missingParameter", "message": "Missing parameters."}
+MISSING_PARAMETERS_422 = {"http_code": 422, "code": "missing Parameter", "message": "Missing parameters."}
 
-SERVER_ERROR_500 = {"http_code": 500, "code": "serverError", "message": "Server error"}
+SERVER_ERROR_500 = {"http_code": 500, "code": "server Error", "message": "Generic error to imply an unexpected condition in server"}
 
 
 def response_with(response, value=None, message=None, error=None, headers={}, pagination=None):
