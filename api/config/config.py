@@ -1,12 +1,7 @@
-""""
-
 """
-
-HOST = 'localhost'
-PORT = 4000
-DEBUG = True
-
-
+To define the basic config that we did in main.py and
+then adds environment-specific configuration on the top.
+"""
 
 class Config(object):
     DEBUG = True

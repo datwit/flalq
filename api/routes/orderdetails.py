@@ -1,27 +1,32 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+""""
 
-from flask import request
+"""
+
+from flask import Blueprint, request
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from api.models.ordersdetails import Orderdetail, OrderdetailSchema
+from api.models.orderdetails import Orderdetail, OrderdetailSchema
 from api.utils import responses as resp
-from api.utils.database import session
-from main import app
+from api.utils.database import Session
 
 
-@app.route('/orderdetails/', methods=['GET'])
+orderdetail_routes = Blueprint("orderdetail_routes", __name__)
+object_schema = OrderdetailSchema()
+session = Session()
+
+
+@orderdetail_routes.route('/orderdetails/', methods=['GET'])
 def allorderdetails():
     rows = session.query(Orderdetail).all()
-    object_schema = OrderdetailSchema(many=True)
-    result = object_schema.dump(rows)
+    result = object_schema.dump(rows, True)
     return resp.response_with(resp.SUCCESS_200, value={"Row List": result}), resp.SUCCESS_200
 
 
-@app.route('/orderdetails/', methods=['POST'])
+@orderdetail_routes.route('/orderdetails/', methods=['POST'])
 def postorderdetail():
     try:
         data = request.get_json()           # review datetime
-        object_schema = OrderdetailSchema()
         row = object_schema.load(data)
         session.add(row)
         session.commit()
@@ -32,11 +37,10 @@ def postorderdetail():
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
 
-@app.route('/orderdetails/<int:orderNumber>', methods=['GET'])
+@orderdetail_routes.route('/orderdetails/<int:orderNumber>', methods=['GET'])
 def getorderdetails(orderNumber):
     found = orderNumber
     row = session.query(Orderdetail).get(found)
-    object_schema = OrderdetailSchema()
     result = object_schema.dump(row)
     if result:
         return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
@@ -44,11 +48,10 @@ def getorderdetails(orderNumber):
         return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
 
 
-@app.route('/orderdetails/<int:orderNumber>', methods=['PUT'])
+@orderdetail_routes.route('/orderdetails/<int:orderNumber>', methods=['PUT'])
 def putorderdetails(orderNumber):
     found = orderNumber
     data = request.get_json()
-    object_schema = OrderdetailSchema()
     result = object_schema.dump(data)
     try:
         session.query(Orderdetail).filter(Orderdetail.orderNumber==found).update(result)
@@ -59,7 +62,7 @@ def putorderdetails(orderNumber):
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
 
-@app.route('/orderdetails/<int:orderNumber>', methods=['DELETE'])
+@orderdetail_routes.route('/orderdetails/<int:orderNumber>', methods=['DELETE'])
 def delorderdetails(orderNumber):
     found = orderNumber
     try:

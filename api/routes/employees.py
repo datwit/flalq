@@ -1,27 +1,32 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""
 
-from flask import request
+"""
+
+from flask import Blueprint, request
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from api.models.employees import Employee, EmployeeSchema
 from api.utils import responses as resp
-from api.utils.database import session
-from main import app
+from api.utils.database import Session
 
 
-@app.route('/employees/', methods=['GET'])
+employee_routes = Blueprint("employee_routes", __name__)
+object_schema = EmployeeSchema()
+session = Session()
+
+
+@employee_routes.route('/employees/', methods=['GET'])
 def allemployees():
     rows = session.query(Employee).all()
-    object_schema = EmployeeSchema(many=True)
-    result = object_schema.dump(rows)
+    result = object_schema.dump(rows, many=True)
     return resp.response_with(resp.SUCCESS_200, value={"Row List": result}), resp.SUCCESS_200
 
 
-@app.route('/employees/', methods=['POST'])
+@employee_routes.route('/employees/', methods=['POST'])
 def postemployee():
     try:
         data = request.get_json()
-        object_schema = EmployeeSchema()
         row = object_schema.load(data)
         session.add(row)
         session.commit()
@@ -32,11 +37,10 @@ def postemployee():
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
 
-@app.route('/employees/<int:employeeNumber>', methods=['GET'])
+@employee_routes.route('/employees/<int:employeeNumber>', methods=['GET'])
 def getemployee(employeeNumber):
     found = employeeNumber
     row = session.query(Employee).get(found)
-    object_schema = EmployeeSchema()
     result = object_schema.dump(row)
     if result:
         return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
@@ -44,7 +48,7 @@ def getemployee(employeeNumber):
         return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
 
 
-@app.route('/employees/<int:employeeNumber>', methods=['PUT'])
+@employee_routes.route('/employees/<int:employeeNumber>', methods=['PUT'])
 def putemployee(employeeNumber):
     found = employeeNumber
     data = request.get_json()
@@ -59,7 +63,7 @@ def putemployee(employeeNumber):
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
 
-@app.route('/employees/<int:employeeNumber>', methods=['DELETE'])
+@employee_routes.route('/employees/<int:employeeNumber>', methods=['DELETE'])
 def delemployee(employeeNumber):
     found = employeeNumber
     try:

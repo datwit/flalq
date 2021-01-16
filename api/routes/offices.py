@@ -1,28 +1,33 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""
 
-from flask import request
+"""
+
+from flask import Blueprint, request
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from api.models.offices import Office, OfficeSchema
 from api.utils import responses as resp
-from api.utils.database import session
-from main import app
+from api.utils.database import Session
+
+
+office_routes = Blueprint("office_routes", __name__)
+object_schema = OfficeSchema()
+session = Session()
 
 
 # Create a URL route in our application for "/offices/" to read a collection
-@app.route('/offices/', methods=['GET'])
+@office_routes.route('/offices/', methods=['GET'])
 def alloffices():
-    rows = session.query(Office).order_by(Office.state).all()           # Using order_by to see how work this
-    object_schema = OfficeSchema(many=True)
-    result = object_schema.dump(rows)
-    return resp.response_with(resp.SUCCESS_200, value={"Row List": result}), resp.SUCCESS_200        # I did many way for this resp. *.bmp
+    rows = session.query(Office).all()
+    result = object_schema.dump(rows, many=True)                    #(, only=['fields, ...'])   .data         ???
+    return resp.response_with(resp.SUCCESS_200, value={"Row List": result}), resp.SUCCESS_200
 
 # Create a URL route in our application for "/offices/" to create a new row
-@app.route('/offices/', methods=['POST'])
+@office_routes.route('/offices/', methods=['POST'])
 def postoffice():
     try:
         data = request.get_json()
-        object_schema = OfficeSchema()
         row = object_schema.load(data)
         session.add(row)
         session.commit()
@@ -33,11 +38,10 @@ def postoffice():
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400   # 422 ó 400 ... ???
 
 # Create a URL route in our application for "/offices/" to read a particular row in the collection
-@app.route('/offices/<string:officeCode>', methods=['GET'])
+@office_routes.route('/offices/<string:officeCode>', methods=['GET'])
 def getoffice(officeCode):
     found = officeCode
     row = session.query(Office).get(found)
-    object_schema = OfficeSchema()
     result = object_schema.dump(row)
     if result:
         return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
@@ -45,11 +49,10 @@ def getoffice(officeCode):
         return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
 
 # Create a URL route in our application for "/offices/" to update all details of an existing row
-@app.route('/offices/<string:officeCode>', methods=['PUT'])
+@office_routes.route('/offices/<string:officeCode>', methods=['PUT'])
 def putoffice(officeCode):
     found = officeCode
     data = request.get_json()
-    object_schema = OfficeSchema()
     result = object_schema.dump(data)
     try:
         session.query(Office).filter(Office.officeCode==found).update(result)
@@ -60,7 +63,7 @@ def putoffice(officeCode):
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
 # Create a URL route in our application for "/offices/" to update some details of an existing row
-@app.route('/offices/<string:officeCode>', methods=['PATCH'])
+@office_routes.route('/offices/<string:officeCode>', methods=['PATCH'])
 def patchoffice(officeCode):
     found = officeCode
     data = request.get_json()
@@ -76,7 +79,6 @@ def patchoffice(officeCode):
             row.addressLine2 = data['addressLine2']
         session.add(row)
         session.commit()
-        object_schema = OfficeSchema()
         result = object_schema.dump(row)
         return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200
     except IntegrityError as error:
@@ -84,7 +86,7 @@ def patchoffice(officeCode):
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
 # Create a URL route in our application for "/offices/" to delete an existing row
-@app.route('/offices/<string:officeCode>', methods=['DELETE'])
+@office_routes.route('/offices/<string:officeCode>', methods=['DELETE'])
 def deloffice(officeCode):
     found = officeCode
     try:

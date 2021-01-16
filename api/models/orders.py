@@ -5,8 +5,11 @@ from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float
 from marshmallow import fields
 from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import ModelSchema
-from api.utils.database import Base, session
-from api.models.offices import CustomerSchema
+from api.utils.database import Base, Session
+from api.models.customers import CustomerSchema
+
+
+session = Session()
 
 
 # Orders class
@@ -30,10 +33,6 @@ class Order(Base):
         self.comments = comments
         self.customerNumber = customerNumber
 
-    def create(self):
-        session.add(self)
-        session.commit()
-        return self
 
 # Customer schema
 class OrderSchema(ModelSchema):

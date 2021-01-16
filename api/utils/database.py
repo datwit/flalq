@@ -1,3 +1,9 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+Create database connection and instances
+"""
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -11,7 +17,5 @@ Base = declarative_base()
 
 # Create session declarative
 Session = sessionmaker(bind=engine)
-# Instantiate session
-session = Session()
 
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)        # "???"

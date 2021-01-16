@@ -5,10 +5,54 @@
 """
 
 from flask import Flask
+from api.utils.database import engine
+from api.routes.offices import office_routes
+from api.routes.employees import employee_routes
+from api.routes.customers import customer_routes
+from api.routes.productlines import productline_routes
+from api.routes.products import product_routes
+from api.routes.orders import order_routes
+from api.routes.orderdetails import orderdetail_routes
+from api.routes.payments import payment_routes
+from api.utils.responses import response_with
+from api.utils import responses as resp
+
 
 app = Flask(__name__)
+
+# Establish the mysql connection
+engine.connect()
+
+app.register_blueprint(office_routes)
+app.register_blueprint(employee_routes)
+app.register_blueprint(customer_routes)
+app.register_blueprint(productline_routes)
+app.register_blueprint(product_routes)
+app.register_blueprint(order_routes)
+app.register_blueprint(orderdetail_routes)
+app.register_blueprint(payment_routes)
+
+
+
+@app.errorhandler(500)
+def handle_app_base_error(e):
+    return response_with(resp.SERVER_ERROR_500)
+
+@app.errorhandler(404)
+def handle_object_not_found_error(e):
+    return response_with(resp.SERVER_ERROR_404)
+
+@app.errorhandler(400)
+def bad_request(e):
+    # logging.error(e)
+    return response_with(resp.BAD_REQUEST_400)
 
 
 # If we're running in stand alone mode, run the application
 if __name__ == "__main__":
-    app.run(host='localhost', port=4000, debug=True)   # (..., use_reloader=False)???
+    app.run(host='localhost', port=4000, debug=True)
+
+
+
+
+

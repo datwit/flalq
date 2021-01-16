@@ -1,10 +1,24 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from api.utils.database import session
+from api.utils.database import Session
 
-class cud():
-    def create(self):
-        session.add(self)
+
+session = Session()
+
+
+class crudmodel():
+    def create(self, row):
+        session.add(row)
+        session.commit()
+        return self
+
+    def update(self, row):
+        session.add(row)
+        session.commit()
+        return self
+
+    def delete(self, row):
+        session.add(row)
         session.commit()
         return self

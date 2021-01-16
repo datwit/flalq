@@ -5,7 +5,10 @@ from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float
 from marshmallow import fields
 from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import ModelSchema
-from api.utils.database import Base, session
+from api.utils.database import Base, Session
+
+
+session = Session()
 
 
 # Productlines class
@@ -23,10 +26,6 @@ class Productline(Base):
         self.htmlDescription = htmlDescription
         self.image = image
 
-    def create(self):
-        session.add(self)
-        session.commit()
-        return self
 
 # Customer schema
 class ProductlineSchema(ModelSchema):

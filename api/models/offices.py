@@ -1,11 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""
+Class to Offices Table and Office Schema
+"""
 
 from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float, Date, DateTime, Binary, CheckConstraint
 from marshmallow import fields
 from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import ModelSchema
-from api.utils.database import Base, session
+from api.utils.database import Base, Session
+
+
+session = Session()
 
 
 # Office class
@@ -33,16 +39,12 @@ class Office(Base):
         self.postalCode = postalCode
         self.territory = territory
 
-    def create(self):
-        session.add(self)
-        session.commit()
-        return self
 
 # Office schema
 class OfficeSchema(ModelSchema):
-    class Meta(ModelSchema.Meta):                               # "???"
-        model = Office                                          # "???"
-        sqla_session = session                                  # "???"
+    class Meta(ModelSchema.Meta):
+        model = Office
+        sqla_session = session
 
     officeCode = fields.String(required=True)       # dump_only=True --> only reading, to Autocompleted primary key, autocreated Date, file path
     city = fields.String(required=True)

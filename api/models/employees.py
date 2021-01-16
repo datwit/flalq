@@ -5,8 +5,11 @@ from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float
 from marshmallow import fields
 from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import ModelSchema
-from api.utils.database import Base, session
+from api.utils.database import Base, Session
 from api.models.offices import OfficeSchema
+
+
+session = Session()
 
 
 # Employees class
@@ -32,10 +35,6 @@ class Employee(Base):
         self.reportsTo = reportsTo
         self.jobTitle = jobTitle
 
-    def create(self):
-        session.add(self)
-        session.commit()
-        return self
 
 # Employee schema
 class EmployeeSchema(ModelSchema):
@@ -49,5 +48,5 @@ class EmployeeSchema(ModelSchema):
     extension = fields.String(required=True)
     email = fields.String(required=True)                               # validate email format
     officeCode = fields.Nested(OfficeSchema, many=False, only=['officeCode'], required=True)
-    reportsTo = fields.Integer()
+    reportsTo = fields.Integer()                            #see relationships
     jobTitle = fields.String(required=True)
