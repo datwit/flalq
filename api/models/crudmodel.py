@@ -14,11 +14,10 @@ class crudmodel():
         return self
 
     def update(self, row):
-        session.add(row)
         session.commit()
         return self
 
     def delete(self, row):
-        session.add(row)
+        session.delete(row)
         session.commit()
         return self

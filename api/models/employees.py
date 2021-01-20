@@ -16,7 +16,7 @@ session = Session()
 class Employee(Base):
     __tablename__ = "employees"
 
-    employeeNumber = Column(Integer, primary_key=True)        # Integer and primary_key is auto-incremented automatically in table structure
+    employeeNumber = Column(Integer, primary_key=True)        # Integer primary_key is auto-incremented automatically
     lastName = Column(String(50), nullable=False)
     firstName = Column(String(50), nullable=False)
     extension = Column(String(10), nullable=False)
@@ -38,9 +38,9 @@ class Employee(Base):
 
 # Employee schema
 class EmployeeSchema(ModelSchema):
-    class Meta(ModelSchema.Meta):                                      # "???"
-        model = Employee                                               # "???"
-        sqla_session = session                                         # "???"
+    class Meta(ModelSchema.Meta):
+        model = Employee
+        sqla_session = session
 
     employeeNumber = fields.Integer(dump_only=True)
     lastName = fields.String(required=True)

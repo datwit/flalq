@@ -10,7 +10,8 @@ from sqlalchemy.orm import sessionmaker
 
 
 # Create engine declarative, configure mysql connection
-engine = create_engine('mysql+pymysql://root:@localhost/test', echo=True)  # , encoding='latin1')
+engine = create_engine('mysql+pymysql://root:@localhost/test', echo=True)
+# use_unicode=True o  convert_unicode = True, charset="utf8" o encoding='latin1'
 
 # Create base declarative
 Base = declarative_base()

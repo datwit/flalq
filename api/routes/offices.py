@@ -20,14 +20,16 @@ session = Session()
 @office_routes.route('/offices/', methods=['GET'])
 def alloffices():
     rows = session.query(Office).all()
-    result = object_schema.dump(rows, many=True)                    #(, only=['fields, ...'])   .data         ???
+    result = object_schema.dump(rows, many=True)
     return resp.response_with(resp.SUCCESS_200, value={"Row List": result}), resp.SUCCESS_200
 
 # Create a URL route in our application for "/offices/" to create a new row
 @office_routes.route('/offices/', methods=['POST'])
 def postoffice():
+    data = request.get_json()
+    if not data:
+        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     try:
-        data = request.get_json()
         row = object_schema.load(data)
         session.add(row)
         session.commit()
@@ -42,22 +44,25 @@ def postoffice():
 def getoffice(officeCode):
     found = officeCode
     row = session.query(Office).get(found)
-    result = object_schema.dump(row)
-    if result:
-        return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
-    else:
+    if not row:
         return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
+    else:
+        result = object_schema.dump(row)
+        return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
 
 # Create a URL route in our application for "/offices/" to update all details of an existing row
 @office_routes.route('/offices/<string:officeCode>', methods=['PUT'])
 def putoffice(officeCode):
     found = officeCode
     data = request.get_json()
-    result = object_schema.dump(data)
+    if not data:
+        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     try:
-        session.query(Office).filter(Office.officeCode==found).update(result)
+        row = object_schema.dump(data)
+        session.query(Office).filter(Office.officeCode==found).update(row)
         session.commit()
-        return resp.response_with(resp.SUCCESS_200, value={"Updated Row": result}), resp.SUCCESS_200
+        result = object_schema.dump(session.query(Office).get(found))
+        return resp.response_with(resp.SUCCESS_201, value={"Updated Row": result}), resp.SUCCESS_201
     except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
@@ -67,8 +72,10 @@ def putoffice(officeCode):
 def patchoffice(officeCode):
     found = officeCode
     data = request.get_json()
-    row = session.query(Office).get(found)
+    if not data:
+        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     try:
+        row = session.query(Office).get(found)
         if data.get('phone'):
             row.phone = data['phone']
         if data.get('postalCode'):
@@ -89,11 +96,13 @@ def patchoffice(officeCode):
 @office_routes.route('/offices/<string:officeCode>', methods=['DELETE'])
 def deloffice(officeCode):
     found = officeCode
+    row = session.query(Office).get(found)
+    if not row:
+        return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
     try:
-        row = session.query(Office).get(found)
         session.delete(row)
         session.commit()
-        return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
-    except SQLAlchemyError as error:
+        return resp.response_with(resp.SUCCESS_204, value={'message': 'Deleted Row'}), resp.SUCCESS_204     #does not print the message
+    except IntegrityError as error:
         session.rollback()
-        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400       #or 204??
+        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400

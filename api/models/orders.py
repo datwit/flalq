@@ -36,9 +36,9 @@ class Order(Base):
 
 # Customer schema
 class OrderSchema(ModelSchema):
-    class Meta(ModelSchema.Meta):                                # "???"
-        model = Order                                            # "???"
-        sqla_session = session                                   # "???"
+    class Meta(ModelSchema.Meta):
+        model = Order
+        sqla_session = session
 
     orderNumber = fields.Integer(dump_only=True)
     orderDate = fields.Date(dump_only=True)

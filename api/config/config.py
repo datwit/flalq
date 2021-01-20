@@ -5,8 +5,12 @@ then adds environment-specific configuration on the top.
 
 class Config(object):
     DEBUG = True
-    # TESTING = False
+    PORT = 5000
+    HOST = "127.0.0.1"
+    SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://<db_user>:<db_pass>@<db_host>:<port>/<db_name>"
+    # TESTING = False
 
 
 class ProductionConfig(Config):

@@ -33,9 +33,9 @@ class Orderdetail(Base):
 
 # Customer schema
 class OrderdetailSchema(ModelSchema):
-    class Meta(ModelSchema.Meta):                               # "???"
-        model = Orderdetail                                     # "???"
-        sqla_session = session                                  # "???"
+    class Meta(ModelSchema.Meta):
+        model = Orderdetail
+        sqla_session = session
 
     orderNumber = fields.Nested(OrderSchema, many=False, only=['orderNumber'], dump_only=True)
     productCode = fields.Nested(ProductSchema, many=False, only=['productCode'], required=True)

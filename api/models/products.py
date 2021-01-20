@@ -41,9 +41,9 @@ class Product(Base):
 
 # Customer schema
 class ProductSchema(ModelSchema):
-    class Meta(ModelSchema.Meta):                                       # "???"
-        model = Product                                                 # "???"
-        sqla_session = session                                          # "???"
+    class Meta(ModelSchema.Meta):
+        model = Product
+        sqla_session = session
 
     productCode = fields.String(dump_only=True)
     productName = fields.String(required=True)

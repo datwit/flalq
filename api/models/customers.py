@@ -48,9 +48,9 @@ class Customer(Base):
 
 # Customer schema
 class CustomerSchema(ModelSchema):
-    class Meta(ModelSchema.Meta):                                       # "???"
-        model = Customer                                                # "???"
-        sqla_session = session                                          # "???"
+    class Meta(ModelSchema.Meta):
+        model = Customer
+        sqla_session = session
 
     customerNumber = fields.Integer(dump_only=True)
     customerName = fields.String(required=True)

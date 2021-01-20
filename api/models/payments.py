@@ -30,9 +30,9 @@ class Payment(Base):
 
 # Customer schema
 class PaymentSchema(ModelSchema):
-    class Meta(ModelSchema.Meta):                                       # "???"
-        model = Payment                                                 # "???"
-        sqla_session = session                                          # "???"
+    class Meta(ModelSchema.Meta):
+        model = Payment
+        sqla_session = session
 
     customerNumber = fields.Nested(CustomerSchema, many=False, only=['customerNumber'], dump_only=True)
     checkNumber = fields.String(required=True)

@@ -50,7 +50,7 @@ class OfficeSchema(ModelSchema):
     city = fields.String(required=True)
     phone = fields.String(required=True)
     addressLine1 = fields.String(required=True)
-    addressLine2 = fields.String(required=True)        # Marshmallow Error: Fields may not be null
+    addressLine2 = fields.String()
     state = fields.String()
     country = fields.String(required=True)
     postalCode = fields.String(required=True)

@@ -25,8 +25,10 @@ def allpayments():
 
 @payment_routes.route('/payments/', methods=['POST'])
 def postpayment():
+    data = request.get_json()
+    if not data:
+        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     try:
-        data = request.get_json()
         row = object_schema.load(data)
         session.add(row)
         session.commit()
@@ -41,22 +43,25 @@ def postpayment():
 def getpayments(checkNumber):
     found = checkNumber
     row = session.query(Payment).get(found)
-    result = object_schema.dump(row)
-    if result:
-        return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
-    else:
+    if not row:
         return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
+    else:
+        result = object_schema.dump(row)
+        return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
 
 
 @payment_routes.route('/payments/<string:checkNumber>', methods=['PUT'])
 def putpayments(checkNumber):
     found = checkNumber
     data = request.get_json()
-    result = object_schema.dump(data)
+    if not data:
+        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     try:
-        session.query(Payment).filter(Payment.checkNumber==found).update(result)
+        row = object_schema.dump(data)
+        session.query(Payment).filter(Payment.checkNumber==found).update(row)
         session.commit()
-        return resp.response_with(resp.SUCCESS_200, value={"Updated Row": result}), resp.SUCCESS_200
+        result = object_schema.dump(session.query(Payment).get(found))
+        return resp.response_with(resp.SUCCESS_201, value={"Updated Row": result}), resp.SUCCESS_201
     except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
@@ -65,11 +70,13 @@ def putpayments(checkNumber):
 @payment_routes.route('/payments/<string:checkNumber>', methods=['DELETE'])
 def delpayments(checkNumber):
     found = checkNumber
+    row = session.query(Payment).get(found)
+    if not row:
+        return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
     try:
-        row = session.query(Payment).get(found)
         session.delete(row)
         session.commit()
-        return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
+        return resp.response_with(resp.SUCCESS_204, value={'message': 'Deleted Row'}), resp.SUCCESS_204
     except SQLAlchemyError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400

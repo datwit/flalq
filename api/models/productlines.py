@@ -29,9 +29,9 @@ class Productline(Base):
 
 # Customer schema
 class ProductlineSchema(ModelSchema):
-    class Meta(ModelSchema.Meta):                                       # "???"
-        model = Productline                                             # "???"
-        sqla_session = session                                     # "???"
+    class Meta(ModelSchema.Meta):
+        model = Productline
+        sqla_session = session
 
     productLine = fields.String(dump_only=True)
     textDescription = fields.String()
