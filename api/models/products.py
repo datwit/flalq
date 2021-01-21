@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float, Date, DateTime, Binary, CheckConstraint
+from sqlalchemy import  ForeignKey, Column, String, SmallInteger, Float, CheckConstraint
 from marshmallow import fields
-from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import ModelSchema
 from api.utils.database import Base, Session
 from api.models.productlines import ProductlineSchema

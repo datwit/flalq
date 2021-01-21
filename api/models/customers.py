@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float, Date, DateTime, Binary, CheckConstraint
+from sqlalchemy import  ForeignKey, Column, String, Integer, Float
+from sqlalchemy.orm import relationship
 from marshmallow import fields
-from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import ModelSchema
 from api.utils.database import Base, Session
 from api.models.employees import EmployeeSchema
@@ -28,7 +28,9 @@ class Customer(Base):
     postalCode = Column(String(15))
     country = Column(String(50), nullable=False)
     salesRepEmployeeNumber = Column(Integer, ForeignKey('employees.employeeNumber'))
-    creditLimit = Column(Float(10,2))                                       # Float --> because Decimal or Numeric type is not JSON serializable
+    creditLimit = Column(Float(10,2))
+    payments = relationship("Payment", backref="Customer")
+    orders = relationship("Order", backref="Customer")
 
     def __init__(self, customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, addressLine2, city, state, postalCode, country, creditLimit, salesRepEmployeeNumber=None):
         self.customerName = customerNumber

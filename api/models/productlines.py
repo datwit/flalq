@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float, Date, DateTime, Binary, CheckConstraint
+from sqlalchemy import Column, String, Binary
+from sqlalchemy.orm import relationship
 from marshmallow import fields
-from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import ModelSchema
 from api.utils.database import Base, Session
 

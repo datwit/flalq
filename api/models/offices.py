@@ -4,9 +4,9 @@
 Class to Offices Table and Office Schema
 """
 
-from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float, Date, DateTime, Binary, CheckConstraint
+from sqlalchemy import  Column, String
+from sqlalchemy.orm import relationship
 from marshmallow import fields
-from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import ModelSchema
 from api.utils.database import Base, Session
 
@@ -27,6 +27,7 @@ class Office(Base):
     country = Column(String(50), nullable=False)
     postalCode = Column(String(15), nullable=False)
     territory = Column(String(10), nullable=False)
+    employees = relationship("Employee", backref="Office")
 
     def __init__(self, officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, territory):
         self.officeCode = officeCode

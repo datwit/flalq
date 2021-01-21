@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float, Date, DateTime, Binary, CheckConstraint
+from sqlalchemy import  ForeignKey, Column, String, Integer, Float, Date, DateTime, Binary
+from sqlalchemy.orm import relationship
 from marshmallow import fields
 from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import ModelSchema
@@ -20,9 +21,10 @@ class Order(Base):
     orderDate = Column(DateTime, default=func.now(), nullable=False)      # orderDate --> Autocomplete on table in created moment #  #default=datetime.utcnow on_update=datetime.utcnow
     requiredDate = Column(Date, nullable=False)
     shippedDate = Column(Date)
-    status = Column(String(15), nullable=False)     # Status field --> this should be like schedule with many options by default, in other table
+    status = Column(String(15), nullable=False)
     comments = Column(String(500))
-    customerNumber = Column(Integer, ForeignKey('customers.customerNumber'), nullable=False,)
+    customerNumber = Column(Integer, ForeignKey('customers.customerNumber'), nullable=False)
+    orderdetails = relationship("Orderdetail", backref="Order")
 
     def __init__(self, orderNumber, orderDate, requiredDate, shippedDate, status, comments, customerNumber=None):
         self.orderNumber = orderNumber
