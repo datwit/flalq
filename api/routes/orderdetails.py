@@ -4,7 +4,7 @@
 
 """
 
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from api.models.orderdetails import Orderdetail, OrderdetailSchema
 from api.models.products import Product
 from api.utils.database import Session
@@ -27,20 +27,22 @@ def allorderdetails():
 @orderdetail_routes.route('/orderdetails/', methods=['POST'])
 def postorderdetail():
     data = request.get_json()
-    productCode = data['productCode']
-    orderNumber = data['orderNumber']
     if not data:
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
+    productCode = data['productCode']
+    ordered = data['quantityOrdered']
     try:
         row = object_schema.load(data)
         ordered_product = session.query(Product).get(productCode)
-        if ordered_product['quantityInStock'] > data['quantityOrdered']:
+        session.co
+        quantity = ordered_product.quantityInStock
+        if ordered < quantity:
             session.add(row)
             session.commit()
-            ordered_product['quantityInStock'] = ordered_product['quantityInStock'] - row['quantityOrdered']
-            session.add(ordered_product)
+            quantity = quantity - ordered
+            session.add(quantity)
             session.commit()
-            result = object_schema.dump(session.query(Orderdetail).get(orderNumber))
+            result = object_schema.dump(session.query(Orderdetail).get(data['orderNumber']))
             return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
         else:
             return resp.response_with(resp.BAD_REQUEST_400, value={"Message": "Not have enough In Stock"}), resp.BAD_REQUEST_400
