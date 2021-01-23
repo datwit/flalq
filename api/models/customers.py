@@ -1,12 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import  ForeignKey, Column, String, Integer, Float
-from sqlalchemy.orm import relationship
-from marshmallow import fields
+from api.utils.database import Session, Base
+from sqlalchemy import  Column, String, Integer, Float, ForeignKey
 from marshmallow_sqlalchemy import ModelSchema
-from api.utils.database import Base, Session
-from api.models.employees import EmployeeSchema
+from marshmallow import fields
 
 
 session = Session()
@@ -27,13 +25,11 @@ class Customer(Base):
     state = Column(String(50))
     postalCode = Column(String(15))
     country = Column(String(50), nullable=False)
-    salesRepEmployeeNumber = Column(Integer, ForeignKey('employees.employeeNumber'))
+    salesRepEmployeeNumber = Column(Integer, ForeignKey('employees.employeeNumber'), nullable=True)
     creditLimit = Column(Float(10,2))
-    payments = relationship("Payment", backref="Customer")
-    orders = relationship("Order", backref="Customer")
 
     def __init__(self, customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, addressLine2, city, state, postalCode, country, creditLimit, salesRepEmployeeNumber=None):
-        self.customerName = customerNumber
+        self.customerNumber = customerNumber
         self.customerName = customerName
         self.contactLastName = contactLastName
         self.contactFirstName = contactFirstName
@@ -54,7 +50,7 @@ class CustomerSchema(ModelSchema):
         model = Customer
         sqla_session = session
 
-    customerNumber = fields.Integer(dump_only=True)
+    customerNumber = fields.Integer(required=True)
     customerName = fields.String(required=True)
     contactLastName = fields.String(required=True)
     contactFirstName = fields.String(required=True)
@@ -65,5 +61,5 @@ class CustomerSchema(ModelSchema):
     state = fields.String()
     postalCode = fields.String()
     country = fields.String(required=True)
-    salesRepEmployeeNumber = fields.Nested(EmployeeSchema, many=True, only=['employeeNumber'])
+    salesRepEmployeeNumber = fields.Integer()
     creditLimit = fields.Float()

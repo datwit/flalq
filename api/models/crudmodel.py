@@ -7,17 +7,14 @@ from api.utils.database import Session
 session = Session()
 
 
-class crudmodel():
+class Crudmodel():
     def create(self, row):
         session.add(row)
-        session.commit()
-        return self
+        return session.commit()
 
-    def update(self, row):
-        session.commit()
-        return self
+    def update(self):
+        return session.commit()
 
     def delete(self, row):
         session.delete(row)
-        session.commit()
-        return self
+        return session.commit()

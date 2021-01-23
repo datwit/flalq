@@ -5,10 +5,10 @@
 """
 
 from flask import Blueprint, request
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from api.models.employees import Employee, EmployeeSchema
-from api.utils import responses as resp
 from api.utils.database import Session
+from api.utils import responses as resp
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 employee_routes = Blueprint("employee_routes", __name__)
@@ -32,7 +32,7 @@ def postemployee():
         row = object_schema.load(data)
         session.add(row)
         session.commit()
-        result = object_schema.dump(data)
+        result = object_schema.dump(session.query(Employee).get(data["employeeNumber"]))
         return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
     except IntegrityError as error:
         session.rollback()
@@ -85,7 +85,7 @@ def patchoffice(employeeNumber):
             row.jobTitle = data['jobTitle']
         session.add(row)
         session.commit()
-        result = object_schema.dump(row)
+        result = object_schema.dump(session.query(Employee).get(found))
         return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200
     except IntegrityError as error:
         session.rollback()

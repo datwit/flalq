@@ -5,10 +5,10 @@
 """
 
 from flask import Blueprint, request
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from api.models.payments import Payment, PaymentSchema
-from api.utils import responses as resp
 from api.utils.database import Session
+from api.utils import responses as resp
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 payment_routes = Blueprint("payment_routes", __name__)
@@ -32,7 +32,7 @@ def postpayment():
         row = object_schema.load(data)
         session.add(row)
         session.commit()
-        result = object_schema.dump(data)
+        result = object_schema.dump(session.query(Payment).get(data["customerNumber"]))
         return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
     except IntegrityError as error:
         session.rollback()

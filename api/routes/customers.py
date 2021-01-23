@@ -5,10 +5,10 @@
 """
 
 from flask import Blueprint, request
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from api.models.customers import Customer, CustomerSchema
-from api.utils import responses as resp
 from api.utils.database import Session
+from api.utils import responses as resp
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 customer_routes = Blueprint("customer_routes", __name__)
@@ -32,7 +32,7 @@ def postcustomer():
         row = object_schema.load(data)
         session.add(row)
         session.commit()
-        result = object_schema.dump(data)
+        result = object_schema.dump(session.query(Customer).get(data["customerNumber"]))
         return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
     except IntegrityError as error:
         session.rollback()
@@ -85,7 +85,7 @@ def patchoffice(customerNumber):
             row.postalCode = data['postalCode']
         session.add(row)
         session.commit()
-        result = object_schema.dump(row)
+        result = object_schema.dump(session.query(Customer).get(found))
         return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200
     except IntegrityError as error:
         session.rollback()

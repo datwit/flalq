@@ -5,10 +5,11 @@
 """
 
 from flask import Blueprint, request
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from api.models.orderdetails import Orderdetail, OrderdetailSchema
-from api.utils import responses as resp
+from api.models.products import Product
 from api.utils.database import Session
+from api.utils import responses as resp
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 orderdetail_routes = Blueprint("orderdetail_routes", __name__)
@@ -25,15 +26,24 @@ def allorderdetails():
 
 @orderdetail_routes.route('/orderdetails/', methods=['POST'])
 def postorderdetail():
-    data = request.get_json()           # review datetime
+    data = request.get_json()
+    productCode = data['productCode']
+    orderNumber = data['orderNumber']
     if not data:
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     try:
         row = object_schema.load(data)
-        session.add(row)
-        session.commit()
-        result = object_schema.dump(data)
-        return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
+        ordered_product = session.query(Product).get(productCode)
+        if ordered_product['quantityInStock'] > data['quantityOrdered']:
+            session.add(row)
+            session.commit()
+            ordered_product['quantityInStock'] = ordered_product['quantityInStock'] - row['quantityOrdered']
+            session.add(ordered_product)
+            session.commit()
+            result = object_schema.dump(session.query(Orderdetail).get(orderNumber))
+            return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
+        else:
+            return resp.response_with(resp.BAD_REQUEST_400, value={"Message": "Not have enough In Stock"}), resp.BAD_REQUEST_400
     except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
@@ -58,10 +68,18 @@ def putorderdetails(orderNumber):
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     try:
         row = object_schema.dump(data)
-        session.query(Orderdetail).filter(Orderdetail.orderNumber==found).update(row)
-        session.commit()
-        result = object_schema.dump(session.query(Orderdetail).get(found))
-        return resp.response_with(resp.SUCCESS_201, value={"Updated Row": result}), resp.SUCCESS_201
+        ordered_product = session.query(Product).get(row['productCode'])
+        ordered_product.quantityInStock = ordered_product['quantityInStock'] + row['quantityOrdered']
+        if ordered_product['quantityInStock'] >= row['quantityOrdered']:
+            session.query(Orderdetail).filter(Orderdetail.orderNumber==found).update(row)
+            session.commit()
+            ordered_product.quantityInStock = ordered_product['quantityInStock'] - row['quantityOrdered']
+            session.add(ordered_product)
+            session.commit()
+            result = object_schema.dump(session.query(Orderdetail).get(found))
+            return resp.response_with(resp.SUCCESS_201, value={"Updated Row": result}), resp.SUCCESS_201
+        else:
+            return resp.response_with(resp.BAD_REQUEST_400, value={"Message": "Not have enough In Stock"}), resp.BAD_REQUEST_400
     except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
@@ -76,12 +94,19 @@ def patchoffice(orderNumber):
     try:
         row = session.query(Orderdetail).get(found)
         if data.get('quantityOrdered'):
-            row.quantityOrdered = data['quantityOrdered']
-
-        session.add(row)
-        session.commit()
-        result = object_schema.dump(row)
-        return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200
+            ordered_product = session.query(Product).get(row['productCode'])
+            ordered_product.quantityInStock = ordered_product['quantityInStock'] + row['quantityOrdered']
+            if ordered_product['quantityInStock'] >= data['quantityOrdered']:
+                row.quantityOrdered = data['quantityOrdered']
+                session.add(row)
+                session.commit()
+                ordered_product.quantityInStock = ordered_product['quantityInStock'] - row['quantityOrdered']
+                session.add(ordered_product)
+                session.commit()
+                result = object_schema.dump(row)
+                return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200
+            else:
+                return resp.response_with(resp.BAD_REQUEST_400, value={"Message": "Not have enough In Stock"}), resp.BAD_REQUEST_400
     except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400

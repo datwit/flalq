@@ -5,10 +5,10 @@
 """
 
 from flask import Blueprint, request
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from api.models.orders import Order, OrderSchema
-from api.utils import responses as resp
 from api.utils.database import Session
+from api.utils import responses as resp
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 order_routes = Blueprint("order_routes", __name__)
 object_schema = OrderSchema()
@@ -31,7 +31,7 @@ def postorder():
         row = object_schema.load(data)
         session.add(row)
         session.commit()
-        result = object_schema.dump(data)
+        result = object_schema.dump(session.query(Order).get(data["orderNumber"]))
         return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
     except IntegrityError as error:
         session.rollback()
@@ -84,7 +84,7 @@ def patchoffice(orderNumber):
             row.comments = data['comments']
         session.add(row)
         session.commit()
-        result = object_schema.dump(row)
+        result = object_schema.dump(session.query(Order).get(found))
         return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200
     except IntegrityError as error:
         session.rollback()

@@ -1,12 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import  ForeignKey, Column, String, Integer
-from sqlalchemy.orm import relationship
-from marshmallow import fields
+from api.utils.database import Session, Base
+from sqlalchemy import  Column, String, Integer, ForeignKey
 from marshmallow_sqlalchemy import ModelSchema
-from api.utils.database import Base, Session
-from api.models.offices import OfficeSchema
+from marshmallow import fields
 
 
 session = Session()
@@ -16,15 +14,14 @@ session = Session()
 class Employee(Base):
     __tablename__ = "employees"
 
-    employeeNumber = Column(Integer, primary_key=True)        # Integer primary_key is auto-incremented automatically
+    employeeNumber = Column(Integer, primary_key=True)
     lastName = Column(String(50), nullable=False)
     firstName = Column(String(50), nullable=False)
     extension = Column(String(10), nullable=False)
     email = Column(String(100), nullable=False, unique=True)                  # email --> I make it unique
-    officeCode = Column(String(10), ForeignKey('offices.officeCode'), nullable=False,)
-    reportsTo = Column(Integer, ForeignKey('employees.employeeNumber'))
+    officeCode = Column(String(10), ForeignKey('offices.officeCode'), nullable=False)
+    reportsTo = Column(Integer, ForeignKey('employees.employeeNumber'), nullable=True)
     jobTitle = Column(String(50), nullable=False)
-    customers = relationship("Customer", backref="Employee")
 
     def __init__(self, employeeNumber, lastName, firstName, extension, email, jobTitle, officeCode=None, reportsTo=None):
         self.employeeNumber = employeeNumber
@@ -43,11 +40,11 @@ class EmployeeSchema(ModelSchema):
         model = Employee
         sqla_session = session
 
-    employeeNumber = fields.Integer(dump_only=True)
+    employeeNumber = fields.Integer(required=True)
     lastName = fields.String(required=True)
     firstName = fields.String(required=True)
     extension = fields.String(required=True)
-    email = fields.String(required=True)                               # validate email format
-    officeCode = fields.Nested(OfficeSchema, many=False, only=['officeCode'], required=True)
+    email = fields.String(required=True)                             # validate email format
+    officeCode = fields.String(required=True)
     reportsTo = fields.Integer()                            #see relationships
     jobTitle = fields.String(required=True)

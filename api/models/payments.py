@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import  ForeignKey, Column, String, Integer, Float, Date
-from marshmallow import fields
+from api.utils.database import Session, Base
+from sqlalchemy import  Column, String, Integer, Float, Date, ForeignKey
 from marshmallow_sqlalchemy import ModelSchema
-from api.utils.database import Base, Session
+from marshmallow import fields
 from api.models.customers import CustomerSchema
 
 

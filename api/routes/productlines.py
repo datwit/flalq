@@ -5,10 +5,10 @@
 """
 
 from flask import Blueprint, request
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from api.models.productlines import Productline, ProductlineSchema
-from api.utils import responses as resp
 from api.utils.database import Session
+from api.utils import responses as resp
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 productline_routes = Blueprint("productline_routes", __name__)
@@ -32,7 +32,7 @@ def postproductline():
         row = object_schema.load(data)
         session.add(row)
         session.commit()
-        result = object_schema.dump(data)
+        result = object_schema.dump(session.query(Productline).get(data["productLine"]))
         return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
     except IntegrityError as error:
         session.rollback()
@@ -83,7 +83,7 @@ def patchoffice(productLine):
             row.image = data['image']
         session.add(row)
         session.commit()
-        result = object_schema.dump(row)
+        result = object_schema.dump(session.query(Productline).get(found))
         return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200
     except IntegrityError as error:
         session.rollback()

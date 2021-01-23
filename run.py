@@ -8,4 +8,4 @@ from main import app as application
 
 # If we're running in stand alone mode, run the application
 if __name__ == "__main__":
-    application.run()
+    application.run(debug=True)

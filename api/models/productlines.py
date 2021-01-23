@@ -1,11 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from api.utils.database import Session, Base
 from sqlalchemy import Column, String, Binary
-from sqlalchemy.orm import relationship
-from marshmallow import fields
 from marshmallow_sqlalchemy import ModelSchema
-from api.utils.database import Base, Session
+from marshmallow import fields
 
 
 session = Session()
@@ -18,7 +17,7 @@ class Productline(Base):
     productLine = Column(String(50), primary_key=True)
     textDescription = Column(String(4000))
     htmlDescription = Column(String(200))                               # validated html format??
-    image = Column(Binary)                                              # validate file extension in the path
+    image = Column(String(100))                                         # validate file extension in the path
 
     def __init__(self, productLine, textDescription, htmlDescription, image):
         self.productLine = productLine
@@ -33,7 +32,7 @@ class ProductlineSchema(ModelSchema):
         model = Productline
         sqla_session = session
 
-    productLine = fields.String(dump_only=True)
+    productLine = fields.String(required=True)
     textDescription = fields.String()
     htmlDescription = fields.String()
     image = fields.String()                                             # path to image

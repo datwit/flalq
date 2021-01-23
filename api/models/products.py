@@ -1,11 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import  ForeignKey, Column, String, SmallInteger, Float, CheckConstraint
-from marshmallow import fields
+from api.utils.database import Session, Base
+from sqlalchemy import  Column, String, SmallInteger, Integer, Float, CheckConstraint, ForeignKey
 from marshmallow_sqlalchemy import ModelSchema
-from api.utils.database import Base, Session
+from marshmallow import fields
 from api.models.productlines import ProductlineSchema
+from api.models.crudmodel import Crudmodel
 
 
 session = Session()
@@ -21,7 +22,7 @@ class Product(Base):
     productScale = Column(String(10), nullable=False)
     productVendor = Column(String(50), nullable=False)
     productDescription = Column(String(500), nullable=False)
-    quantityInStock = Column(SmallInteger, nullable=False)
+    quantityInStock = Column(Integer, nullable=False)
     buyPrice = Column(Float(10,2), nullable=False)
     MSRP = Column(Float(10,2), nullable=False)
     CheckConstraint('quantityInStock >= 0', name='quantityInStock_positive')        # I am ensuring that quantityInStock data is always positive
@@ -44,9 +45,9 @@ class ProductSchema(ModelSchema):
         model = Product
         sqla_session = session
 
-    productCode = fields.String(dump_only=True)
+    productCode = fields.String(required=True)
     productName = fields.String(required=True)
-    productLine = fields.Nested(ProductlineSchema, many=False, only=['productLine'], required=True)
+    productLine = fields.String(required=True)
     productScale = fields.String(required=True)
     productVendor = fields.String(required=True)
     productDescription = fields.String(required=True)
