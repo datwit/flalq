@@ -4,7 +4,7 @@
 
 """
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from api.models.orderdetails import Orderdetail, OrderdetailSchema
 from api.models.products import Product
 from api.utils.database import Session
@@ -29,20 +29,18 @@ def postorderdetail():
     data = request.get_json()
     if not data:
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
-    productCode = data['productCode']
-    ordered = data['quantityOrdered']
+    product_data = data['productCode']
+    quantity_data = data['quantityOrdered']
     try:
         row = object_schema.load(data)
-        ordered_product = session.query(Product).get(productCode)
-        session.co
-        quantity = ordered_product.quantityInStock
-        if ordered < quantity:
-            session.add(row)
+        product_ordered = session.query(Product).get(product_data)
+        quantity_stock = product_ordered.quantityInStock
+        if quantity_data <= quantity_stock:
+            row.create()
+            quantity_stock = quantity_stock - quantity_data
+            product_ordered.quantityInStock = quantity_stock
             session.commit()
-            quantity = quantity - ordered
-            session.add(quantity)
-            session.commit()
-            result = object_schema.dump(session.query(Orderdetail).get(data['orderNumber']))
+            result = object_schema.dump(data)
             return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
         else:
             return resp.response_with(resp.BAD_REQUEST_400, value={"Message": "Not have enough In Stock"}), resp.BAD_REQUEST_400
@@ -51,10 +49,11 @@ def postorderdetail():
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
 
-@orderdetail_routes.route('/orderdetails/<int:orderNumber>', methods=['GET'])
-def getorderdetails(orderNumber):
-    found = orderNumber
-    row = session.query(Orderdetail).get(found)
+@orderdetail_routes.route('/orderdetails/<int:orderNumber>/<int:orderLineNumber>', methods=['GET'])
+def getorderdetails(orderNumber, orderLineNumber):
+    order_found = orderNumber
+    lineNumber_found = orderLineNumber
+    row = session.query(Orderdetail).filter(Orderdetail.orderNumber==order_found, Orderdetail.orderLineNumber==lineNumber_found).one()
     if not row:
         return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
     else:
@@ -62,66 +61,52 @@ def getorderdetails(orderNumber):
         return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
 
 
-@orderdetail_routes.route('/orderdetails/<int:orderNumber>', methods=['PUT'])
-def putorderdetails(orderNumber):
-    found = orderNumber
+@orderdetail_routes.route('/orderdetails/<int:orderNumber>/<int:orderLineNumber>', methods=['PATCH'])
+def putorderdetails(orderNumber, orderLineNumber):
+    order_found = orderNumber
+    lineNumber_found = orderLineNumber
     data = request.get_json()
     if not data:
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     try:
-        row = object_schema.dump(data)
-        ordered_product = session.query(Product).get(row['productCode'])
-        ordered_product.quantityInStock = ordered_product['quantityInStock'] + row['quantityOrdered']
-        if ordered_product['quantityInStock'] >= row['quantityOrdered']:
-            session.query(Orderdetail).filter(Orderdetail.orderNumber==found).update(row)
-            session.commit()
-            ordered_product.quantityInStock = ordered_product['quantityInStock'] - row['quantityOrdered']
-            session.add(ordered_product)
-            session.commit()
-            result = object_schema.dump(session.query(Orderdetail).get(found))
-            return resp.response_with(resp.SUCCESS_201, value={"Updated Row": result}), resp.SUCCESS_201
-        else:
-            return resp.response_with(resp.BAD_REQUEST_400, value={"Message": "Not have enough In Stock"}), resp.BAD_REQUEST_400
-    except IntegrityError as error:
-        session.rollback()
-        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
-
-
-@orderdetail_routes.route('/orderdetails/<int:orderNumber>', methods=['PATCH'])
-def patchoffice(orderNumber):
-    found = orderNumber
-    data = request.get_json()
-    if not data:
-        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
-    try:
-        row = session.query(Orderdetail).get(found)
         if data.get('quantityOrdered'):
-            ordered_product = session.query(Product).get(row['productCode'])
-            ordered_product.quantityInStock = ordered_product['quantityInStock'] + row['quantityOrdered']
-            if ordered_product['quantityInStock'] >= data['quantityOrdered']:
-                row.quantityOrdered = data['quantityOrdered']
-                session.add(row)
+            quantity_data = data['quantityOrdered']
+            ordered_details = session.query(Orderdetail).filter(Orderdetail.orderNumber==order_found, Orderdetail.orderLineNumber==lineNumber_found).one()
+            quantity_before = ordered_details.quantityOrdered
+            product_ordered = session.query(Product).get(ordered_details.productCode)
+            quantity_stock = product_ordered.quantityInStock
+            if quantity_data <= (quantity_stock + quantity_before):
+                ordered_details.quantityOrdered = quantity_data
                 session.commit()
-                ordered_product.quantityInStock = ordered_product['quantityInStock'] - row['quantityOrdered']
-                session.add(ordered_product)
+                quantity_stock = (quantity_stock + quantity_before) - quantity_data
+                product_ordered.quantityInStock = quantity_stock
                 session.commit()
-                result = object_schema.dump(row)
-                return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200
+                result = object_schema.dump(session.query(Orderdetail).filter(Orderdetail.orderNumber==order_found, Orderdetail.orderLineNumber==lineNumber_found).one())
+                return resp.response_with(resp.SUCCESS_201, value={"Updated Row": result}), resp.SUCCESS_201
             else:
-                return resp.response_with(resp.BAD_REQUEST_400, value={"Message": "Not have enough In Stock"}), resp.BAD_REQUEST_400
+                return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
+        else:
+            return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
 
-@orderdetail_routes.route('/orderdetails/<int:orderNumber>', methods=['DELETE'])
-def delorderdetails(orderNumber):
-    found = orderNumber
-    row = session.query(Orderdetail).get(found)
-    if not row:
-        return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
+@orderdetail_routes.route('/orderdetails/<int:orderNumber>/<int:orderLineNumber>', methods=['DELETE'])
+def delorderdetails(orderNumber, orderLineNumber):
+    order_found = orderNumber
+    lineNumber_found = orderLineNumber
     try:
+        row = session.query(Orderdetail).filter(Orderdetail.orderNumber==order_found, Orderdetail.orderLineNumber==lineNumber_found).one()
+        if not row:
+            return resp.response_with(resp.SERVER_ERROR_404), resp.SERVER_ERROR_404
+        quantity_product = row.quantityOrdered
+        product_found = row.productCode
         session.delete(row)
+        session.commit()
+        product_ordered = session.query(Product).get(product_found)
+        quantity_stock = product_ordered.quantityInStock
+        product_ordered.quantityInStock = quantity_stock + quantity_product
         session.commit()
         return resp.response_with(resp.SUCCESS_204, value={'message': 'Deleted Row'}), resp.SUCCESS_204
     except SQLAlchemyError as error:

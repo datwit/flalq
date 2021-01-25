@@ -20,7 +20,7 @@ class Orderdetail(Base):
     productCode = Column(String(15), ForeignKey('products.productCode'), nullable=False, primary_key=True)
     quantityOrdered = Column(Integer, nullable=False)
     priceEach = Column(Float(10,2), nullable=False)
-    orderLineNumber = Column(SmallInteger, nullable=False)
+    orderLineNumber = Column(Integer, nullable=False)
 
     def __init__(self, quantityOrdered, priceEach, orderLineNumber, orderNumber=None, productCode=None):
         self.orderNumber = orderNumber
@@ -28,6 +28,11 @@ class Orderdetail(Base):
         self.quantityOrdered = quantityOrdered
         self.priceEach = priceEach
         self.orderLineNumber = orderLineNumber
+
+    def create(self):
+        session.add(self)
+        session.commit()
+        return self
 
 
 # Customer schema
