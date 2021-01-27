@@ -10,7 +10,9 @@ class Config(object):
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://<db_user>:<db_pass>@<db_host>:<port>/<db_name>"
-    # TESTING = False
+    UPLOAD_FOLDER= 'C:/Users/Danay/Desktop/danay_python/snippets/api_classic/api/images/'
+    ALLOWED_EXTENSIONS = {'png', 'jpg'}
+    MAX_CONTENT_LENGTH = 0.1 * 1024 * 1024
 
 
 class ProductionConfig(Config):

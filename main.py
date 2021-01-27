@@ -4,7 +4,7 @@
 
 """
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from api.utils.database import engine
 from api.routes.offices import office_routes
 from api.routes.employees import employee_routes
@@ -32,6 +32,8 @@ app.register_blueprint(order_routes)
 app.register_blueprint(orderdetail_routes)
 app.register_blueprint(payment_routes)
 
+# to restrict file length (response Error: read ECONNRESET, HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
 
 
 @app.errorhandler(500)
@@ -46,6 +48,10 @@ def handle_object_not_found_error(e):
 def bad_request(e):
     # logging.error(e)
     return response_with(resp.BAD_REQUEST_400)
+
+@app.route('/image/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
 
 
 # If we're running in stand alone mode, run the application

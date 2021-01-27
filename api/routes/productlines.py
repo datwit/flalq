@@ -4,16 +4,25 @@
 
 """
 
-from flask import Blueprint, request
+from flask import Blueprint, request, url_for, current_app
 from api.models.productlines import Productline, ProductlineSchema
 from api.utils.database import Session
 from api.utils import responses as resp
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from werkzeug.utils import secure_filename
+import os
 
 
 productline_routes = Blueprint("productline_routes", __name__)
 object_schema = ProductlineSchema()
 session = Session()
+
+UPLOAD_FOLDER = 'C:/Users/Danay/Desktop/danay_python/snippets/api_classic/api/images/'
+ALLOWED_EXTENSIONS = {'png', 'jpg'}
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @productline_routes.route('/productlines/', methods=['GET'])
@@ -34,6 +43,31 @@ def postproductline():
         session.commit()
         result = object_schema.dump(session.query(Productline).get(data["productLine"]))
         return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
+    except IntegrityError as error:
+        session.rollback()
+        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
+
+
+@productline_routes.route('/productlines/image/<string:productLine>', methods=['POST'])
+def postimageproductline(productLine):
+    found = productLine
+    file = request.files['image']
+    if not file:
+        return resp.response_with(resp.UNAUTHORIZED_401), resp.UNAUTHORIZED_401
+    # if user does not select file, browser also submit an empty part without filename
+    if file.filename == '':
+        return resp.response_with(resp.INVALID_INPUT_422), resp.INVALID_INPUT_422
+    try:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            row = session.query(Productline).get(found)
+            row.image = url_for('uploaded_file', filename=filename, _external=True)
+            session.add(row)
+            session.commit()
+            result = object_schema.dump(row)
+            return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
+        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
     except IntegrityError as error:
         session.rollback()
         return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400

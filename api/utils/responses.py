@@ -20,7 +20,7 @@ SERVER_ERROR_404 = {"http_code": 404, "code": "Not Found", "message": "The reque
 
 NOT_FOUND_HANDLER_404 = {"http_code": 404, "code": "Not Found", "message": "Route not found"}
 
-INVALID_FIELD_NAME_SENT_422 = {"http_code": 422, "code": "Invalid Field", "message": "Invalid fields found"}
+INVALID_FIELD_NAME_SENT_422 = {"http_code": 422, "code": "Invalid Field", "message": "Invalid fields name sent"}
 
 INVALID_INPUT_422 = {"http_code": 422, "code": "Invalid Input", "message": "The request can not be processed due to semantic error"}
 
