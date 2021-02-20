@@ -10,13 +10,13 @@ from sqlalchemy.orm import sessionmaker
 
 
 # Create engine declarative, configure mysql connection
-engine = create_engine('mysql+pymysql://root:@localhost/test', echo=True)
+engine = create_engine('mysql+pymysql://root:@localhost/pruebadanay', echo=True)
 # use_unicode=True o  convert_unicode = True, charset="utf8" o encoding='latin1'
 
-# Create base declarative
-Base = declarative_base()
-
-# Create session declarative
+# # To create 'Session' declarative.
+# # Session class is defined using 'sessionmaker()'function which is bound to the engine object. To interact with the database, we need its handle, which is a 'session' object. 'bind' - The database Engine to which to bind the session
 Session = sessionmaker(bind=engine)
 
-# Base.metadata.create_all(engine)        # "???"
+# To create 'Base' declarative.
+# The 'declarative_base()' function is used to create 'base' class. A base class stores a catlog of classes and mapped tables in the Declarative system.
+Base = declarative_base()
