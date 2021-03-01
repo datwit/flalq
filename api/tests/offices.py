@@ -10,7 +10,7 @@ import unittest2 as unittest
 from api.utils.test_base import BaseTestCase
 from api.models.offices import Office
 from api.utils.database import session
-
+from unittest.mock import patch
 
 def create_offices():
 	""" This is 'create_offices' method to create offices using the SQLAlchemy model to facilitate testing. """
@@ -105,6 +105,21 @@ class TestOffice(BaseTestCase):
 
 	# # "PATCH".....'None Type' object has no attribute '_sa_instance_state'
 	# # .....sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.NoneType' is not mapped
+
+	@patch('secrets.token_urlsafe')    
+    def  test_add_record(self, mock_token_urlsafe):
+        """Test the POST method of alias service.
+        """
+        mock_token_urlsafe.return_value = 'pHculIupkQU34u5lRy7TsvU1eRzTGiUp2XkNyDygrTQ'
+        response = self.client.post(
+            '/pattern',
+            json = {'origin':'https://github.com/sorice/test.git',
+                    'alias':'test',
+                    'description':'This is a case only for test',
+                    'tags':'lin linguistics alpha'}
+        )
+
+        self.assertEqual(response.status, '201 CREATED')
 
 # ...
 if __name__ == "__main__":
