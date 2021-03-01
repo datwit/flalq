@@ -6,14 +6,13 @@
 
 from flask import Blueprint, request
 from api.models.customers import Customer, CustomerSchema
-from api.utils.database import Session
+from api.utils.database import session, engine
 from api.utils import responses as resp
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 customer_routes = Blueprint("customer_routes", __name__)
 object_schema = CustomerSchema()
-session = Session()
 
 
 @customer_routes.route('/customers/', methods=['GET'])

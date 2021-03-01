@@ -6,7 +6,7 @@
 
 from flask import Blueprint, request, url_for, current_app
 from api.models.productlines import Productline, ProductlineSchema
-from api.utils.database import Session
+from api.utils.database import session, engine
 from api.utils import responses as resp
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from werkzeug.utils import secure_filename
@@ -15,7 +15,6 @@ import os
 
 productline_routes = Blueprint("productline_routes", __name__)
 object_schema = ProductlineSchema()
-session = Session()
 
 UPLOAD_FOLDER = 'C:/Users/Danay/Desktop/danay_python/snippets/api_classic/api/images/'
 ALLOWED_EXTENSIONS = {'png', 'jpg'}

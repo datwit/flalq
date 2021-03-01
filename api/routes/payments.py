@@ -6,14 +6,13 @@
 
 from flask import Blueprint, request
 from api.models.payments import Payment, PaymentSchema
-from api.utils.database import Session
+from api.utils.database import session, engine
 from api.utils import responses as resp
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 payment_routes = Blueprint("payment_routes", __name__)
 object_schema = PaymentSchema()
-session = Session()
 
 
 @payment_routes.route('/payments/', methods=['GET'])

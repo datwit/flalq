@@ -6,14 +6,13 @@
 
 from flask import Blueprint, request
 from api.models.employees import Employee, EmployeeSchema
-from api.utils.database import Session
+from api.utils.database import session, engine
 from api.utils import responses as resp
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 employee_routes = Blueprint("employee_routes", __name__)
 object_schema = EmployeeSchema()
-session = Session()
 
 
 @employee_routes.route('/employees/', methods=['GET'])

@@ -7,14 +7,13 @@
 from flask import Blueprint, request
 from api.models.orderdetails import Orderdetail, OrderdetailSchema
 from api.models.products import Product
-from api.utils.database import Session
+from api.utils.database import session, engine
 from api.utils import responses as resp
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 orderdetail_routes = Blueprint("orderdetail_routes", __name__)
 object_schema = OrderdetailSchema()
-session = Session()
 
 
 @orderdetail_routes.route('/orderdetails/', methods=['GET'])

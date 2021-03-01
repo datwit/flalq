@@ -6,13 +6,12 @@
 
 from flask import Blueprint, request
 from api.models.orders import Order, OrderSchema
-from api.utils.database import Session
+from api.utils.database import session, engine
 from api.utils import responses as resp
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 order_routes = Blueprint("order_routes", __name__)
 object_schema = OrderSchema()
-session = Session()
 
 
 @order_routes.route('/orders/', methods=['GET'])

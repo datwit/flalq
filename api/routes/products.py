@@ -6,14 +6,13 @@
 
 from flask import Blueprint, request
 from api.models.products import Product, ProductSchema
-from api.utils.database import Session
+from api.utils.database import session, engine
 from api.utils import responses as resp
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 product_routes = Blueprint("product_routes", __name__)
 object_schema = ProductSchema()
-session = Session()
 
 
 @product_routes.route('/products/', methods=['GET'])

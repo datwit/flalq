@@ -4,16 +4,15 @@
 
 """
 
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from api.models.offices import Office, OfficeSchema
-from api.utils.database import Session
+from api.utils.database import session, engine
 from api.utils import responses as resp
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 office_routes = Blueprint("office_routes", __name__)
 object_schema = OfficeSchema()
-session = Session()
 
 
 # Create a URL route in our application for "/offices/" to read a collection
@@ -35,9 +34,9 @@ def postoffice():
         session.commit()
         result = object_schema.dump(session.query(Office).get(data["officeCode"]))
         return resp.response_with(resp.SUCCESS_201, value={"Inserted Data": result}), resp.SUCCESS_201
-    except IntegrityError as error:
+    except Exception as e:
         session.rollback()
-        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400   # 422 ó 400 ... ???
+        return resp.response_with(resp.BAD_REQUEST_400), resp.BAD_REQUEST_400
 
 # Create a URL route in our application for "/offices/" to read a particular row in the collection
 @office_routes.route('/offices/<string:officeCode>', methods=['GET'])
@@ -49,6 +48,7 @@ def getoffice(officeCode):
     else:
         result = object_schema.dump(row)
         return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200
+        # return jsonify(result)            # ..OJO...The json response must be like this to test in Postman
 
 # Create a URL route in our application for "/offices/" to update all details of an existing row
 @office_routes.route('/offices/<string:officeCode>', methods=['PUT'])
