@@ -1,13 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from api.utils.database import Session, Base
+from api.utils.database import session, Base, engine
 from sqlalchemy import  Column, String, Integer, ForeignKey
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
-
-
-session = Session()
 
 
 # Employees class

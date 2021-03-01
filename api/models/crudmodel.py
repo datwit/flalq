@@ -1,10 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from api.utils.database import Session
-
-
-session = Session()
+from api.utils.database import session, engine
 
 
 class Crudmodel():

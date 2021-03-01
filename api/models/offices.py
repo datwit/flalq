@@ -4,13 +4,10 @@
 Class to Offices Table and Office Schema
 """
 
-from api.utils.database import Session, Base
+from api.utils.database import session, Base, engine
 from sqlalchemy import  Column, String
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
-
-
-session = Session()
 
 
 # Office class

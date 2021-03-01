@@ -1,15 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from api.utils.database import Session, Base
+from api.utils.database import session, Base, engine
 from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float, Table
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
 from api.models.orders import OrderSchema
 from api.models.products import ProductSchema
-
-
-session = Session()
 
 
 # Orderdetails class
