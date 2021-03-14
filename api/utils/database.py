@@ -13,11 +13,11 @@ from sqlalchemy.orm import scoped_session
 
 # Create engine declarative, configure mysql connection
 engine = create_engine(app_config.SQLALCHEMY_DATABASE_URI)
-# echo=True, use_unicode=True o  convert_unicode = True, charset="utf8" o encoding='latin1'
+# echo=True, use_unicode=True o  convert_unicode = True, encoding="utf8" o encoding='latin1'
 
-# # Create 'Session' declarative.
-# # Session class is defined using 'sessionmaker()'function which is bound to the engine object. To interact with the database, we need its handle, which is a 'session' object. 'bind' - The database Engine to which to bind the session
-Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Create 'Session' declarative.
+# Session class is defined using 'sessionmaker()'function which is bound to the engine object. To interact with the database, we need its handle, which is a 'session' object. 'bind' - The database Engine to which to bind the session
+Session = sessionmaker(bind=engine)
 session = Session()
 
 # Create 'Base' declarative.

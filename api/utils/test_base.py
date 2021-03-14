@@ -11,8 +11,11 @@ import unittest2 as unittest
 from main import create_app
 from api.config.config import app_config
 from sqlalchemy import create_engine
-from api.utils.database import session, Base
+from api.utils.database import Base, session
+# from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.orm import sessionmaker
 
+# Base = declarative_base()
 
 class BaseTestCase(unittest.TestCase):
     """A base test case"""
@@ -21,19 +24,17 @@ class BaseTestCase(unittest.TestCase):
         """This method is called once, before every test method; to create the mysql database and all tables. """
 
         self.app = create_app(app_config)
-        # print(self.app.config)
-        self.client = self.app.test_client
+        self.client = self.app.test_client()
         self.engine = create_engine(app_config.SQLALCHEMY_DATABASE_URI)
-        with self.app.app_context():
+        self.app_context = self.app.app_context()
+        with self.app_context:
+            self.app_context.push()
             Base.metadata.create_all(self.engine)
-        self.app.app_context().push()
-
 
 
     def tearDown(self):
         """This method is called once, after every test method; to close current session and to delete test-database completely """
 
-        with self.app.app_context():
-            session.close()
-            Base.metadata.drop_all(self.engine)
-        # self.app_context.pop()
+        session.close()
+        Base.metadata.drop_all(self.engine)
+        self.app_context.pop()

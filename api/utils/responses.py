@@ -3,7 +3,7 @@
 
 from flask import make_response, jsonify
 
-SUCCESS_200 = {'http_code': 200, 'code': 'success', 'message': 'OK: Showed'}
+SUCCESS_200 = {'http_code': 200, 'code': 'success', 'message': 'Success'}
 
 SUCCESS_201 = {'http_code': 201, 'code': 'success', 'message': 'Created: The request was fulfilled and a new resource has been created'}
 
