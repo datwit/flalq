@@ -16,7 +16,7 @@ class Office(Base):
 
     officeCode = Column(String(10), primary_key=True)
     city = Column(String(50), nullable=False)
-    phone = Column(String(50), nullable=False, unique=True)         # phone --> validate unique
+    phone = Column(String(50), nullable=False)
     addressLine1 = Column(String(50), nullable=False)
     addressLine2 = Column(String(50))
     state = Column(String(50))
@@ -47,7 +47,7 @@ class OfficeSchema(ModelSchema):
     phone = fields.String(required=True)
     addressLine1 = fields.String(required=True)
     addressLine2 = fields.String()
-    state = fields.String()
+    state = fields.String()                         # In POST is required to evade error
     country = fields.String(required=True)
     postalCode = fields.String(required=True)
     territory = fields.String(required=True)

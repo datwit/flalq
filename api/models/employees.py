@@ -11,13 +11,13 @@ from marshmallow import fields
 class Employee(Base):
     __tablename__ = "employees"
 
-    employeeNumber = Column(Integer, primary_key=True)
+    employeeNumber = Column(Integer, primary_key=True, autoincrement=False)      # Integer 'Autoincrement' automatically
     lastName = Column(String(50), nullable=False)
     firstName = Column(String(50), nullable=False)
     extension = Column(String(10), nullable=False)
-    email = Column(String(100), nullable=False, unique=True)                  # email --> I make it unique
+    email = Column(String(100), nullable=False)
     officeCode = Column(String(10), ForeignKey('offices.officeCode'), nullable=False)
-    reportsTo = Column(Integer, ForeignKey('employees.employeeNumber'), nullable=True)
+    reportsTo = Column(Integer, ForeignKey('employees.employeeNumber'))
     jobTitle = Column(String(50), nullable=False)
 
     def __init__(self, employeeNumber, lastName, firstName, extension, email, jobTitle, officeCode=None, reportsTo=None):
@@ -41,7 +41,7 @@ class EmployeeSchema(ModelSchema):
     lastName = fields.String(required=True)
     firstName = fields.String(required=True)
     extension = fields.String(required=True)
-    email = fields.String(required=True)                             # validate email format
+    email = fields.String(required=True)
     officeCode = fields.String(required=True)
-    reportsTo = fields.Integer()                            #see relationships
+    reportsTo = fields.Integer()                            # In POST is not required, I suppose because it is 'foreing key'
     jobTitle = fields.String(required=True)

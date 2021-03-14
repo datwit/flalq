@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from api.utils.database import session, Base, engine
-from sqlalchemy import  ForeignKey, Column, String, Integer, Float, Date, DateTime, Binary
+from sqlalchemy import Column, Integer, Date, DateTime, String, Text, ForeignKey
 from datetime import datetime
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
@@ -14,11 +14,11 @@ class Order(Base):
     __tablename__ = "orders"
 
     orderNumber = Column(Integer, primary_key=True)
-    orderDate = Column(DateTime, default=datetime.now, nullable=False)      # orderDate --> Autocomplete on table in created moment #  #default=datetime.utcnow on_update=datetime.utcnow
+    orderDate = Column(DateTime, default=datetime.now(), nullable=False)      # orderDate --> Autocomplete on table in created moment #  #default=datetime.utcnow on_update=datetime.utcnow
     requiredDate = Column(Date, nullable=False)
     shippedDate = Column(Date)
     status = Column(String(15), nullable=False)
-    comments = Column(String(500))
+    comments = Column(String(200))
     customerNumber = Column(Integer, ForeignKey('customers.customerNumber'), nullable=False)
 
     def __init__(self, orderNumber, orderDate, requiredDate, shippedDate, status, comments, customerNumber=None):
