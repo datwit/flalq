@@ -8,11 +8,8 @@ This is offices test
 import json
 import unittest2 as unittest
 from api.utils.test_base import BaseTestCase
-<<<<<<< HEAD
-=======
-from api.models.offices import Office
 from api.utils.database import session
-from unittest.mock import patch
+
 
 def create_offices():
 	""" This is 'create_offices' method to create offices using the SQLAlchemy model to facilitate testing. """
@@ -23,7 +20,6 @@ def create_offices():
 		session.commit()
 	except Exception as e:
 		session.rollback()
->>>>>>> 023dd487eeb31ed37f00a2985b65d2b615b2e510
 
 
 class TestOffice(BaseTestCase):
