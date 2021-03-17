@@ -100,7 +100,7 @@ def patchoffice(productCode):
                     found.productDescription = data['productDescription']
                 if data.get('buyPrice'):
                     found.buyPrice = data['buyPrice']
-                session.add(row)
+                session.add(found)
                 session.commit()
                 result = object_schema.dump(found)
                 return resp.response_with(resp.SUCCESS_200, value={"Updated Row Fields": result}), resp.SUCCESS_200

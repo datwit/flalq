@@ -30,7 +30,7 @@ class PaymentSchema(ModelSchema):
         model = Payment
         sqla_session = session
 
-    customerNumber = fields.Nested(CustomerSchema, many=False, only=['customerNumber'], dump_only=True)
+    customerNumber = fields.Integer(required=True)
     checkNumber = fields.String(required=True)
     paymentDate = fields.Date(required=True)
     amount = fields.Float(required=True)                # marshmallow.fields has not attribute DECIMAL

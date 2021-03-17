@@ -82,7 +82,6 @@ def putorderdetails(orderNumber, productCode):
         if found:
             try:
                 quantity_data = data['quantityOrdered']
-                # ordered_details = session.query(Orderdetail).get({"orderNumber": orderNumber_found, "productCode": productCode_found})
                 quantity_before = found.quantityOrdered             #
                 product_ordered = session.query(Product).get(found.productCode)           #
                 quantity_stock = product_ordered.quantityInStock

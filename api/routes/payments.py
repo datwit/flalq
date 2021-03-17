@@ -71,11 +71,12 @@ def putpayments(customerNumber, checkNumber):
         found = session.query(Payment).get({"customerNumber": customerNumber_found, "checkNumber": checkNumber_found})
         if found:
             try:
-                row = object_schema.dump(data)
-                session.query(Payment).filter(Payment.customerNumber==customerNumber_found, Payment.checkNumber==checkNumber_found).update(row)
-                session.commit()
-                result = object_schema.dump(found)
-                return resp.response_with(resp.SUCCESS_200, value={"Updated Row": result}), resp.SUCCESS_200
+                row = object_schema.load(data)
+                if row:
+                    session.query(Payment).filter(Payment.customerNumber==customerNumber_found, Payment.checkNumber==checkNumber_found).update(data)
+                    session.commit()
+                    result = object_schema.dump(found)
+                    return resp.response_with(resp.SUCCESS_200, value={"Updated Row": result}), resp.SUCCESS_200
             except Exception as e:
                 session.rollback()
                 return resp.response_with(resp.BAD_REQUEST_400, value={"error": str(e)}), resp.BAD_REQUEST_400
@@ -86,10 +87,11 @@ def putpayments(customerNumber, checkNumber):
 
 
 # Create a URL route in our application for "/payments/" to delete an existing row
-@payment_routes.route('/payments/<string:checkNumber>', methods=['DELETE'])
-def delpayments(checkNumber):
+@payment_routes.route('/payments/<string:customerNumber>/<string:checkNumber>', methods=['DELETE'])
+def delpayments(customerNumber, checkNumber):
+    customerNumber_found = customerNumber
     checkNumber_found = checkNumber
-    found = session.query(Payment).get(checkNumber_found)
+    found = session.query(Payment).get({"customerNumber": customerNumber_found, "checkNumber": checkNumber_found})
     if found:
         try:
             session.delete(found)

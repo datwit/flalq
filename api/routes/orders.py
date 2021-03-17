@@ -69,11 +69,12 @@ def putorders(orderNumber):
         found = session.query(Order).get(orderNumber_found)
         if found:
             try:
-                row = object_schema.dump(data)
-                session.query(Order).filter(Order.orderNumber==orderNumber_found).update(row)
-                session.commit()
-                result = object_schema.dump(found)
-                return resp.response_with(resp.SUCCESS_200, value={"Updated Row": result}), resp.SUCCESS_200
+                row = object_schema.load(data)
+                if row:
+                    session.query(Order).filter(Order.orderNumber==orderNumber_found).update(data)
+                    session.commit()
+                    result = object_schema.dump(found)
+                    return resp.response_with(resp.SUCCESS_200, value={"Updated Row": result}), resp.SUCCESS_200
             except Exception as e:
                 session.rollback()
                 return resp.response_with(resp.BAD_REQUEST_400, value={"error": str(e)}), resp.BAD_REQUEST_400
@@ -90,7 +91,7 @@ def patchoffice(orderNumber):
     data = request.get_json()
     if not data:
         return resp.response_with(resp.BAD_REQUEST_400, value={"error": "No input data provided"}), resp.BAD_REQUEST_400
-    elif data.get('ordersNumber'):
+    elif data.get('orderNumber'):
         found = session.query(Order).get(ordersNumber_found)
         if found:
             try:
