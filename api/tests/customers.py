@@ -127,7 +127,7 @@ class TestCustomer(BaseTestCase):
 
 		response = self.client.post('/customers/', headers={'Content-Type': 'application/json'}, data=json.dumps(self.customer1))
 		customer = {'customerNumber': 1, 'phone': '777', 'addressLine1': 'Ocean', 'addressLine2': 'A', 'postalCode': '887833'}
-		response = self.client.patch('/customers/1', headers={'Content-Type': 'application/json'}, data=json.dumps(customer))
+		response = self.client.patch('/customers/2', headers={'Content-Type': 'application/json'}, data=json.dumps(customer))
 		data = json.loads(response.data)
 		print(data)
 		self.assertEqual(200, response.status_code)
