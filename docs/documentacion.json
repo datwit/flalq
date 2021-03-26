@@ -1,0 +1,131 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "description": "Fichero editado 'prueba.json' para mostrar la documentacion de la API en swagger ui",
+        "version": "1.0.0",
+        "title": "Test-Swagger",
+        "contact": {
+            "email": "danay3k@nauta.cu"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Classic Models DB",
+            "description": "Example API for to introduce and to request market data"
+        }
+    ],
+    "paths": {
+        "/offices/": {
+            "get": {
+                "tags": [
+                    "Offices Request"
+                ],
+                "summary": "Return offices request",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/all_offices/"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components":{
+        "schemas":{
+            "id": {},
+            "post_office": {
+                "type": "object",
+                "properties":{
+                    "addressLine1": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "addressLine2": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "city": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "country": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "officeCode": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "postalCode": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "state": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "territory": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "all_offices": {
+                "type": "object",
+                "properties":{
+                    "addressLine1": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "addressLine2": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "city": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "country": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "officeCode": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "postalCode": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "state": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "territory": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            }
+        }
+    }
+}

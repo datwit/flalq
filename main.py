@@ -4,7 +4,7 @@
 To initialize the app object
 """
 
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify
 from api.utils.database import engine, Base
 from api.routes.offices import office_routes
 from api.routes.employees import employee_routes
@@ -17,6 +17,8 @@ from api.routes.payments import payment_routes
 from api.utils.responses import response_with
 from api.utils import responses as resp
 from api.utils.database import session
+from flask_swagger import swagger
+from flask_swagger_ui import get_swaggerui_blueprint
 
 
 def create_app(app_config):
@@ -56,5 +58,14 @@ def create_app(app_config):
     @app.route('/image/<filename>')
     def uploaded_file(filename):
         return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
+
+
+    @app.route("/docs/<path:path>")
+    def send_documentation(path):
+        return send_from_directory('docs', path)
+    API_URL = '/docs/document.yaml'
+    swaggerui_blueprint = get_swaggerui_blueprint('/swagger', API_URL, config={'app_name': "Flalq API"})
+    app.register_blueprint(swaggerui_blueprint, url_prefix='/swagger')
+
 
     return app

@@ -46,6 +46,6 @@ def response_with(response, value=None, message=None, error=None, headers={}, pa
         result.update({'pagination': pagination})
 
     headers.update({'Access-Control-Allow-Origin': '*'})
-    headers.update({'server': 'Flask REST API'})
+    headers.update({'server': 'API flaql '})
 
     return make_response(jsonify(result), response['http_code'], headers)

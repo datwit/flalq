@@ -1,0 +1,224 @@
+swagger: '2.0'
+info:
+  description: This is API_flalq_documentation. This API use FLask, SQLAlchemy, Marshmallow and Unittest. For more information see [API flalq](https://github.com/datwit/flalq/)
+  version: 1.0.0
+  title: Test-Swagger
+  termsOfService:
+  contact:
+    email: danay3k@nauta.cu
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+schemes:
+- http
+tags:
+  - name: Offices
+    description: Shop offices
+  - name: Employees
+    description: Employees by offices
+  - name: Customers
+    description: Customers by employees
+  - name: Productlines
+    description: Product lines in the Business
+  - name: Products
+    description: Products by product lines
+  - name: Orders
+    description: Sale orders
+  - name: Orderdetails
+    description: Order details by products
+  - name: Payments
+    description: Payments by customers
+paths:
+  /offices:
+    get:
+      tags:
+      - Offices
+      summary: Return all offices rows
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref: '#/definitions/offices'
+  /offices/{officeCode}:
+    get:
+      tags:
+      - Offices
+      summary: Return one offices
+      description: One offices row requested by officeCode key
+      parameters:
+        - name: officeCode
+          in: path
+          description: Office code that need to be considered for filter
+          required: True
+          type: string
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref: '#/definitions/offices'
+        '404':
+          description: Not found the Request
+  /employees/:
+    get:
+      tags:
+      - Employees
+      summary: Return all employees rows
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref:
+  /customers/:
+    get:
+      tags:
+      - Customers
+      summary: Return all customers rows
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref:
+  /productlines/:
+    get:
+      tags:
+      - Productlines
+      summary: Return all productlines rows
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref:
+  /products/:
+    get:
+      tags:
+      - Products
+      summary: Return all products rows
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref:
+  /orders/:
+    get:
+      tags:
+      - Orders
+      summary: Return all orders rows
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref:
+  /orderdetails/:
+    get:
+      tags:
+      - Orderdetails
+      summary: Return all orderdetails rows
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref:
+  /payments/:
+    get:
+      tags:
+      - Payments
+      summary: Return all payments rows
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref:
+definitions:
+  offices:
+    type: object
+    properties:
+      officeCode:
+        type: string
+        format: string
+      city:
+        type: string
+        format: string
+      phone:
+        type: string
+        format: string
+      addressLine1:
+        type: string
+        format: string
+      addressLine2:
+        type: string
+        format: string
+      state:
+        type: string
+        format: string
+      country:
+        type: string
+        format: string
+      postalCode:
+        type: string
+        format: string
+      territory:
+        type: string
+        format: string
+  employees:
+    type: object
+    properties:
+      employeeNumber:
+        type: integer
+        format: int64
+      lastName:
+        type: string
+        format: string
+      firstName:
+        type: string
+        format: string
+      extension:
+        type: string
+        format: string
+      email:
+        type: string
+        format: email
+      jobTitle:
+        type: string
+        format: string
+      officeCode:
+        type: string
+        format: string
+      oreportsTo:
+        type: integer
+        format: int64
+  customers:
+    type: object
+    properties:
+      officeCode:
+        type: string
+        format: string
+  productlines:
+    type: object
+    properties:
+      officeCode:
+        type: string
+        format: string
+  products:
+    type: object
+    properties:
+      officeCode:
+        type: string
+        format: string
+  orders:
+    type: object
+    properties:
+      officeCode:
+        type: string
+        format: string
+  orderdetails:
+    type: object
+    properties:
+      officeCode:
+        type: string
+        format: string
+  payments:
+    type: object
+    properties:
+      officeCode:
+        type: string
+        format: string
