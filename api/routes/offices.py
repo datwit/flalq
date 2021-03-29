@@ -53,7 +53,7 @@ def getoffice(officeCode):
     officeCode_found = officeCode
     found = session.query(Office).get(officeCode_found)
     if not found:
-        return resp.response_with(resp.SERVER_ERROR_404, value={"error": "The request data no exists"}), resp.SERVER_ERROR_404
+        return resp.response_with(resp.SERVER_ERROR_404, value={"error": "Key data not exists"}), resp.SERVER_ERROR_404
     else:
         result = object_schema.dump(found)
         return resp.response_with(resp.SUCCESS_200, value={"Request": result}), resp.SUCCESS_200

@@ -1,9 +1,10 @@
 {
     "openapi": "3.0.0",
     "info": {
+        "title": "Test-Swagger",
         "description": "Fichero editado 'prueba.json' para mostrar la documentacion de la API en swagger ui",
         "version": "1.0.0",
-        "title": "Test-Swagger",
+        "termsOfService": "",
         "contact": {
             "email": "danay3k@nauta.cu"
         },
@@ -30,11 +31,18 @@
                     "Offices Request"
                 ],
                 "summary": "Return offices request",
+                "description": "Returns all pets from the system that the user has access to",
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/components/schemas/all_offices/"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/all_offices/"
+                            }
                         }
                     }
                 }
@@ -42,6 +50,8 @@
         }
     },
     "components":{
+        "parameters": {},
+        "responses": {},
         "schemas":{
             "id": {},
             "post_office": {
@@ -126,6 +136,8 @@
                     }
                 }
             }
-        }
-    }
+        },
+        "securitySchemes:": {}
+    },
+    "security":
 }

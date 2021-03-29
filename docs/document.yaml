@@ -29,35 +29,204 @@ tags:
   - name: Payments
     description: Payments by customers
 paths:
-  /offices:
+  /offices/:
     get:
       tags:
       - Offices
       summary: Return all offices rows
+      produces:
+        - application/json
       responses:
         '200':
           description: Success Request
           schema:
             $ref: '#/definitions/offices'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    post:
+      tags:
+      - Offices
+      summary: Add new office
+      description: One offices row requested by officeCode key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Office Rows
+        in: body
+        description: Office rows that needs to be added to store
+        required: true
+        schema:
+          $ref: '#/definitions/offices'
+      responses:
+        '201':
+          description: Created Request
+          schema:
+            $ref: '#/definitions/offices'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
   /offices/{officeCode}:
     get:
       tags:
       - Offices
       summary: Return one offices
-      description: One offices row requested by officeCode key
+      description: Return only one offices row filter by officeCode key
+      produces:
+      - application/json
       parameters:
-        - name: officeCode
-          in: path
-          description: Office code that need to be considered for filter
-          required: True
-          type: string
+      - name: officeCode
+        in: path
+        description: Office code that need to be considered for filter
+        required: True
+        type: string
       responses:
         '200':
           description: Success Request
           schema:
             $ref: '#/definitions/offices'
         '404':
-          description: Not found the Request
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    put:
+      tags:
+      - Offices
+      summary: Update an existing office
+      description: Update all office fields, the office filter by officeCode key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: officeCode
+        in: path
+        description: Office code that need to be considered for filter
+        required: True
+        type: string
+      - name: offices rows
+        in: body
+        description: Office rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/offices'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/offices'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    patch:
+      tags:
+      - Offices
+      summary: Update fields of existing office
+      description: Update some office specific fields, the office filter by officeCode key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: officeCode
+        in: path
+        description: Office code that need to be considered for filter
+        required: True
+        type: string
+      - name: offices rows
+        in: body
+        description: Office rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/offices_patch'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/offices'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    delete:
+      tags:
+      - Offices
+      summary: Delete one office
+      description: Delete filtered office by its officeCode key
+      produces:
+      - application/json
+      parameters:
+      - name: officeCode
+        in: path
+        description: Office code that need to be considered for filter
+        required: True
+        type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
   /employees/:
     get:
       tags:
@@ -134,31 +303,54 @@ definitions:
     properties:
       officeCode:
         type: string
-        format: string
+        format: uuid
+        maxLength: 10
       city:
         type: string
-        format: string
+        maxLength: 50
       phone:
         type: string
-        format: string
+        maxLength: 50
       addressLine1:
         type: string
-        format: string
+        maxLength: 50
       addressLine2:
         type: string
-        format: string
+        maxLength: 50
+        multipleOf: True
       state:
         type: string
-        format: string
+        maxLength: 50
+        multipleOf: True
       country:
         type: string
-        format: string
+        maxLength: 50
       postalCode:
         type: string
-        format: string
+        maxLength: 15
       territory:
         type: string
-        format: string
+        maxLength: 50
+  offices_patch:
+    type: object
+    properties:
+      officeCode:
+        type: string
+        format: uuid
+        maxLength: 10
+      phone:
+        type: string
+        maxLength: 50
+      addressLine1:
+        type: string
+        maxLength: 50
+      addressLine2:
+        type: string
+        maxLength: 50
+        multipleOf: True
+      postalCode:
+        type: string
+        maxLength: 15
   employees:
     type: object
     properties:
@@ -167,25 +359,27 @@ definitions:
         format: int64
       lastName:
         type: string
-        format: string
+        maxLength: 50
       firstName:
         type: string
-        format: string
+        maxLength: 50
       extension:
         type: string
-        format: string
+        maxLength: 10
       email:
         type: string
         format: email
+        maxLength: 100
       jobTitle:
         type: string
-        format: string
+        maxLength: 50
       officeCode:
         type: string
-        format: string
+        maxLength: 10
       oreportsTo:
         type: integer
         format: int64
+        multipleOf: True
   customers:
     type: object
     properties:
@@ -222,3 +416,19 @@ definitions:
       officeCode:
         type: string
         format: string
+  Error:
+    type: object
+    properties:
+      code:
+        description: http code
+        type: string
+      status:
+        description: http status
+        type: integer
+        format: int32
+      type:
+        type: string
+        description: Error type
+      message:
+        type: string
+        description: Generic error to imply an unexpected condition in server
