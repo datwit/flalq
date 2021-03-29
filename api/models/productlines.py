@@ -14,7 +14,7 @@ class Productline(Base):
     productLine = Column(String(50), primary_key=True)
     textDescription = Column(String(4000))
     htmlDescription = Column(String(200))                               # validated html format??
-    image = Column(String(100))                                         # validate file extension in the path
+    image = Column(String(100))
 
     def __init__(self, productLine, textDescription, htmlDescription, image):
         self.productLine = productLine

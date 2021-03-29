@@ -305,6 +305,7 @@ definitions:
         type: string
         format: uuid
         maxLength: 10
+        uniqueItems: True
       city:
         type: string
         maxLength: 50
@@ -338,6 +339,7 @@ definitions:
         type: string
         format: uuid
         maxLength: 10
+        uniqueItems: True
       phone:
         type: string
         maxLength: 50
@@ -357,6 +359,7 @@ definitions:
       employeeNumber:
         type: integer
         format: int64
+        uniqueItems: True
       lastName:
         type: string
         maxLength: 50
@@ -376,46 +379,286 @@ definitions:
       officeCode:
         type: string
         maxLength: 10
-      oreportsTo:
+      reportsTo:
+        type: integer
+        format: int64
+        multipleOf: True
+  employees_patch:
+    type: object
+    properties:
+      employeeNumber:
+        type: integer
+        format: int64
+        uniqueItems: True
+      extension:
+        type: string
+        maxLength: 10
+      jobTitle:
+        type: string
+        maxLength: 50
+      officeCode:
+        type: string
+        maxLength: 10
+      reportsTo:
         type: integer
         format: int64
         multipleOf: True
   customers:
     type: object
     properties:
-      officeCode:
+      customerNumber:
+        type: integer
+        format: int64
+        uniqueItems: True
+      customerName:
         type: string
-        format: string
+        maxLength: 50
+      contactLastName:
+        type: string
+        maxLength: 50
+      contactFirstName:
+        type: string
+        maxLength: 50
+      phone:
+        type: string
+        maxLength: 50
+      addressLine1:
+        type: string
+        maxLength: 50
+      addressLine2:
+        type: string
+        maxLength: 50
+        multipleOf: True
+      city:
+        type: string
+        maxLength: 50
+      state:
+        type: string
+        maxLength: 50
+        multipleOf: True
+      postalCode:
+        type: string
+        maxLength: 15
+        multipleOf: True
+      country:
+        type: string
+        maxLength: 50
+      creditLimit:
+        type: number
+        format: float
+      salesRepEmployeeNumber:
+        type: integer
+        format: int64
+  customers_patch:
+    type: object
+    properties:
+      customerNumber:
+        type: integer
+        format: int64
+        uniqueItems: True
+      phone:
+        type: string
+        maxLength: 50
+      addressLine1:
+        type: string
+        maxLength: 50
+      addressLine2:
+        type: string
+        maxLength: 50
+        multipleOf: True
+      postalCode:
+        type: string
+        maxLength: 15
+        multipleOf: True
   productlines:
     type: object
     properties:
-      officeCode:
+      productLine:
         type: string
-        format: string
+        maxLength: 50
+        uniqueItems: True
+      textDescription:
+        type: string
+        maxLength: 4000
+        multipleOf: True
+      htmlDescription:
+        type: string
+        maxLength: 200
+        multipleOf: True
+        xml:
+          namespace: 'http://name.com/clasification/Nname'
+          prefix: Nname
+      image:
+        type: string
+        maxLength: 100
+        multipleOf: True
+        paramType: path
+  productlines_patch:
+    type: object
+    properties:
+      productLine:
+        type: string
+        maxLength: 50
+        uniqueItems: True
+      textDescription:
+        type: string
+        maxLength: 4000
+        multipleOf: True
+      htmlDescription:
+        type: string
+        maxLength: 200
+        multipleOf: True
+        xml:
+          namespace: 'http://name.com/clasification/Nname'
+          prefix: Nname
   products:
     type: object
     properties:
-      officeCode:
+      productCode:
         type: string
-        format: string
+        maxLength: 15
+        uniqueItems: True
+      productName:
+        type: string
+        maxLength: 70
+      productLine:
+        type: string
+        maxLength: 50
+      productScale:
+        type: string
+        maxLength: 10
+      productVendor:
+        type: string
+        maxLength: 50
+      productDescription:
+        type: string
+        maxLength: 200
+      quantityInStock:
+        type: integer
+        format: int32
+        minimum: 0
+      buyPrice:
+        type: number
+        format: float
+      MSRP:
+        type: number
+        format: float
+  products_patch:
+    type: object
+    properties:
+      productCode:
+        type: string
+        maxLength: 15
+        uniqueItems: True
+      productVendor:
+        type: string
+        maxLength: 50
+      productDescription:
+        type: string
+        maxLength: 200
+        minimum: 0
+      buyPrice:
+        type: number
+        format: float
   orders:
     type: object
     properties:
-      officeCode:
+      orderNumber:
+        type: integer
+        format: int64
+        uniqueItems: True
+      orderDate:
         type: string
-        format: string
+        format: date-time
+      requiredDate:
+        type: string
+        format: date
+      shippedDate:
+        type: string
+        format: date
+        multipleOf: True
+      status:
+        type: string
+        maxLength: 15
+      comments:
+        type: string
+        maxLength: 200
+        multipleOf: True
+      customerNumber:
+        type: integer
+        format: int64
+  orders_patch:
+    type: object
+    properties:
+      orderNumber:
+        type: integer
+        format: int64
+        uniqueItems: True
+      requiredDate:
+        type: string
+        format: date
+      shippedDate:
+        type: string
+        format: date
+        multipleOf: True
+      status:
+        type: string
+        maxLength: 15
+      comments:
+        type: string
+        maxLength: 200
+        multipleOf: True
   orderdetails:
     type: object
     properties:
-      officeCode:
+      orderNumber:
+        type: integer
+        format: int64
+        uniqueItems: True
+      productCode:
         type: string
-        format: string
+        maxLength: 15
+        uniqueItems: True
+      quantityOrdered:
+        type: integer
+        format: int64
+      priceEach:
+        type: number
+        format: float
+      orderLineNumber:
+        type: integer
+        format: int32
+  orderdetails_patch:
+    type: object
+    properties:
+      orderNumber:
+        type: integer
+        format: int64
+        uniqueItems: True
+      productCode:
+        type: string
+        maxLength: 15
+        uniqueItems: True
+      quantityOrdered:
+        type: integer
+        format: int64
   payments:
     type: object
     properties:
-      officeCode:
+      customerNumber:
+        type: integer
+        format: int64
+        uniqueItems: True
+      checkNumber:
         type: string
-        format: string
+        maxLength: 50
+        uniqueItems: True
+      paymentDate:
+        type: string
+        format: date
+      amount:
+        type: number
+        format: float
   Error:
     type: object
     properties:
