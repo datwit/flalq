@@ -33,7 +33,7 @@ paths:
     get:
       tags:
       - Offices
-      summary: Return all offices rows
+      summary: Return all office rows
       produces:
         - application/json
       responses:
@@ -51,7 +51,7 @@ paths:
       tags:
       - Offices
       summary: Add new office
-      description: One offices row requested by officeCode key
+      description: One offices row added with all its fields
       consumes:
       - application/json
       produces:
@@ -90,8 +90,8 @@ paths:
     get:
       tags:
       - Offices
-      summary: Return one offices
-      description: Return only one offices row filter by officeCode key
+      summary: Return one office
+      description: Return only one office row filter by officeCode key
       produces:
       - application/json
       parameters:
@@ -126,7 +126,7 @@ paths:
         description: Office code that need to be considered for filter
         required: True
         type: string
-      - name: offices rows
+      - name: Office rows
         in: body
         description: Office rows that needs to be updated in store
         required: true
@@ -159,7 +159,7 @@ paths:
       tags:
       - Offices
       summary: Update fields of existing office
-      description: Update some office specific fields, the office filter by officeCode key
+      description: Update some office specific fields, filter by officeCode key
       consumes:
       - application/json
       produces:
@@ -170,7 +170,7 @@ paths:
         description: Office code that need to be considered for filter
         required: True
         type: string
-      - name: offices rows
+      - name: Office rows
         in: body
         description: Office rows that needs to be updated in store
         required: true
@@ -231,72 +231,1392 @@ paths:
     get:
       tags:
       - Employees
-      summary: Return all employees rows
+      summary: Return all employee rows
+      produces:
+        - application/json
       responses:
         '200':
           description: Success Request
           schema:
-            $ref:
+            $ref: '#/definitions/employees'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    post:
+      tags:
+      - Employees
+      summary: Add new employee
+      description: One employee row added with all its fields
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Employee Rows
+        in: body
+        description: Employee rows that needs to be added to store
+        required: true
+        schema:
+          $ref: '#/definitions/employees'
+      responses:
+        '201':
+          description: Created Request
+          schema:
+            $ref: '#/definitions/employees'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+  /employees/{employeeNumber}:
+    get:
+      tags:
+      - Employees
+      summary: Return one employee
+      description: Return only one employee row filter by employeeNumber key
+      produces:
+      - application/json
+      parameters:
+      - name: employeeNumber
+        in: path
+        description: Employee code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref: '#/definitions/employees'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    put:
+      tags:
+      - Employees
+      summary: Update an existing employee
+      description: Update all employee fields, the employee filter by employeeNumber key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: employeeNumber
+        in: path
+        description: Employee code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: Employee rows
+        in: body
+        description: Employee rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/employees'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/employees'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    patch:
+      tags:
+      - Employees
+      summary: Update fields of existing employee
+      description: Update some employee specific fields, filter by employeeNumber key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: employeeNumber
+        in: path
+        description: Employee code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: Employee rows
+        in: body
+        description: Employee rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/employees_patch'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/employees'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    delete:
+      tags:
+      - Employees
+      summary: Delete one employee
+      description: Delete filtered employee by its employeeNumber key
+      produces:
+      - application/json
+      parameters:
+      - name: employeeNumber
+        in: path
+        description: Employee code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
   /customers/:
     get:
       tags:
       - Customers
-      summary: Return all customers rows
+      summary: Return all customer rows
+      produces:
+        - application/json
       responses:
         '200':
           description: Success Request
           schema:
-            $ref:
+            $ref: '#/definitions/customers'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    post:
+      tags:
+      - Customers
+      summary: Add new customer
+      description: One customer row added with all its fields
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Customer Rows
+        in: body
+        description: Customer rows that needs to be added to store
+        required: true
+        schema:
+          $ref: '#/definitions/customers'
+      responses:
+        '201':
+          description: Created Request
+          schema:
+            $ref: '#/definitions/customers'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+  /customers/{customerNumber}:
+    get:
+      tags:
+      - Customers
+      summary: Return one customer
+      description: Return only one customer row filter by customerNumber key
+      produces:
+      - application/json
+      parameters:
+      - name: customerNumber
+        in: path
+        description: Customer code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref: '#/definitions/customers'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    put:
+      tags:
+      - Customers
+      summary: Update an existing customer
+      description: Update all customer fields, the customer filter by customerNumber key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: customerNumber
+        in: path
+        description: Customer code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: Customer rows
+        in: body
+        description: Customer rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/customers'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/customers'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    patch:
+      tags:
+      - Customers
+      summary: Update fields of existing customer
+      description: Update some customer specific fields, filter by customerNumber key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: customerNumber
+        in: path
+        description: Customer code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: Customer rows
+        in: body
+        description: Customer rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/customers_patch'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/customers'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    delete:
+      tags:
+      - Customers
+      summary: Delete one customer
+      description: Delete filtered customer by its customerNumber key
+      produces:
+      - application/json
+      parameters:
+      - name: customerNumber
+        in: path
+        description: Customer code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
   /productlines/:
     get:
       tags:
       - Productlines
-      summary: Return all productlines rows
+      summary: Return all productline rows
+      produces:
+        - application/json
       responses:
         '200':
           description: Success Request
           schema:
-            $ref:
+            $ref: '#/definitions/productlines'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    post:
+      tags:
+      - Productlines
+      summary: Add new productline
+      description: One productline row added with all its fields
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Productline Rows
+        in: body
+        description: Productline rows that needs to be added to store
+        required: true
+        schema:
+          $ref: '#/definitions/productlines'
+      responses:
+        '201':
+          description: Created Request
+          schema:
+            $ref: '#/definitions/productlines'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+  /productlines/{productLine}:
+    get:
+      tags:
+      - Productlines
+      summary: Return one productline
+      description: Return only one productline row filter by productLine key
+      produces:
+      - application/json
+      parameters:
+      - name: productLine
+        in: path
+        description: Productline code that need to be considered for filter
+        required: True
+        type: string
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref: '#/definitions/productlines'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    put:
+      tags:
+      - Productlines
+      summary: Update an existing productline
+      description: Update all productline fields, the customer filter by productLine key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: productLine
+        in: path
+        description: Productline code that need to be considered for filter
+        required: True
+        type: string
+      - name: Productline rows
+        in: body
+        description: Productline rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/productlines'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/productlines'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    patch:
+      tags:
+      - Productlines
+      summary: Update fields of existing productline
+      description: Update some productline specific fields, filter by productLine key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: productLine
+        in: path
+        description: Productline code that need to be considered for filter
+        required: True
+        type: string
+      - name: Productline rows
+        in: body
+        description: Productline rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/productlines_patch'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/productlines'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    delete:
+      tags:
+      - Productlines
+      summary: Delete one productline
+      description: Delete filtered productline by its productLine key
+      produces:
+      - application/json
+      parameters:
+      - name: productLine
+        in: path
+        description: Productline code that need to be considered for filter
+        required: True
+        type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+  /productlines/image/{productLine}:
+    post:
+      tags:
+      - Productlines
+      summary: Add image to an existing productline
+      description: Insert path to image that correspond with an existing productline, requested by productLine key
+      consumes:
+      -  multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - name: productLine
+        in: path
+        description: Productline code that need to be considered for filter
+        required: True
+        type: string
+      - name: Productline Image
+        in: formData
+        description: Productline Image that needs to be added to store
+        required: false
+        type: file
+      responses:
+        '201':
+          description: Created Request
+          schema:
+            $ref: '#/definitions/productlines'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
   /products/:
     get:
       tags:
       - Products
-      summary: Return all products rows
+      summary: Return all product rows
+      produces:
+        - application/json
       responses:
         '200':
           description: Success Request
           schema:
-            $ref:
+            $ref: '#/definitions/products'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    post:
+      tags:
+      - Products
+      summary: Add new product
+      description: One product row added with all its fields
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Product Rows
+        in: body
+        description: Product rows that needs to be added to store
+        required: true
+        schema:
+          $ref: '#/definitions/products'
+      responses:
+        '201':
+          description: Created Request
+          schema:
+            $ref: '#/definitions/products'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+  /products/{productCode}:
+    get:
+      tags:
+      - Products
+      summary: Return one product
+      description: Return only one product row filter by productCode key
+      produces:
+      - application/json
+      parameters:
+      - name: productCode
+        in: path
+        description: Product code that need to be considered for filter
+        required: True
+        type: string
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref: '#/definitions/products'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    put:
+      tags:
+      - Products
+      summary: Update an existing product
+      description: Update all product fields, the customer filter by productCode key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: productCode
+        in: path
+        description: Product code that need to be considered for filter
+        required: True
+        type: string
+      - name: Product rows
+        in: body
+        description: Product rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/products'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/products'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    patch:
+      tags:
+      - Products
+      summary: Update fields of existing product
+      description: Update some product specific fields, filter by productCode key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: productCode
+        in: path
+        description: Product code that need to be considered for filter
+        required: True
+        type: string
+      - name: Product rows
+        in: body
+        description: Product rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/products_patch'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/products'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    delete:
+      tags:
+      - Products
+      summary: Delete one product
+      description: Delete filtered product by its productCode key
+      produces:
+      - application/json
+      parameters:
+      - name: productCode
+        in: path
+        description: Product code that need to be considered for filter
+        required: True
+        type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
   /orders/:
     get:
       tags:
       - Orders
-      summary: Return all orders rows
+      summary: Return all order rows
+      produces:
+        - application/json
       responses:
         '200':
           description: Success Request
           schema:
-            $ref:
+            $ref: '#/definitions/orders'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    post:
+      tags:
+      - Orders
+      summary: Add new order
+      description: One order row added with all its fields
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Order Rows
+        in: body
+        description: Order rows that needs to be added to store
+        required: true
+        schema:
+          $ref: '#/definitions/orders'
+      responses:
+        '201':
+          description: Created Request
+          schema:
+            $ref: '#/definitions/orders'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+  /orders/{orderNumber}:
+    get:
+      tags:
+      - Orders
+      summary: Return one order
+      description: Return only one order row filter by orderNumber key
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Order code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref: '#/definitions/orders'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    put:
+      tags:
+      - Orders
+      summary: Update an existing order
+      description: Update all order fields, the customer filter by orderNumber key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Order code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: Order rows
+        in: body
+        description: Order rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/orders'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/orders'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    patch:
+      tags:
+      - Orders
+      summary: Update fields of existing order
+      description: Update some order specific fields, filter by orderNumber key
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Order code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: Order rows
+        in: body
+        description: Order rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/orders_patch'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/orders'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    delete:
+      tags:
+      - Orders
+      summary: Delete one order
+      description: Delete filtered order by its orderNumber key
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Order code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
   /orderdetails/:
     get:
       tags:
       - Orderdetails
-      summary: Return all orderdetails rows
+      summary: Return all order rows
+      produces:
+        - application/json
       responses:
         '200':
           description: Success Request
           schema:
-            $ref:
+            $ref: '#/definitions/orderdetails'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    post:
+      tags:
+      - Orderdetails
+      summary: Add new orderdetail
+      description: One orderdetail row added with all its fields
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Orderdetail Rows
+        in: body
+        description: Orderdetail rows that needs to be added to store
+        required: true
+        schema:
+          $ref: '#/definitions/orderdetails'
+      responses:
+        '201':
+          description: Created Request
+          schema:
+            $ref: '#/definitions/orderdetails'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+  /orderdetails/{orderNumber}/{productCode}:
+    get:
+      tags:
+      - Orderdetails
+      summary: Return one orderdetail
+      description: Return only one orderdetail row filter by orderNumber and productCode keys
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Orderdetail code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: productCode
+        in: path
+        description: Orderdetail code that need to be considered for filter
+        required: True
+        type: string
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref: '#/definitions/orderdetails'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    patch:
+      tags:
+      - Orderdetails
+      summary: Update fields of existing orderdetail
+      description: Update some orderdetail specific fields, filter by orderNumber and productCode keys
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Orderdetail code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: productCode
+        in: path
+        description: Orderdetail code that need to be considered for filter
+        required: True
+        type: string
+      - name: Orderdetail rows
+        in: body
+        description: Orderdetail rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/orderdetails_patch'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/orderdetails'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    delete:
+      tags:
+      - Orderdetails
+      summary: Delete one orderdetail
+      description: Delete filtered orderdetail by its orderNumber and productCode keys
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Orderdetail code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: productCode
+        in: path
+        description: Orderdetail code that need to be considered for filter
+        required: True
+        type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
   /payments/:
     get:
       tags:
       - Payments
-      summary: Return all payments rows
+      summary: Return all payment rows
+      produces:
+        - application/json
       responses:
         '200':
           description: Success Request
           schema:
-            $ref:
+            $ref: '#/definitions/payments'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    post:
+      tags:
+      - Payments
+      summary: Add new payment
+      description: One payment row added with all its fields
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Payment Rows
+        in: body
+        description: Payment rows that needs to be added to store
+        required: true
+        schema:
+          $ref: '#/definitions/payments'
+      responses:
+        '201':
+          description: Created Request
+          schema:
+            $ref: '#/definitions/payments'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+  /payments/{customerNumber}/{checkNumber}:
+    get:
+      tags:
+      - Payments
+      summary: Return one payment
+      description: Return only one payment row filter by orderNumber and checkNumber keys
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Payment code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: checkNumber
+        in: path
+        description: Payment code that need to be considered for filter
+        required: True
+        type: string
+      responses:
+        '200':
+          description: Success Request
+          schema:
+            $ref: '#/definitions/payments'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    put:
+      tags:
+      - Payments
+      summary: Update an existing payment
+      description: Update all payment fields, the customer filter by orderNumber and checkNumber keys
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Payment code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: checkNumber
+        in: path
+        description: Payment code that need to be considered for filter
+        required: True
+        type: string
+      - name: Payment rows
+        in: body
+        description: Payment rows that needs to be updated in store
+        required: true
+        schema:
+          $ref: '#/definitions/payments'
+      responses:
+        '200':
+          description: Updated Request
+          schema:
+            $ref: '#/definitions/payments'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+    delete:
+      tags:
+      - Payments
+      summary: Delete one payment
+      description: Delete filtered payment by its orderNumber and checkNumber keys
+      produces:
+      - application/json
+      parameters:
+      - name: orderNumber
+        in: path
+        description: Payment code that need to be considered for filter
+        required: True
+        type: integer
+        format: int64
+      - name: checkNumber
+        in: path
+        description: Payment code that need to be considered for filter
+        required: True
+        type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Error'
 definitions:
   offices:
     type: object
