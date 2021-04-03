@@ -1,14 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from api.utils.database import Session, Base
-from sqlalchemy import  Column, String, Integer, Float, Date, ForeignKey
+from api.utils.database import session, Base, engine
+from sqlalchemy import  Column, String, Integer, Date, ForeignKey, DECIMAL
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
 from api.models.customers import CustomerSchema
-
-
-session = Session()
 
 
 # Payments class
@@ -18,7 +15,7 @@ class Payment(Base):
     customerNumber = Column(Integer, ForeignKey('customers.customerNumber'), primary_key=True,)
     checkNumber = Column(String(50), nullable=False, primary_key=True)
     paymentDate = Column(Date, nullable=False)
-    amount = Column(Float(10,2), nullable=False)
+    amount = Column(DECIMAL(10,2), nullable=False)
 
     def __init__(self, checkNumber, paymentDate, amount, customerNumber=None):
         self.customerNumber = customerNumber
@@ -33,7 +30,7 @@ class PaymentSchema(ModelSchema):
         model = Payment
         sqla_session = session
 
-    customerNumber = fields.Nested(CustomerSchema, many=False, only=['customerNumber'], dump_only=True)
+    customerNumber = fields.Integer(required=True)
     checkNumber = fields.String(required=True)
     paymentDate = fields.Date(required=True)
-    amount = fields.Float(required=True)
+    amount = fields.Float(required=True)                # marshmallow.fields has not attribute DECIMAL

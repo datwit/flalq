@@ -1,13 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from api.utils.database import Session, Base
-from sqlalchemy import  Column, String, Integer, Float, ForeignKey
+from api.utils.database import session, Base, engine
+from sqlalchemy import  Column, String, Integer, ForeignKey, DECIMAL
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
-
-
-session = Session()
 
 
 # Customers class
@@ -18,7 +15,7 @@ class Customer(Base):
     customerName = Column(String(50), nullable=False)
     contactLastName = Column(String(50), nullable=False)
     contactFirstName = Column(String(50), nullable=False)
-    phone = Column(String(50), nullable=False, unique=True)                     # phone --> I make it unique
+    phone = Column(String(50), nullable=False)
     addressLine1 = Column(String(50), nullable=False)
     addressLine2 = Column(String(50))
     city = Column(String(50), nullable=False)
@@ -26,7 +23,7 @@ class Customer(Base):
     postalCode = Column(String(15))
     country = Column(String(50), nullable=False)
     salesRepEmployeeNumber = Column(Integer, ForeignKey('employees.employeeNumber'), nullable=True)
-    creditLimit = Column(Float(10,2))
+    creditLimit = Column(DECIMAL(10,2))
 
     def __init__(self, customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, addressLine2, city, state, postalCode, country, creditLimit, salesRepEmployeeNumber=None):
         self.customerNumber = customerNumber
@@ -62,4 +59,4 @@ class CustomerSchema(ModelSchema):
     postalCode = fields.String()
     country = fields.String(required=True)
     salesRepEmployeeNumber = fields.Integer()
-    creditLimit = fields.Float()
+    creditLimit = fields.Float()                    # marshmallow.fields has not attribute DECIMAL

@@ -1,13 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from api.utils.database import Session, Base
-from sqlalchemy import Column, String, Binary
+from api.utils.database import session, Base, engine
+from sqlalchemy import Column, String
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
-
-
-session = Session()
 
 
 # Productlines class

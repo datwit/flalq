@@ -1,15 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from api.utils.database import Session, Base
-from sqlalchemy import  ForeignKey, Column, String, Integer, SmallInteger, Float, Table
+from api.utils.database import session, Base, engine
+from sqlalchemy import Column, Integer, ForeignKey, String, DECIMAL, SmallInteger
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
 from api.models.orders import OrderSchema
 from api.models.products import ProductSchema
-
-
-session = Session()
 
 
 # Orderdetails class
@@ -19,8 +16,8 @@ class Orderdetail(Base):
     orderNumber = Column(Integer, ForeignKey('orders.orderNumber'), primary_key=True)
     productCode = Column(String(15), ForeignKey('products.productCode'), nullable=False, primary_key=True)
     quantityOrdered = Column(Integer, nullable=False)
-    priceEach = Column(Float(10,2), nullable=False)
-    orderLineNumber = Column(Integer, nullable=False)
+    priceEach = Column(DECIMAL(10,2), nullable=False)
+    orderLineNumber = Column(SmallInteger(), nullable=False)
 
     def __init__(self, quantityOrdered, priceEach, orderLineNumber, orderNumber=None, productCode=None):
         self.orderNumber = orderNumber
@@ -44,5 +41,5 @@ class OrderdetailSchema(ModelSchema):
     orderNumber = fields.Integer(required=True)
     productCode = fields.String(required=True)
     quantityOrdered = fields.Integer(required=True)
-    priceEach = fields.Float(required=True)
-    orderLineNumber = fields.Integer(required=True)                     # marchmellow have not SmallInteger fields
+    priceEach = fields.Float(required=True)                     # marshmallow.fields has not attribute DECIMAL
+    orderLineNumber = fields.Integer(required=True)             # marshmallow.fields has not attribute SmallInteger
