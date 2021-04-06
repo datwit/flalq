@@ -1,14 +1,12 @@
 swagger: '2.0'
 info:
-  description: This is API_flalq_documentation. This API use FLask, SQLAlchemy, Marshmallow and Unittest. For more information see [API flalq](https://github.com/datwit/flalq/)
+  description: "**Flalq API** is a Python project with Flask, SQLAlchemy and Marshmallow using the [classicmodels](https://www.mysqltutorial.org/mysql-sample-database.aspx) database from the [MySQL Basic Tutorial](https://www.mysqltutorial.org/basic-mysql-tutorial.aspx). For more information see [flalq API](https://github.com/datwit/flalq/)."
   version: 1.0.0
-  title: Test-Swagger
+  title: Flalq API  Documentation (to Swagger)
   termsOfService:
   contact:
-    email: danay3k@nauta.cu
-  license:
-    name: MIT
-    url: https://opensource.org/licenses/MIT
+    name: Danay Meneses Abad
+    email: danaymeneses@gmail.com
 schemes:
 - http
 tags:
@@ -845,10 +843,10 @@ paths:
         description: Productline code that need to be considered for filter
         required: True
         type: string
-      - name: Productline Image
+      - name: image
         in: formData
         description: Productline Image that needs to be added to store
-        required: false
+        required: True
         type: file
       responses:
         '201':
@@ -1511,7 +1509,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: orderNumber
+      - name: customerNumber
         in: path
         description: Payment code that need to be considered for filter
         required: True
@@ -1543,7 +1541,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: orderNumber
+      - name: customerNumber
         in: path
         description: Payment code that need to be considered for filter
         required: True
@@ -1591,7 +1589,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: orderNumber
+      - name: customerNumber
         in: path
         description: Payment code that need to be considered for filter
         required: True

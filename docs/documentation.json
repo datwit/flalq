@@ -1,0 +1,248 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Flalq API  Documentation (.json)",
+        "description": "**Flalq API** is a Python project with Flask, SQLAlchemy and Marshmallow using the [classicmodels](https://www.mysqltutorial.org/mysql-sample-database.aspx) database from the [MySQL Basic Tutorial](https://www.mysqltutorial.org/basic-mysql-tutorial.aspx). For more information see [flalq API](https://github.com/datwit/flalq/).",
+        "version": "1.0.0",
+        "termsOfService": "",
+        "contact": {
+            "name": "Danay Meneses Abad",
+            "email": "danaymeneses@gmail.com"
+        },
+        "license": {  }
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Offices Request",
+            "description": "Example API for to introduce and to request market data"
+        }
+    ],
+    "paths": {
+        "/offices/": {
+            "get": {
+                "tags": [
+                    "Offices Request"
+                ],
+                "summary": "Return all office rows",
+                "description": "Returns all office stored in db",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/all_offices/"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Offices Request"
+                ],
+                "summary": "Add new office",
+                "description": "One offices row added with all its fields",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/all_offices/"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/offices/{officeCode}": {
+            "put": {
+                "tags": [
+                    "Offices Request"
+                ],
+                "summary": "Update an existing office",
+                "description": "Update all office fields, the office filter by officeCode key",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/all_offices/"
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Offices Request"
+                ],
+                "summary": "Return one office",
+                "description": "Return only one office row filter by officeCode key",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/all_offices/"
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Offices Request"
+                ],
+                "summary": "Update fields of existing office",
+                "description": "Update some office specific fields, filter by officeCode key",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/all_offices/"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Offices Request"
+                ],
+                "summary": "Delete one office",
+                "description": "Delete filtered office by its officeCode key",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/all_offices/"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components":{
+        "parameters": {},
+        "responses": {},
+        "schemas":{
+            "id": {},
+            "post_office": {
+                "type": "object",
+                "properties":{
+                    "addressLine1": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "addressLine2": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "city": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "country": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "officeCode": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "postalCode": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "state": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "territory": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "all_offices": {
+                "type": "object",
+                "properties":{
+                    "addressLine1": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "addressLine2": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "city": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "country": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "officeCode": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "postalCode": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "state": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "territory": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes:": {}
+    },
+    "security":{}
+}
