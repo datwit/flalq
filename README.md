@@ -7,7 +7,7 @@
 ---
 ## Index
 
-- [API flalq: using Flask y SQLAlchemy](#api-flalq-using-flask-y-sqlalchemy)
+- [API flalq: using Flask and SQLAlchemy](#api-flalq-using-flask-y-sqlalchemy)
   - [Index](#index)
   - [Requirements](#requirements)
   - [Installation, Configuration and Usage](#installation-configuration-and-usage)
