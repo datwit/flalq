@@ -1,5 +1,5 @@
 
-# API flalq: using Flask y SQLAlchemy
+# API flalq: using Flask and SQLAlchemy
 
 **API flalq** uses the structure from the MySQL Basic [Tutorial]((https://www.mysqltutorial.org/basic-mysql-tutorial.aspx)) database. Developed with **Flask**, **SQLAlchemy** (not Flask_SQLAlchemy), **marshmallow**, **unittest** and **mysql** db. In this case, the application has been built with [SQLAlchemy ORM](http://docs.sqlalchemy.org/en/latest/orm/tutorial.html). Contains different data types and endpoints, trying to cover simple examples that can be useful to other projects.
 
