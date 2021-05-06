@@ -3,64 +3,124 @@
     "info": {
         "title": "Flalq API  Documentation (.json)",
         "description": "**Flalq API** is a Python project with Flask, SQLAlchemy and Marshmallow using the [classicmodels](https://www.mysqltutorial.org/mysql-sample-database.aspx) database from the [MySQL Basic Tutorial](https://www.mysqltutorial.org/basic-mysql-tutorial.aspx). For more information see [flalq API](https://github.com/datwit/flalq/).",
-        "version": "1.0.0",
-        "termsOfService": "",
+        "version": "0.1",
+        "termsOfService": null,
         "contact": {
             "name": "Danay Meneses Abad",
             "email": "danaymeneses@gmail.com"
-        },
+          },
         "license": {  }
-    },
-    "servers": [
-        {
-            "url": "/"
-        }
-    ],
-    "tags": [
-        {
-            "name": "Offices Request",
-            "description": "Example API for to introduce and to request market data"
-        }
-    ],
+        },
+    "servers": [ {
+            "url": "http://localhost:5000"
+        } ],
+    "tags": [ {
+        "name": "Offices",
+        "description": "Shop offices"
+        }, {
+        "name" : "Employees",
+        "description" : "Employees by offices"
+        }, {
+        "name" : "Customers",
+        "description" : "Customers by employees"
+        }, {
+        "name" : "Productlines",
+        "description" : "Product lines in the Business"
+        }, {
+        "name" : "Products",
+        "description" : "Products by product lines"
+        }, {
+        "name" : "Orders",
+        "description" : "Sale orders"
+        }, {
+        "name" : "Orderdetails",
+        "description" : "Order details by products"
+        }, {
+        "name" : "Payments",
+        "description" : "Payments by customers"
+    } ],
     "paths": {
         "/offices/": {
             "get": {
-                "tags": [
-                    "Offices Request"
-                ],
-                "summary": "Return all office rows",
-                "description": "Returns all office stored in db",
-                "produces": [
-                    "application/json"
-                ],
+                "tags": [ "Offices" ],
+                "summary": "Return all office row stored in db",
+                "produces": [ "application/json" ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/components/schemas/all_offices/"
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/offices"
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description" : "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
                             }
                         }
                     }
                 }
             },
             "post": {
-                "tags": [
-                    "Offices Request"
-                ],
+                "tags": [ "Offices" ],
                 "summary": "Add new office",
-                "description": "One offices row added with all its fields",
-                "produces": [
-                    "application/json"
-                ],
+                "description": "One offices row added with all its fields:\n- **officeCode**: office code.\n- **city**: city where office is located.\n- **phone**: office phone number.\n- **addressLine1**: main street name.\n- **addressLine2**: streets name.\n- **state**: state where office is located.\n- **country**: country where office is located.\n- **postalCode**: office postal code.\n- **territory**: territory where office is located.",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [ {
+                    "name": "Office Row",
+                    "in": "body",
+                    "description": "Office row that needs to be added to store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/offices"
+                    }
+                } ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/components/schemas/all_offices/"
+                    "201": {
+                        "description": "Created Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/offices"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
                             }
                         }
                     }
@@ -68,85 +128,2374 @@
             }
         },
         "/offices/{officeCode}": {
-            "put": {
-                "tags": [
-                    "Offices Request"
-                ],
-                "summary": "Update an existing office",
-                "description": "Update all office fields, the office filter by officeCode key",
-                "produces": [
-                    "application/json"
-                ],
+            "get": {
+                "tags": [ "Offices" ],
+                "summary": "Return one office",
+                "description": "Return only one office row filter by officeCode key",
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "officeCode",
+                    "in" : "path",
+                    "description" : "Office code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  } ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/components/schemas/all_offices/"
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/offices"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
                             }
                         }
                     }
                 }
             },
-            "get": {
-                "tags": [
-                    "Offices Request"
-                ],
-                "summary": "Return one office",
-                "description": "Return only one office row filter by officeCode key",
-                "produces": [
-                    "application/json"
-                ],
+            "put": {
+                "tags": [ "Offices" ],
+                "summary": "Update an existing office",
+                "description": "Update all office fields, the office filter by officeCode key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "officeCode",
+                    "in" : "path",
+                    "description" : "Office code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }, {
+                    "name": "Office Row",
+                    "in": "body",
+                    "description": "Office row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/offices"
+                    }
+                } ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/components/schemas/all_offices/"
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/offices"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
                             }
                         }
                     }
                 }
             },
             "patch": {
-                "tags": [
-                    "Offices Request"
-                ],
+                "tags": [ "Offices" ],
                 "summary": "Update fields of existing office",
                 "description": "Update some office specific fields, filter by officeCode key",
-                "produces": [
-                    "application/json"
-                ],
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "officeCode",
+                    "in" : "path",
+                    "description" : "Office code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }, {
+                    "name": "Office Row",
+                    "in": "body",
+                    "description": "Office row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/offices_patch"
+                    }
+                } ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/components/schemas/all_offices/"
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/offices"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
                             }
                         }
                     }
                 }
             },
             "delete": {
-                "tags": [
-                    "Offices Request"
-                ],
+                "tags": [ "Offices" ],
                 "summary": "Delete one office",
                 "description": "Delete filtered office by its officeCode key",
-                "produces": [
-                    "application/json"
-                ],
+                "parameters" : [ {
+                    "name" : "officeCode",
+                    "in" : "path",
+                    "description" : "Office code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }],
+                "responses": {
+                    "204" : {
+                      "description" : "Deleted Request"
+                    },
+                    "400" : {
+                        "description" : "Bad Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404" : {
+                        "description" : "Not found Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employees/": {
+            "get": {
+                "tags": [ "Employees" ],
+                "summary": "Return all employee row stored in db",
+                "produces": [ "application/json" ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/components/schemas/all_offices/"
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/employees"
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description" : "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Employees" ],
+                "summary": "Add new employee",
+                "description": "One employee row added with all its fields",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [ {
+                    "name": "Employee Row",
+                    "in": "body",
+                    "description": "Employee row that needs to be added to store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/employees"
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "Created Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/employees"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employees/{employeeNumber}": {
+            "get": {
+                "tags": [ "Employees" ],
+                "summary": "Return one employee",
+                "description": "Return only one employee row filter by employeeNumber key",
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "employeeNumber",
+                    "in" : "path",
+                    "description" : "Employee code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/employees"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Employees" ],
+                "summary": "Update an existing employee",
+                "description": "Update all employee fields, the employees filter by employeeNumber key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "employeeNumber",
+                    "in" : "path",
+                    "description" : "Employee code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name": "Employee Row",
+                    "in": "body",
+                    "description": "Employee row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/employees"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/employees"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [ "Employees" ],
+                "summary": "Update fields of existing employee",
+                "description": "Update some employee specific fields, filter by employeeNumber key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "employeeNumber",
+                    "in" : "path",
+                    "description" : "Employee code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name": "Employee Row",
+                    "in": "body",
+                    "description": "Employee row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/employees_patch"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/employees"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Employees" ],
+                "summary": "Delete one employee",
+                "description": "Delete filtered employee by its employeeNumber key",
+                "parameters" : [ {
+                    "name" : "employeeNumber",
+                    "in" : "path",
+                    "description" : "Employee code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }],
+                "responses": {
+                    "204" : {
+                      "description" : "Deleted Request"
+                    },
+                    "400" : {
+                        "description" : "Bad Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404" : {
+                        "description" : "Not found Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/": {
+            "get": {
+                "tags": [ "Customers" ],
+                "summary": "Return all customer row stored in db",
+                "produces": [ "application/json" ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/customers"
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description" : "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Customers" ],
+                "summary": "Add new customer",
+                "description": "One customer row added with all its fields",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [ {
+                    "name": "Customer Row",
+                    "in": "body",
+                    "description": "Customer row that needs to be added to store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/customers"
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "Created Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/customers"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{customerNumber}": {
+            "get": {
+                "tags": [ "Customers" ],
+                "summary": "Return one customer",
+                "description": "Return only one customer row filter by employeeNumber key",
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "customerNumber",
+                    "in" : "path",
+                    "description" : "Customer code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/customers"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Customers" ],
+                "summary": "Update an existing customer",
+                "description": "Update all customer fields, the customers filter by customerNumber key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "customerNumber",
+                    "in" : "path",
+                    "description" : "Customer code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name": "Customer Row",
+                    "in": "body",
+                    "description": "Customer row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/customers"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/customers"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [ "Customers" ],
+                "summary": "Update fields of existing customer",
+                "description": "Update some customer specific fields, filter by customerNumber key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "customerNumber",
+                    "in" : "path",
+                    "description" : "Customer code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name": "Customer Row",
+                    "in": "body",
+                    "description": "Customer row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/customers_patch"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/customers"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Customers" ],
+                "summary": "Delete one customer",
+                "description": "Delete filtered customer by its customerNumber key",
+                "parameters" : [ {
+                    "name" : "customerNumber",
+                    "in" : "path",
+                    "description" : "Customer code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }],
+                "responses": {
+                    "204" : {
+                      "description" : "Deleted Request"
+                    },
+                    "400" : {
+                        "description" : "Bad Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404" : {
+                        "description" : "Not found Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/productlines/": {
+            "get": {
+                "tags": [ "Productlines" ],
+                "summary": "Return all productline row stored in db",
+                "produces": [ "application/json" ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/productlines"
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description" : "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Productlines" ],
+                "summary": "Add new productline",
+                "description": "One productline row added with all its fields",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [ {
+                    "name": "Productline Row",
+                    "in": "body",
+                    "description": "Productline row that needs to be added to store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/productlines"
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "Created Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/productlines"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/productlines/{productLine}": {
+            "get": {
+                "tags": [ "Productlines" ],
+                "summary": "Return one productline",
+                "description": "Return only one productline row filter by productLine key",
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "productLine",
+                    "in" : "path",
+                    "description" : "Productline code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/productlines"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Productlines" ],
+                "summary": "Update an existing productline",
+                "description": "Update all productline fields, the office filter by productLine key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "productLine",
+                    "in" : "path",
+                    "description" : "Productline code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }, {
+                    "name": "Productline Row",
+                    "in": "body",
+                    "description": "Productline row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/productlines"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/productlines"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [ "Productlines" ],
+                "summary": "Update fields of existing productline",
+                "description": "Update some productline specific fields, filter by productLine key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "productLine",
+                    "in" : "path",
+                    "description" : "Productline code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }, {
+                    "name": "Productline Row",
+                    "in": "body",
+                    "description": "Productline row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/productlines_patch"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/productlines"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Productlines" ],
+                "summary": "Delete one productline",
+                "description": "Delete filtered productline by its productLine key",
+                "parameters" : [ {
+                    "name" : "productLine",
+                    "in" : "path",
+                    "description" : "Productline code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }],
+                "responses": {
+                    "204" : {
+                      "description" : "Deleted Request"
+                    },
+                    "400" : {
+                        "description" : "Bad Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404" : {
+                        "description" : "Not found Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/productlines/image/{productLine}": {
+            "post":{
+                "tags": ["Productlines"],
+                "summary": "Add image to an existing productline",
+                "description": "Insert path to image that correspond with an existing productline, requested by productLine key",
+                "consumes": ["multipart/form-data"],
+                "produces": ["application/json"],
+                "parameters":[{
+                    "name": "productLine",
+                    "in": "path",
+                    "description": "Productline code that need to be considered for filter",
+                    "required": true,
+                    "type": "string"
+                  }, {
+                    "name": "image",
+                    "in": "formData",
+                    "description": "Productline Image that needs to be added to store",
+                    "required": true,
+                    "type": "file"
+                }],
+                "responses":{
+                    "201":{
+                        "description": "Created Request",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "$ref": "#/components/schemas/productlines"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422":{
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/": {
+            "get": {
+                "tags": [ "Products" ],
+                "summary": "Return all product row stored in db",
+                "produces": [ "application/json" ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/products"
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description" : "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Products" ],
+                "summary": "Add new product",
+                "description": "One product row added with all its fields",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [ {
+                    "name": "Product Row",
+                    "in": "body",
+                    "description": "Product row that needs to be added to store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/products"
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "Created Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/products"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{productCode}": {
+            "get": {
+                "tags": [ "Products" ],
+                "summary": "Return one product",
+                "description": "Return only one product row filter by productCode key",
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "productCode",
+                    "in" : "path",
+                    "description" : "Product code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/products"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Products" ],
+                "summary": "Update an existing product",
+                "description": "Update all product fields, the office filter by productCode key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "productCode",
+                    "in" : "path",
+                    "description" : "Product code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }, {
+                    "name": "Product Row",
+                    "in": "body",
+                    "description": "Product row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/products"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/products"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [ "Products" ],
+                "summary": "Update fields of existing product",
+                "description": "Update some product specific fields, filter by productCode key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "productCode",
+                    "in" : "path",
+                    "description" : "Product code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }, {
+                    "name": "Product Row",
+                    "in": "body",
+                    "description": "Product row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/products_patch"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/products"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Products" ],
+                "summary": "Delete one product",
+                "description": "Delete filtered product by its productCode key",
+                "parameters" : [ {
+                    "name" : "productCode",
+                    "in" : "path",
+                    "description" : "Product code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }],
+                "responses": {
+                    "204" : {
+                      "description" : "Deleted Request"
+                    },
+                    "400" : {
+                        "description" : "Bad Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404" : {
+                        "description" : "Not found Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/": {
+            "get": {
+                "tags": [ "Orders" ],
+                "summary": "Return all order row stored in db",
+                "produces": [ "application/json" ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/orders"
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description" : "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Orders" ],
+                "summary": "Add new order",
+                "description": "One order row added with all its fields",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [ {
+                    "name": "Order Row",
+                    "in": "body",
+                    "description": "Order row that needs to be added to store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/orders"
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "Created Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/orders"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{orderNumber}": {
+            "get": {
+                "tags": [ "Orders" ],
+                "summary": "Return one order",
+                "description": "Return only one order row filter by orderNumber key",
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "orderNumber",
+                    "in" : "path",
+                    "description" : "Order code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/orders"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Orders" ],
+                "summary": "Update an existing order",
+                "description": "Update all order fields, the employees filter by orderNumber key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "orderNumber",
+                    "in" : "path",
+                    "description" : "Order code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name": "Order Row",
+                    "in": "body",
+                    "description": "Order row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/orders"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/orders"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [ "Orders" ],
+                "summary": "Update fields of existing order",
+                "description": "Update some order specific fields, filter by orderNumber key",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "orderNumber",
+                    "in" : "path",
+                    "description" : "Orders code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name": "Order Row",
+                    "in": "body",
+                    "description": "Order row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/orders_patch"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/orders"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Orders" ],
+                "summary": "Delete one order",
+                "description": "Delete filtered order by its orderNumber key",
+                "parameters" : [ {
+                    "name" : "ordeNumber",
+                    "in" : "path",
+                    "description" : "Order code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }],
+                "responses": {
+                    "204" : {
+                      "description" : "Deleted Request"
+                    },
+                    "400" : {
+                        "description" : "Bad Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404" : {
+                        "description" : "Not found Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orderdetails/": {
+            "get": {
+                "tags": [ "Orderdetails" ],
+                "summary": "Return all orderdetail row stored in db",
+                "produces": [ "application/json" ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/orderdetails"
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description" : "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Orderdetails" ],
+                "summary": "Add new orderdetail",
+                "description": "One orderdetail row added with all its fields",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [ {
+                    "name": "Orderdetail Row",
+                    "in": "body",
+                    "description": "Orderdetail row that needs to be added to store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/orderdetails"
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "Created Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/orderdetails"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orderdetails/{orderNumber}/{productCode}": {
+            "get": {
+                "tags": [ "Orderdetails" ],
+                "summary": "Return one orderdetail",
+                "description": "Return only one orderdetail row filter by orderNumber and productCode keys",
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "orderNumber",
+                    "in" : "path",
+                    "description" : "Order code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name" : "productCode",
+                    "in" : "path",
+                    "description" : "Product code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/orderdetails"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [ "Orderdetails" ],
+                "summary": "Update fields of existing orderdetail",
+                "description": "Update some orderdetail specific fields, filter by orderNumber and productCode keys",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "orderNumber",
+                    "in" : "path",
+                    "description" : "Order code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name" : "productCode",
+                    "in" : "path",
+                    "description" : "Product code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }, {
+                    "name": "Orderdetail Row",
+                    "in": "body",
+                    "description": "Orderdetail row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/orderdetails_patch"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/orderdetails"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Orderdetails" ],
+                "summary": "Delete one orderdetail",
+                "description": "Delete filtered orderdetail by orderNumber and productCode keys",
+                "parameters" : [ {
+                    "name" : "orderNumber",
+                    "in" : "path",
+                    "description" : "Order code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name" : "productCode",
+                    "in" : "path",
+                    "description" : "Product code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }],
+                "responses": {
+                    "204" : {
+                      "description" : "Deleted Request"
+                    },
+                    "400" : {
+                        "description" : "Bad Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404" : {
+                        "description" : "Not found Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/": {
+            "get": {
+                "tags": [ "Payments" ],
+                "summary": "Return all payment row stored in db",
+                "produces": [ "application/json" ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/payments"
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description" : "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Payments" ],
+                "summary": "Add new payment",
+                "description": "One payment row added with all its fields",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [ {
+                    "name": "Payment Row",
+                    "in": "body",
+                    "description": "Payment row that needs to be added to store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/payments"
+                    }
+                } ],
+                "responses": {
+                    "201": {
+                        "description": "Created Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/payments"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/{customerNumber}/{checkNumber}": {
+            "get": {
+                "tags": [ "Payments" ],
+                "summary": "Return one payment",
+                "description": "Return only one payment row filter by customerNumber and checkNumber keys",
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "customerNumber",
+                    "in" : "path",
+                    "description" : "Customer code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name" : "checkNumber",
+                    "in" : "path",
+                    "description" : "Payment code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/payments"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Payments" ],
+                "summary": "Update an existing payment",
+                "description": "Update all payment fields, the payments filter by customerNumber and checkNumber keys",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters" : [ {
+                    "name" : "customerNumber",
+                    "in" : "path",
+                    "description" : "Customer code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name" : "checkNumber",
+                    "in" : "path",
+                    "description" : "Payment code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }, {
+                    "name": "Payment Row",
+                    "in": "body",
+                    "description": "Payment row that needs to be updated in store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/payments"
+                    }
+                } ],
+                "responses": {
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/payments"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid field input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Payments" ],
+                "summary": "Delete one payment",
+                "description": "Delete filtered payment by customerNumber and checkNumber keys",
+                "parameters" : [ {
+                    "name" : "customerNumber",
+                    "in" : "path",
+                    "description" : "Customer code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "integer",
+                    "format" : "int64"
+                  }, {
+                    "name" : "checkNumber",
+                    "in" : "path",
+                    "description" : "Payment code that need to be considered for filter",
+                    "required" : true,
+                    "type" : "string"
+                  }],
+                "responses": {
+                    "204" : {
+                      "description" : "Deleted Request"
+                    },
+                    "400" : {
+                        "description" : "Bad Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404" : {
+                        "description" : "Not found Request",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
                             }
                         }
                     }
@@ -154,95 +2503,507 @@
             }
         }
     },
-    "components":{
-        "parameters": {},
-        "responses": {},
-        "schemas":{
-            "id": {},
-            "post_office": {
-                "type": "object",
+    "components": {
+        "schemas": {
+            "offices" : {
+                "type" : "object",
                 "properties":{
-                    "addressLine1": {
+                    "officeCode": {
                         "type": "string",
-                        "format": "string"
-                    },
-                    "addressLine2": {
-                        "type": "string",
-                        "format": "string"
+                        "maxLength": 10,
+                        "uniqueItems": true
                     },
                     "city": {
                         "type": "string",
-                        "format": "string"
-                    },
-                    "country": {
-                        "type": "string",
-                        "format": "string"
-                    },
-                    "officeCode": {
-                        "type": "string",
-                        "format": "string"
+                        "maxLength": 50
                     },
                     "phone": {
                         "type": "string",
-                        "format": "string"
+                        "maxLength": 50
                     },
-                    "postalCode": {
+                    "addressLine1": {
                         "type": "string",
-                        "format": "string"
+                        "maxLength": 50
+                    },
+                    "addressLine2": {
+                        "type": "string",
+                        "maxLength": 50
                     },
                     "state": {
                         "type": "string",
-                        "format": "string"
+                        "maxLength": 50
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "postalCode": {
+                        "type": "string",
+                        "maxLength": 15
                     },
                     "territory": {
                         "type": "string",
-                        "format": "string"
+                        "maxLength": 50
                     }
                 }
             },
-            "all_offices": {
-                "type": "object",
+            "offices_patch" : {
+                "type" : "object",
                 "properties":{
-                    "addressLine1": {
-                        "type": "string",
-                        "format": "string"
-                    },
-                    "addressLine2": {
-                        "type": "string",
-                        "format": "string"
-                    },
-                    "city": {
-                        "type": "string",
-                        "format": "string"
-                    },
-                    "country": {
-                        "type": "string",
-                        "format": "string"
-                    },
                     "officeCode": {
                         "type": "string",
-                        "format": "string"
+                        "maxLength": 10,
+                        "uniqueItems": true
                     },
                     "phone": {
                         "type": "string",
-                        "format": "string"
+                        "maxLength": 50
+                    },
+                    "addressLine1": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "addressLine2": {
+                        "type": "string",
+                        "maxLength": 50
                     },
                     "postalCode": {
                         "type": "string",
-                        "format": "string"
+                        "maxLength": 15
+                    }
+                }
+            },
+            "employees" : {
+                "type" : "object",
+                "properties" : {
+                    "employeeNumber" : {
+                        "type" : "integer",
+                        "format" : "int64",
+                        "uniqueItems" : true
                     },
-                    "state": {
-                        "type": "string",
-                        "format": "string"
+                    "lastName" : {
+                        "type" : "string",
+                        "maxLength" : 50
                     },
-                    "territory": {
-                        "type": "string",
-                        "format": "string"
+                    "firstName" : {
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "extension":{
+                        "type" : "string",
+                        "maxLength" : 10
+                    },
+                    "email":{
+                        "type" : "string",
+                        "format" : "email",
+                        "maxLength" : 100
+                    },
+                    "jobTitle":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "officeCode": {
+                        "type" : "string",
+                        "maxLength" : 10
+                    },
+                    "reportsTo": {
+                        "type" : "integer",
+                        "format" : "int64",
+                        "multipleOf": true
+                    }
+                }
+            },
+            "employees_patch":{
+                "type" : "object",
+                "properties" :{
+                    "employeeNumber":{
+                        "type" : "integer",
+                        "format" : "int64",
+                        "uniqueItems" : true
+                    },
+                    "extension":{
+                        "type" : "string",
+                        "maxLength" : 10
+                    },
+                    "jobTitle":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "officeCode":{
+                        "type" : "string",
+                        "maxLength" : 10
+                    },
+                    "reportsTo":{
+                        "type" : "integer",
+                        "format" : "int64",
+                        "multipleOf": true
+                    }
+                }
+            },
+            "customers": {
+                "type" : "object",
+                "properties" : {
+                    "customerNumber": {
+                        "type" : "integer",
+                        "format" : "int64",
+                        "uniqueItems" : true
+                    },
+                    "customerName":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "contactLastName":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "contactFirstName":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "phone":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "addressLine1":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "addressLine2":{
+                        "type" : "string",
+                        "maxLength" : 50,
+                        "multipleOf": true
+                    },
+                    "city":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "state":{
+                        "type" : "string",
+                        "maxLength" : 50,
+                        "multipleOf": true
+                    },
+                    "postalCode":{
+                        "type" : "string",
+                        "maxLength" : 15,
+                        "multipleOf" : true
+                    },
+                    "country":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "creditLimit":{
+                        "type" : "number",
+                        "format" : "float"
+                    },
+                    "salesRepEmployeeNumber": {
+                        "type" : "integer",
+                        "format" : "int64"
+                    }
+                }
+            },
+            "customers_patch": {
+                "type" : "object",
+                "properties" : {
+                    "customerNumber" : {
+                        "type" : "integer",
+                        "format" : "int64",
+                        "uniqueItems" : true
+                    },
+                    "phone":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "addressLine1":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "addressLine2":{
+                        "type" : "string",
+                        "maxLength" : 50,
+                        "multipleOf" : true
+                    },
+                    "postalCode":{
+                        "type" : "string",
+                        "maxLength" : 15,
+                        "multipleOf" : true
+                    }
+                }
+            },
+            "productlines":{
+                "type" : "object",
+                "properties" :{
+                    "productLine":{
+                        "type" : "string",
+                        "maxLength" : 50,
+                        "uniqueItems" : true
+                    },
+                    "textDescription":{
+                        "type" : "string",
+                        "maxLength" : 4000,
+                        "multipleOf" : true
+                    },
+                    "htmlDescription":{
+                        "type" : "string",
+                        "maxLength" : 200,
+                        "multipleOf" : true,
+                        "xml": {
+                            "namespace": "http://name.com/clasification/Nname",
+                            "prefix": "Nname"
+                        }
+                    },
+                    "image":{
+                        "type" : "string",
+                        "maxLength" : 100,
+                        "multipleOf" : true,
+                        "paramType": "path"
+                    }
+                }
+            },
+            "productlines_patch":{
+                "type" : "object",
+                "properties" :{
+                    "productLine":{
+                        "type" : "string",
+                        "maxLength" : 50,
+                        "uniqueItems" : true
+                    },
+                    "textDescription":{
+                        "type" : "string",
+                        "maxLength" : 4000,
+                        "multipleOf" : true
+                    },
+                    "htmlDescription":{
+                        "type" : "string",
+                        "maxLength" : 200,
+                        "multipleOf" : true,
+                        "xml" : {
+                            "namespace": "http://name.com/clasification/Nname",
+                            "prefix": "Nname"
+                        }
+                    }
+                }
+            },
+            "products":{
+                "type" : "object",
+                "properties" :{
+                    "productCode":{
+                        "type" : "string",
+                        "maxLength" : 15,
+                        "uniqueItems" : true
+                    },
+                    "productName":{
+                        "type" : "string",
+                        "maxLength" : 70
+                    },
+                    "productLine":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "productScale":{
+                        "type" : "string",
+                        "maxLength" : 10
+                    },
+                    "productVendor":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "productDescription":{
+                        "type" : "string",
+                        "maxLength" : 200
+                    },
+                    "quantityInStock":{
+                        "type" : "integer",
+                        "format" : "int32",
+                        "minimum": 0
+                    },
+                    "buyPrice":{
+                        "type" : "number",
+                        "format" : "float"
+                    },
+                    "MSRP":{
+                        "type" : "number",
+                        "format" : "float"
+                    }
+                }
+            },
+            "products_patch":{
+                "type" : "object",
+                "properties" :{
+                    "productCode":{
+                        "type" : "string",
+                        "maxLength" : 15,
+                        "uniqueItems" : true
+                    },
+                    "productVendor":{
+                        "type" : "string",
+                        "maxLength" : 50
+                    },
+                    "productDescription":{
+                        "type" : "string",
+                        "maxLength" : 200,
+                        "minimum": 0
+                    },
+                    "buyPrice":{
+                        "type" : "number",
+                        "format" : "float"
+                    }
+                }
+            },
+            "orders":{
+                "type" : "object",
+                "properties" :{
+                    "orderNumber":{
+                        "type" : "integer",
+                        "format" : "int64",
+                        "uniqueItems" : true
+                    },
+                    "orderDate":{
+                        "type" : "string",
+                        "format" : "date-time"
+                    },
+                    "requiredDate":{
+                        "type" : "string",
+                        "format" : "date"
+                    },
+                    "shippedDate":{
+                        "type" : "string",
+                        "format" : "date",
+                        "multipleOf" : true
+                    },
+                    "status":{
+                        "type" : "string",
+                        "maxLength" : 15
+                    },
+                    "comments":{
+                        "type" : "string",
+                        "maxLength" : 200,
+                        "multipleOf" : true
+                    },
+                    "customerNumber" :{
+                        "type" : "integer",
+                        "format" : "int64"
+                    }
+                }
+            },
+            "orders_patch":{
+                "type" : "object",
+                "properties" :{
+                    "orderNumber":{
+                        "type" : "integer",
+                        "format" : "int64",
+                        "uniqueItems" : true
+                    },
+                    "requiredDate":{
+                        "type" : "string",
+                        "format" : "date"
+                    },
+                    "shippedDate":{
+                        "type" : "string",
+                        "format" : "date",
+                        "multipleOf" : true
+                    },
+                    "status":{
+                        "type" : "string",
+                        "maxLength" : 15
+                    },
+                    "comments":{
+                        "type" : "string",
+                        "maxLength" : 200,
+                        "multipleOf" : true
+                    }
+                }
+            },
+            "orderdetails":{
+                "type" : "object",
+                "properties" :{
+                    "orderNumber":{
+                        "type" : "integer",
+                        "format" : "int64",
+                        "uniqueItems" : true
+                    },
+                    "productCode":{
+                        "type" : "string",
+                        "maxLength" : 15,
+                        "uniqueItems" : true
+                    },
+                    "quantityOrdered":{
+                        "type" : "integer",
+                        "format" : "int64"
+                    },
+                    "priceEach":{
+                        "type" : "number",
+                        "format" : "float"
+                    },
+                    "orderLineNumber":{
+                        "type" : "integer",
+                        "format" : "int32"
+                    }
+                }
+            },
+            "orderdetails_patch":{
+                "type" : "object",
+                "properties" :{
+                    "orderNumber":{
+                        "type" : "integer",
+                        "format" : "int64",
+                        "uniqueItems" : true
+                    },
+                    "productCode":{
+                        "type" : "string",
+                        "maxLength" : 15,
+                        "uniqueItems" : true
+                    },
+                    "quantityOrdered":{
+                        "type" : "integer",
+                        "format" : "int64"
+                    }
+                }
+            },
+            "payments":{
+                "type" : "object",
+                "properties" :{
+                    "customerNumber" :{
+                        "type" : "integer",
+                        "format" : "int64",
+                        "uniqueItems" : true
+                    },
+                    "checkNumber":{
+                        "type" : "string",
+                        "maxLength" : 50,
+                        "uniqueItems" : true
+                    },
+                    "paymentDate":{
+                        "type" : "string",
+                        "format" : "date"
+                    },
+                    "amount":{
+                        "type" : "number",
+                        "format" : "float"
+                    }
+                }
+            },
+            "Error" : {
+                "type" : "object",
+                "properties" : {
+                    "code" : {
+                    "description" : "http code",
+                    "type" : "string"
+                    },
+                    "status" : {
+                    "description" : "http status",
+                    "type" : "integer",
+                    "format" : "int32"
+                    },
+                    "type" : {
+                    "type" : "string",
+                    "description" : "Error type"
+                    },
+                    "message" : {
+                    "type" : "string",
+                    "description" : "Generic error to imply an unexpected condition in server"
                     }
                 }
             }
-        },
-        "securitySchemes:": {}
-    },
-    "security":{}
+        }
+    }
 }

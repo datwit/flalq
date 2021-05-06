@@ -1,14 +1,14 @@
 swagger: '2.0'
 info:
   description: "**Flalq API** is a Python project with Flask, SQLAlchemy and Marshmallow using the [classicmodels](https://www.mysqltutorial.org/mysql-sample-database.aspx) database from the [MySQL Basic Tutorial](https://www.mysqltutorial.org/basic-mysql-tutorial.aspx). For more information see [flalq API](https://github.com/datwit/flalq/)."
-  version: 1.0.0
+  version: 0.1
   title: Flalq API  Documentation (to Swagger)
   termsOfService:
   contact:
     name: Danay Meneses Abad
     email: danaymeneses@gmail.com
 schemes:
-- http
+  - http
 tags:
   - name: Offices
     description: Shop offices
@@ -31,7 +31,7 @@ paths:
     get:
       tags:
       - Offices
-      summary: Return all office rows
+      summary: Return all office rows stored in db
       produces:
         - application/json
       responses:
@@ -41,15 +41,13 @@ paths:
             $ref: '#/definitions/offices'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     post:
       tags:
       - Offices
       summary: Add new office
-      description: One offices row added with all its fields
+      description: "One offices row added with all its fields:\n- **officeCode**: office code.\n- **city**: city where office is located.\n- **phone**: office phone number.\n- **addressLine1**: main street name.\n- **addressLine2**: streets name.\n- **state**: state where office is located.\n- **country**: country where office is located.\n- **postalCode**: office postal code.\n- **territory**: territory where office is located."
       consumes:
       - application/json
       produces:
@@ -68,22 +66,16 @@ paths:
             $ref: '#/definitions/offices'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
   /offices/{officeCode}:
     get:
       tags:
@@ -96,7 +88,7 @@ paths:
       - name: officeCode
         in: path
         description: Office code that need to be considered for filter
-        required: True
+        required: true
         type: string
       responses:
         '200':
@@ -105,10 +97,12 @@ paths:
             $ref: '#/definitions/offices'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
     put:
       tags:
       - Offices
@@ -122,7 +116,7 @@ paths:
       - name: officeCode
         in: path
         description: Office code that need to be considered for filter
-        required: True
+        required: true
         type: string
       - name: Office rows
         in: body
@@ -137,22 +131,16 @@ paths:
             $ref: '#/definitions/offices'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     patch:
       tags:
       - Offices
@@ -166,7 +154,7 @@ paths:
       - name: officeCode
         in: path
         description: Office code that need to be considered for filter
-        required: True
+        required: true
         type: string
       - name: Office rows
         in: body
@@ -181,50 +169,42 @@ paths:
             $ref: '#/definitions/offices'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     delete:
       tags:
       - Offices
       summary: Delete one office
       description: Delete filtered office by its officeCode key
-      produces:
-      - application/json
       parameters:
       - name: officeCode
         in: path
         description: Office code that need to be considered for filter
-        required: True
+        required: true
         type: string
       responses:
         '204':
           description: Deleted Request
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
   /employees/:
     get:
       tags:
@@ -239,10 +219,8 @@ paths:
             $ref: '#/definitions/employees'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     post:
       tags:
       - Employees
@@ -266,22 +244,16 @@ paths:
             $ref: '#/definitions/employees'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
   /employees/{employeeNumber}:
     get:
       tags:
@@ -294,7 +266,7 @@ paths:
       - name: employeeNumber
         in: path
         description: Employee code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       responses:
@@ -304,10 +276,12 @@ paths:
             $ref: '#/definitions/employees'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
     put:
       tags:
       - Employees
@@ -321,7 +295,7 @@ paths:
       - name: employeeNumber
         in: path
         description: Employee code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       - name: Employee rows
@@ -337,22 +311,16 @@ paths:
             $ref: '#/definitions/employees'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     patch:
       tags:
       - Employees
@@ -366,7 +334,7 @@ paths:
       - name: employeeNumber
         in: path
         description: Employee code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       - name: Employee rows
@@ -382,34 +350,26 @@ paths:
             $ref: '#/definitions/employees'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     delete:
       tags:
       - Employees
       summary: Delete one employee
       description: Delete filtered employee by its employeeNumber key
-      produces:
-      - application/json
       parameters:
       - name: employeeNumber
         in: path
         description: Employee code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       responses:
@@ -417,16 +377,16 @@ paths:
           description: Deleted Request
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
   /customers/:
     get:
       tags:
@@ -441,10 +401,8 @@ paths:
             $ref: '#/definitions/customers'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     post:
       tags:
       - Customers
@@ -468,22 +426,16 @@ paths:
             $ref: '#/definitions/customers'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
   /customers/{customerNumber}:
     get:
       tags:
@@ -496,7 +448,7 @@ paths:
       - name: customerNumber
         in: path
         description: Customer code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       responses:
@@ -506,10 +458,12 @@ paths:
             $ref: '#/definitions/customers'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
     put:
       tags:
       - Customers
@@ -523,7 +477,7 @@ paths:
       - name: customerNumber
         in: path
         description: Customer code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       - name: Customer rows
@@ -539,22 +493,16 @@ paths:
             $ref: '#/definitions/customers'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     patch:
       tags:
       - Customers
@@ -568,7 +516,7 @@ paths:
       - name: customerNumber
         in: path
         description: Customer code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       - name: Customer rows
@@ -584,34 +532,26 @@ paths:
             $ref: '#/definitions/customers'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     delete:
       tags:
       - Customers
       summary: Delete one customer
       description: Delete filtered customer by its customerNumber key
-      produces:
-      - application/json
       parameters:
       - name: customerNumber
         in: path
         description: Customer code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       responses:
@@ -619,16 +559,16 @@ paths:
           description: Deleted Request
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
   /productlines/:
     get:
       tags:
@@ -643,10 +583,8 @@ paths:
             $ref: '#/definitions/productlines'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     post:
       tags:
       - Productlines
@@ -670,22 +608,16 @@ paths:
             $ref: '#/definitions/productlines'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
   /productlines/{productLine}:
     get:
       tags:
@@ -698,7 +630,7 @@ paths:
       - name: productLine
         in: path
         description: Productline code that need to be considered for filter
-        required: True
+        required: true
         type: string
       responses:
         '200':
@@ -707,10 +639,12 @@ paths:
             $ref: '#/definitions/productlines'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
     put:
       tags:
       - Productlines
@@ -724,7 +658,7 @@ paths:
       - name: productLine
         in: path
         description: Productline code that need to be considered for filter
-        required: True
+        required: true
         type: string
       - name: Productline rows
         in: body
@@ -739,22 +673,16 @@ paths:
             $ref: '#/definitions/productlines'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     patch:
       tags:
       - Productlines
@@ -768,7 +696,7 @@ paths:
       - name: productLine
         in: path
         description: Productline code that need to be considered for filter
-        required: True
+        required: true
         type: string
       - name: Productline rows
         in: body
@@ -783,50 +711,42 @@ paths:
             $ref: '#/definitions/productlines'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     delete:
       tags:
       - Productlines
       summary: Delete one productline
       description: Delete filtered productline by its productLine key
-      produces:
-      - application/json
       parameters:
       - name: productLine
         in: path
         description: Productline code that need to be considered for filter
-        required: True
+        required: true
         type: string
       responses:
         '204':
           description: Deleted Request
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
   /productlines/image/{productLine}:
     post:
       tags:
@@ -841,12 +761,12 @@ paths:
       - name: productLine
         in: path
         description: Productline code that need to be considered for filter
-        required: True
+        required: true
         type: string
       - name: image
         in: formData
         description: Productline Image that needs to be added to store
-        required: True
+        required: true
         type: file
       responses:
         '201':
@@ -855,22 +775,16 @@ paths:
             $ref: '#/definitions/productlines'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
   /products/:
     get:
       tags:
@@ -885,10 +799,8 @@ paths:
             $ref: '#/definitions/products'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     post:
       tags:
       - Products
@@ -912,22 +824,16 @@ paths:
             $ref: '#/definitions/products'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
   /products/{productCode}:
     get:
       tags:
@@ -940,7 +846,7 @@ paths:
       - name: productCode
         in: path
         description: Product code that need to be considered for filter
-        required: True
+        required: true
         type: string
       responses:
         '200':
@@ -949,10 +855,12 @@ paths:
             $ref: '#/definitions/products'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
     put:
       tags:
       - Products
@@ -966,7 +874,7 @@ paths:
       - name: productCode
         in: path
         description: Product code that need to be considered for filter
-        required: True
+        required: true
         type: string
       - name: Product rows
         in: body
@@ -981,22 +889,16 @@ paths:
             $ref: '#/definitions/products'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     patch:
       tags:
       - Products
@@ -1010,7 +912,7 @@ paths:
       - name: productCode
         in: path
         description: Product code that need to be considered for filter
-        required: True
+        required: true
         type: string
       - name: Product rows
         in: body
@@ -1025,50 +927,42 @@ paths:
             $ref: '#/definitions/products'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     delete:
       tags:
       - Products
       summary: Delete one product
       description: Delete filtered product by its productCode key
-      produces:
-      - application/json
       parameters:
       - name: productCode
         in: path
         description: Product code that need to be considered for filter
-        required: True
+        required: true
         type: string
       responses:
         '204':
           description: Deleted Request
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
   /orders/:
     get:
       tags:
@@ -1083,10 +977,8 @@ paths:
             $ref: '#/definitions/orders'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     post:
       tags:
       - Orders
@@ -1110,22 +1002,16 @@ paths:
             $ref: '#/definitions/orders'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
   /orders/{orderNumber}:
     get:
       tags:
@@ -1138,7 +1024,7 @@ paths:
       - name: orderNumber
         in: path
         description: Order code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       responses:
@@ -1148,10 +1034,12 @@ paths:
             $ref: '#/definitions/orders'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
     put:
       tags:
       - Orders
@@ -1165,7 +1053,7 @@ paths:
       - name: orderNumber
         in: path
         description: Order code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       - name: Order rows
@@ -1181,22 +1069,16 @@ paths:
             $ref: '#/definitions/orders'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     patch:
       tags:
       - Orders
@@ -1210,7 +1092,7 @@ paths:
       - name: orderNumber
         in: path
         description: Order code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       - name: Order rows
@@ -1226,34 +1108,26 @@ paths:
             $ref: '#/definitions/orders'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     delete:
       tags:
       - Orders
       summary: Delete one order
       description: Delete filtered order by its orderNumber key
-      produces:
-      - application/json
       parameters:
       - name: orderNumber
         in: path
         description: Order code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       responses:
@@ -1261,16 +1135,16 @@ paths:
           description: Deleted Request
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
   /orderdetails/:
     get:
       tags:
@@ -1285,10 +1159,8 @@ paths:
             $ref: '#/definitions/orderdetails'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     post:
       tags:
       - Orderdetails
@@ -1312,22 +1184,16 @@ paths:
             $ref: '#/definitions/orderdetails'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
   /orderdetails/{orderNumber}/{productCode}:
     get:
       tags:
@@ -1339,14 +1205,14 @@ paths:
       parameters:
       - name: orderNumber
         in: path
-        description: Orderdetail code that need to be considered for filter
-        required: True
+        description: Order code that need to be considered for filter
+        required: true
         type: integer
         format: int64
       - name: productCode
         in: path
-        description: Orderdetail code that need to be considered for filter
-        required: True
+        description: Product code that need to be considered for filter
+        required: true
         type: string
       responses:
         '200':
@@ -1355,10 +1221,12 @@ paths:
             $ref: '#/definitions/orderdetails'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
     patch:
       tags:
       - Orderdetails
@@ -1371,14 +1239,14 @@ paths:
       parameters:
       - name: orderNumber
         in: path
-        description: Orderdetail code that need to be considered for filter
-        required: True
+        description: Order code that need to be considered for filter
+        required: true
         type: integer
         format: int64
       - name: productCode
         in: path
-        description: Orderdetail code that need to be considered for filter
-        required: True
+        description: Product code that need to be considered for filter
+        required: true
         type: string
       - name: Orderdetail rows
         in: body
@@ -1393,56 +1261,48 @@ paths:
             $ref: '#/definitions/orderdetails'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     delete:
       tags:
       - Orderdetails
       summary: Delete one orderdetail
       description: Delete filtered orderdetail by its orderNumber and productCode keys
-      produces:
-      - application/json
       parameters:
       - name: orderNumber
         in: path
         description: Orderdetail code that need to be considered for filter
-        required: True
+        required: true
         type: integer
         format: int64
       - name: productCode
         in: path
         description: Orderdetail code that need to be considered for filter
-        required: True
+        required: true
         type: string
       responses:
         '204':
           description: Deleted Request
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
   /payments/:
     get:
       tags:
@@ -1457,10 +1317,8 @@ paths:
             $ref: '#/definitions/payments'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     post:
       tags:
       - Payments
@@ -1484,41 +1342,35 @@ paths:
             $ref: '#/definitions/payments'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
   /payments/{customerNumber}/{checkNumber}:
     get:
       tags:
       - Payments
       summary: Return one payment
-      description: Return only one payment row filter by orderNumber and checkNumber keys
+      description: Return only one payment row filter by customerNumber and checkNumber keys
       produces:
       - application/json
       parameters:
       - name: customerNumber
         in: path
-        description: Payment code that need to be considered for filter
-        required: True
+        description: Customer code that need to be considered for filter
+        required: true
         type: integer
         format: int64
       - name: checkNumber
         in: path
         description: Payment code that need to be considered for filter
-        required: True
+        required: true
         type: string
       responses:
         '200':
@@ -1527,15 +1379,17 @@ paths:
             $ref: '#/definitions/payments'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
     put:
       tags:
       - Payments
       summary: Update an existing payment
-      description: Update all payment fields, the customer filter by orderNumber and checkNumber keys
+      description: Update all payment fields, the customer filter by customerNumber and checkNumber keys
       consumes:
       - application/json
       produces:
@@ -1543,14 +1397,14 @@ paths:
       parameters:
       - name: customerNumber
         in: path
-        description: Payment code that need to be considered for filter
-        required: True
+        description: Customer code that need to be considered for filter
+        required: true
         type: integer
         format: int64
       - name: checkNumber
         in: path
         description: Payment code that need to be considered for filter
-        required: True
+        required: true
         type: string
       - name: Payment rows
         in: body
@@ -1565,65 +1419,56 @@ paths:
             $ref: '#/definitions/payments'
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '422':
           description: Invalid field input
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
     delete:
       tags:
       - Payments
       summary: Delete one payment
-      description: Delete filtered payment by its orderNumber and checkNumber keys
-      produces:
-      - application/json
+      description: Delete filtered payment by customerNumber and checkNumber keys
       parameters:
       - name: customerNumber
         in: path
-        description: Payment code that need to be considered for filter
-        required: True
+        description: Customer code that need to be considered for filter
+        required: true
         type: integer
         format: int64
       - name: checkNumber
         in: path
         description: Payment code that need to be considered for filter
-        required: True
+        required: true
         type: string
       responses:
         '204':
           description: Deleted Request
         '400':
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '404':
           description: Not found Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   offices:
     type: object
     properties:
       officeCode:
         type: string
-        format: uuid
         maxLength: 10
-        uniqueItems: True
+        uniqueItems: true
       city:
         type: string
         maxLength: 50
@@ -1636,11 +1481,11 @@ definitions:
       addressLine2:
         type: string
         maxLength: 50
-        multipleOf: True
+        multipleOf: true
       state:
         type: string
         maxLength: 50
-        multipleOf: True
+        multipleOf: true
       country:
         type: string
         maxLength: 50
@@ -1655,9 +1500,8 @@ definitions:
     properties:
       officeCode:
         type: string
-        format: uuid
         maxLength: 10
-        uniqueItems: True
+        uniqueItems: true
       phone:
         type: string
         maxLength: 50
@@ -1667,7 +1511,7 @@ definitions:
       addressLine2:
         type: string
         maxLength: 50
-        multipleOf: True
+        multipleOf: true
       postalCode:
         type: string
         maxLength: 15
@@ -1677,7 +1521,7 @@ definitions:
       employeeNumber:
         type: integer
         format: int64
-        uniqueItems: True
+        uniqueItems: true
       lastName:
         type: string
         maxLength: 50
@@ -1700,14 +1544,14 @@ definitions:
       reportsTo:
         type: integer
         format: int64
-        multipleOf: True
+        multipleOf: true
   employees_patch:
     type: object
     properties:
       employeeNumber:
         type: integer
         format: int64
-        uniqueItems: True
+        uniqueItems: true
       extension:
         type: string
         maxLength: 10
@@ -1720,14 +1564,14 @@ definitions:
       reportsTo:
         type: integer
         format: int64
-        multipleOf: True
+        multipleOf: true
   customers:
     type: object
     properties:
       customerNumber:
         type: integer
         format: int64
-        uniqueItems: True
+        uniqueItems: true
       customerName:
         type: string
         maxLength: 50
@@ -1746,18 +1590,18 @@ definitions:
       addressLine2:
         type: string
         maxLength: 50
-        multipleOf: True
+        multipleOf: true
       city:
         type: string
         maxLength: 50
       state:
         type: string
         maxLength: 50
-        multipleOf: True
+        multipleOf: true
       postalCode:
         type: string
         maxLength: 15
-        multipleOf: True
+        multipleOf: true
       country:
         type: string
         maxLength: 50
@@ -1773,7 +1617,7 @@ definitions:
       customerNumber:
         type: integer
         format: int64
-        uniqueItems: True
+        uniqueItems: true
       phone:
         type: string
         maxLength: 50
@@ -1783,33 +1627,33 @@ definitions:
       addressLine2:
         type: string
         maxLength: 50
-        multipleOf: True
+        multipleOf: true
       postalCode:
         type: string
         maxLength: 15
-        multipleOf: True
+        multipleOf: true
   productlines:
     type: object
     properties:
       productLine:
         type: string
         maxLength: 50
-        uniqueItems: True
+        uniqueItems: true
       textDescription:
         type: string
         maxLength: 4000
-        multipleOf: True
+        multipleOf: true
       htmlDescription:
         type: string
         maxLength: 200
-        multipleOf: True
+        multipleOf: true
         xml:
           namespace: 'http://name.com/clasification/Nname'
           prefix: Nname
       image:
         type: string
         maxLength: 100
-        multipleOf: True
+        multipleOf: true
         paramType: path
   productlines_patch:
     type: object
@@ -1817,15 +1661,15 @@ definitions:
       productLine:
         type: string
         maxLength: 50
-        uniqueItems: True
+        uniqueItems: true
       textDescription:
         type: string
         maxLength: 4000
-        multipleOf: True
+        multipleOf: true
       htmlDescription:
         type: string
         maxLength: 200
-        multipleOf: True
+        multipleOf: true
         xml:
           namespace: 'http://name.com/clasification/Nname'
           prefix: Nname
@@ -1835,7 +1679,7 @@ definitions:
       productCode:
         type: string
         maxLength: 15
-        uniqueItems: True
+        uniqueItems: true
       productName:
         type: string
         maxLength: 70
@@ -1867,7 +1711,7 @@ definitions:
       productCode:
         type: string
         maxLength: 15
-        uniqueItems: True
+        uniqueItems: true
       productVendor:
         type: string
         maxLength: 50
@@ -1884,7 +1728,7 @@ definitions:
       orderNumber:
         type: integer
         format: int64
-        uniqueItems: True
+        uniqueItems: true
       orderDate:
         type: string
         format: date-time
@@ -1894,14 +1738,14 @@ definitions:
       shippedDate:
         type: string
         format: date
-        multipleOf: True
+        multipleOf: true
       status:
         type: string
         maxLength: 15
       comments:
         type: string
         maxLength: 200
-        multipleOf: True
+        multipleOf: true
       customerNumber:
         type: integer
         format: int64
@@ -1911,32 +1755,32 @@ definitions:
       orderNumber:
         type: integer
         format: int64
-        uniqueItems: True
+        uniqueItems: true
       requiredDate:
         type: string
         format: date
       shippedDate:
         type: string
         format: date
-        multipleOf: True
+        multipleOf: true
       status:
         type: string
         maxLength: 15
       comments:
         type: string
         maxLength: 200
-        multipleOf: True
+        multipleOf: true
   orderdetails:
     type: object
     properties:
       orderNumber:
         type: integer
         format: int64
-        uniqueItems: True
+        uniqueItems: true
       productCode:
         type: string
         maxLength: 15
-        uniqueItems: True
+        uniqueItems: true
       quantityOrdered:
         type: integer
         format: int64
@@ -1952,11 +1796,11 @@ definitions:
       orderNumber:
         type: integer
         format: int64
-        uniqueItems: True
+        uniqueItems: true
       productCode:
         type: string
         maxLength: 15
-        uniqueItems: True
+        uniqueItems: true
       quantityOrdered:
         type: integer
         format: int64
@@ -1966,11 +1810,11 @@ definitions:
       customerNumber:
         type: integer
         format: int64
-        uniqueItems: True
+        uniqueItems: true
       checkNumber:
         type: string
         maxLength: 50
-        uniqueItems: True
+        uniqueItems: true
       paymentDate:
         type: string
         format: date
