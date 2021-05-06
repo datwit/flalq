@@ -1,35 +1,37 @@
-aniso8601==8.0.0
-click==7.1.2
-Flask==1.1.2
 Flask-RESTful==0.3.8
-itsdangerous==1.1.0
-Jinja2==2.11.2
-MarkupSafe==1.1.1
-python-dateutil==2.8.1
 pytz==2020.1
-six==1.15.0
+aniso8601==8.0.0
+itsdangerous==1.1.0
+MarkupSafe==1.1.1
+Jinja2==2.11.2
 Werkzeug==1.0.1
+Flask==1.1.2
+six==1.15.0
+*click==7.1.2
+python-dateutil==2.8.1
 
 
 httpie==2.2.0
-colorama
-Pygments
-requests
-chardet
-idna
-urllib3
-certifi
+colorama==0.4.3
+Pygments==2.7.2
+chardet==3.0.4
+idna==2.10
+urllib3==1.25.10
+certifi==2020.6.20
+requests==2.24.0
 
 
-SQLAlchemy==1.3.19
 Flask-SQLAlchemy==2.4.4
+SQLAlchemy==1.3.19
 
 
 PyMySQL==0.10.1
 
 
-marshmallow==3.9.1
 flask_marshmallow==0.14.0
+marshmallow==3.9.1
+
+
 marshmallow_sqlalchemy==0.24.1
 
 
@@ -39,11 +41,55 @@ linecache2==1.0.0
 argparse==1.4.0
 
 
+unittest2py3k==0.5.1
+
+
 coverage==5.5
 
 
-flask_swagger==0.2.14
 flask_swagger_ui==3.36.0
-PyYAML==5.4.1
+flask_swagger==0.2.14
+
+
+swagger_codegen==0.1.6
+pyparsing==2.4.7
+importlib_metadata==1.7.0
+toml==0.10.2
+sortedcontainers==2.3.0
+py==1.10.0
+pluggy==0.13.1
+packaging==20.9
+iniconfig==1.1.1
+attrs==19.3.0
+atomicwrites==1.4.0
+pytest==6.2.3
+hypothesis==5.49.0
+commonmark==0.9.1
+typer==0.1.1
+schemathesis==1.1.0
+rich==0.8.13
+pydantic==1.8.1
+multidict==4.7.6
+inflection==0.4.0
+
+
+Sphinx==3.5.4
+...
+sphinx_rtd_theme==0.5.2
+
+
+swagger_py_codegen==0.4.0
+*PyYAML==4.2b1
+jsonschema==2.6.0
+swagger_spec_validator==2.7.3
+json_spec==0.10.1
+dpath==2.0.1
+*click==6.7
+
+
+
+
+
+
 
 
