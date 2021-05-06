@@ -1,9 +1,8 @@
 swagger: '2.0'
 info:
   description: "**Flalq API** is a Python project with Flask, SQLAlchemy and Marshmallow using the [classicmodels](https://www.mysqltutorial.org/mysql-sample-database.aspx) database from the [MySQL Basic Tutorial](https://www.mysqltutorial.org/basic-mysql-tutorial.aspx). For more information see [flalq API](https://github.com/datwit/flalq/)."
-  version: 0.1
+  version: "0.1"
   title: Flalq API  Documentation (to Swagger)
-  termsOfService:
   contact:
     name: Danay Meneses Abad
     email: danaymeneses@gmail.com
@@ -1481,11 +1480,11 @@ definitions:
       addressLine2:
         type: string
         maxLength: 50
-        multipleOf: true
+        uniqueItems: true
       state:
         type: string
         maxLength: 50
-        multipleOf: true
+        uniqueItems: true
       country:
         type: string
         maxLength: 50
@@ -1511,7 +1510,7 @@ definitions:
       addressLine2:
         type: string
         maxLength: 50
-        multipleOf: true
+        uniqueItems: true
       postalCode:
         type: string
         maxLength: 15
@@ -1544,7 +1543,7 @@ definitions:
       reportsTo:
         type: integer
         format: int64
-        multipleOf: true
+        uniqueItems: true
   employees_patch:
     type: object
     properties:
@@ -1564,7 +1563,7 @@ definitions:
       reportsTo:
         type: integer
         format: int64
-        multipleOf: true
+        uniqueItems: true
   customers:
     type: object
     properties:
@@ -1590,18 +1589,18 @@ definitions:
       addressLine2:
         type: string
         maxLength: 50
-        multipleOf: true
+        uniqueItems: true
       city:
         type: string
         maxLength: 50
       state:
         type: string
         maxLength: 50
-        multipleOf: true
+        uniqueItems: true
       postalCode:
         type: string
         maxLength: 15
-        multipleOf: true
+        uniqueItems: true
       country:
         type: string
         maxLength: 50
@@ -1627,11 +1626,11 @@ definitions:
       addressLine2:
         type: string
         maxLength: 50
-        multipleOf: true
+        uniqueItems: true
       postalCode:
         type: string
         maxLength: 15
-        multipleOf: true
+        uniqueItems: true
   productlines:
     type: object
     properties:
@@ -1642,19 +1641,18 @@ definitions:
       textDescription:
         type: string
         maxLength: 4000
-        multipleOf: true
+        uniqueItems: true
       htmlDescription:
         type: string
         maxLength: 200
-        multipleOf: true
+        uniqueItems: true
         xml:
           namespace: 'http://name.com/clasification/Nname'
           prefix: Nname
       image:
         type: string
         maxLength: 100
-        multipleOf: true
-        paramType: path
+        uniqueItems: true
   productlines_patch:
     type: object
     properties:
@@ -1665,11 +1663,11 @@ definitions:
       textDescription:
         type: string
         maxLength: 4000
-        multipleOf: true
+        uniqueItems: true
       htmlDescription:
         type: string
         maxLength: 200
-        multipleOf: true
+        uniqueItems: true
         xml:
           namespace: 'http://name.com/clasification/Nname'
           prefix: Nname
@@ -1738,14 +1736,14 @@ definitions:
       shippedDate:
         type: string
         format: date
-        multipleOf: true
+        uniqueItems: true
       status:
         type: string
         maxLength: 15
       comments:
         type: string
         maxLength: 200
-        multipleOf: true
+        uniqueItems: true
       customerNumber:
         type: integer
         format: int64
@@ -1762,14 +1760,14 @@ definitions:
       shippedDate:
         type: string
         format: date
-        multipleOf: true
+        uniqueItems: true
       status:
         type: string
         maxLength: 15
       comments:
         type: string
         maxLength: 200
-        multipleOf: true
+        uniqueItems: true
   orderdetails:
     type: object
     properties:
