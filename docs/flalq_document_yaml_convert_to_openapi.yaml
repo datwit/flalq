@@ -1,0 +1,2108 @@
+openapi: 3.0.0
+info:
+  description: >-
+    **Flalq API** is a Python project with Flask, SQLAlchemy and Marshmallow
+    using the
+    [classicmodels](https://www.mysqltutorial.org/mysql-sample-database.aspx)
+    database from the [MySQL Basic
+    Tutorial](https://www.mysqltutorial.org/basic-mysql-tutorial.aspx). For more
+    information see [flalq API](https://github.com/datwit/flalq/).
+  version: 1.0.0-oas3
+  title: Flalq API  Documentation (to Swagger)
+  contact:
+    name: Danay Meneses Abad
+    email: danaymeneses@gmail.com
+tags:
+  - name: Offices
+    description: Shop offices
+  - name: Employees
+    description: Employees by offices
+  - name: Customers
+    description: Customers by employees
+  - name: Productlines
+    description: Product lines in the Business
+  - name: Products
+    description: Products by product lines
+  - name: Orders
+    description: Sale orders
+  - name: Orderdetails
+    description: Order details by products
+  - name: Payments
+    description: Payments by customers
+paths:
+  /offices/:
+    get:
+      tags:
+        - Offices
+      summary: Return all office rows stored in db
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offices'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Offices
+      summary: Add new office
+      description: |-
+        One offices row added with all its fields:
+        - **officeCode**: office code.
+        - **city**: city where office is located.
+        - **phone**: office phone number.
+        - **addressLine1**: main street name.
+        - **addressLine2**: streets name.
+        - **state**: state where office is located.
+        - **country**: country where office is located.
+        - **postalCode**: office postal code.
+        - **territory**: territory where office is located.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offices'
+        description: Office rows that needs to be added to store
+        required: true
+      responses:
+        '201':
+          description: Created Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offices'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/offices/{officeCode}':
+    get:
+      tags:
+        - Offices
+      summary: Return one office
+      description: Return only one office row filter by officeCode key
+      parameters:
+        - name: officeCode
+          in: path
+          description: Office code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offices'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Offices
+      summary: Update an existing office
+      description: 'Update all office fields, the office filter by officeCode key'
+      parameters:
+        - name: officeCode
+          in: path
+          description: Office code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offices'
+        description: Office rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offices'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Offices
+      summary: Update fields of existing office
+      description: 'Update some office specific fields, filter by officeCode key'
+      parameters:
+        - name: officeCode
+          in: path
+          description: Office code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offices_patch'
+        description: Office rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offices'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Offices
+      summary: Delete one office
+      description: Delete filtered office by its officeCode key
+      parameters:
+        - name: officeCode
+          in: path
+          description: Office code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+  /employees/:
+    get:
+      tags:
+        - Employees
+      summary: Return all employee rows
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employees'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Employees
+      summary: Add new employee
+      description: One employee row added with all its fields
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/employees'
+        description: Employee rows that needs to be added to store
+        required: true
+      responses:
+        '201':
+          description: Created Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employees'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/employees/{employeeNumber}':
+    get:
+      tags:
+        - Employees
+      summary: Return one employee
+      description: Return only one employee row filter by employeeNumber key
+      parameters:
+        - name: employeeNumber
+          in: path
+          description: Employee code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employees'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Employees
+      summary: Update an existing employee
+      description: 'Update all employee fields, the employee filter by employeeNumber key'
+      parameters:
+        - name: employeeNumber
+          in: path
+          description: Employee code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/employees'
+        description: Employee rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employees'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Employees
+      summary: Update fields of existing employee
+      description: 'Update some employee specific fields, filter by employeeNumber key'
+      parameters:
+        - name: employeeNumber
+          in: path
+          description: Employee code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/employees_patch'
+        description: Employee rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employees'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Employees
+      summary: Delete one employee
+      description: Delete filtered employee by its employeeNumber key
+      parameters:
+        - name: employeeNumber
+          in: path
+          description: Employee code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+  /customers/:
+    get:
+      tags:
+        - Customers
+      summary: Return all customer rows
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customers'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Customers
+      summary: Add new customer
+      description: One customer row added with all its fields
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customers'
+        description: Customer rows that needs to be added to store
+        required: true
+      responses:
+        '201':
+          description: Created Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customers'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/customers/{customerNumber}':
+    get:
+      tags:
+        - Customers
+      summary: Return one customer
+      description: Return only one customer row filter by customerNumber key
+      parameters:
+        - name: customerNumber
+          in: path
+          description: Customer code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customers'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Customers
+      summary: Update an existing customer
+      description: 'Update all customer fields, the customer filter by customerNumber key'
+      parameters:
+        - name: customerNumber
+          in: path
+          description: Customer code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customers'
+        description: Customer rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customers'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Customers
+      summary: Update fields of existing customer
+      description: 'Update some customer specific fields, filter by customerNumber key'
+      parameters:
+        - name: customerNumber
+          in: path
+          description: Customer code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customers_patch'
+        description: Customer rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customers'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Customers
+      summary: Delete one customer
+      description: Delete filtered customer by its customerNumber key
+      parameters:
+        - name: customerNumber
+          in: path
+          description: Customer code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+  /productlines/:
+    get:
+      tags:
+        - Productlines
+      summary: Return all productline rows
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productlines'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Productlines
+      summary: Add new productline
+      description: One productline row added with all its fields
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productlines'
+        description: Productline rows that needs to be added to store
+        required: true
+      responses:
+        '201':
+          description: Created Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productlines'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/productlines/{productLine}':
+    get:
+      tags:
+        - Productlines
+      summary: Return one productline
+      description: Return only one productline row filter by productLine key
+      parameters:
+        - name: productLine
+          in: path
+          description: Productline code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productlines'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Productlines
+      summary: Update an existing productline
+      description: 'Update all productline fields, the customer filter by productLine key'
+      parameters:
+        - name: productLine
+          in: path
+          description: Productline code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productlines'
+        description: Productline rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productlines'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Productlines
+      summary: Update fields of existing productline
+      description: 'Update some productline specific fields, filter by productLine key'
+      parameters:
+        - name: productLine
+          in: path
+          description: Productline code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productlines_patch'
+        description: Productline rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productlines'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Productlines
+      summary: Delete one productline
+      description: Delete filtered productline by its productLine key
+      parameters:
+        - name: productLine
+          in: path
+          description: Productline code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/productlines/image/{productLine}':
+    post:
+      tags:
+        - Productlines
+      summary: Add image to an existing productline
+      description: >-
+        Insert path to image that correspond with an existing productline,
+        requested by productLine key
+      parameters:
+        - name: productLine
+          in: path
+          description: Productline code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  description: Productline Image that needs to be added to store
+                  type: string
+                  format: binary
+              required:
+                - image
+      responses:
+        '201':
+          description: Created Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productlines'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /products/:
+    get:
+      tags:
+        - Products
+      summary: Return all product rows
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Products
+      summary: Add new product
+      description: One product row added with all its fields
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/products'
+        description: Product rows that needs to be added to store
+        required: true
+      responses:
+        '201':
+          description: Created Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/products/{productCode}':
+    get:
+      tags:
+        - Products
+      summary: Return one product
+      description: Return only one product row filter by productCode key
+      parameters:
+        - name: productCode
+          in: path
+          description: Product code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Products
+      summary: Update an existing product
+      description: 'Update all product fields, the customer filter by productCode key'
+      parameters:
+        - name: productCode
+          in: path
+          description: Product code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/products'
+        description: Product rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Products
+      summary: Update fields of existing product
+      description: 'Update some product specific fields, filter by productCode key'
+      parameters:
+        - name: productCode
+          in: path
+          description: Product code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/products_patch'
+        description: Product rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Products
+      summary: Delete one product
+      description: Delete filtered product by its productCode key
+      parameters:
+        - name: productCode
+          in: path
+          description: Product code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+  /orders/:
+    get:
+      tags:
+        - Orders
+      summary: Return all order rows
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orders'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Orders
+      summary: Add new order
+      description: One order row added with all its fields
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orders'
+        description: Order rows that needs to be added to store
+        required: true
+      responses:
+        '201':
+          description: Created Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orders'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orders/{orderNumber}':
+    get:
+      tags:
+        - Orders
+      summary: Return one order
+      description: Return only one order row filter by orderNumber key
+      parameters:
+        - name: orderNumber
+          in: path
+          description: Order code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orders'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Orders
+      summary: Update an existing order
+      description: 'Update all order fields, the customer filter by orderNumber key'
+      parameters:
+        - name: orderNumber
+          in: path
+          description: Order code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orders'
+        description: Order rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orders'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Orders
+      summary: Update fields of existing order
+      description: 'Update some order specific fields, filter by orderNumber key'
+      parameters:
+        - name: orderNumber
+          in: path
+          description: Order code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orders_patch'
+        description: Order rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orders'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Orders
+      summary: Delete one order
+      description: Delete filtered order by its orderNumber key
+      parameters:
+        - name: orderNumber
+          in: path
+          description: Order code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+  /orderdetails/:
+    get:
+      tags:
+        - Orderdetails
+      summary: Return all order rows
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderdetails'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Orderdetails
+      summary: Add new orderdetail
+      description: One orderdetail row added with all its fields
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orderdetails'
+        description: Orderdetail rows that needs to be added to store
+        required: true
+      responses:
+        '201':
+          description: Created Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderdetails'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/orderdetails/{orderNumber}/{productCode}':
+    get:
+      tags:
+        - Orderdetails
+      summary: Return one orderdetail
+      description: >-
+        Return only one orderdetail row filter by orderNumber and productCode
+        keys
+      parameters:
+        - name: orderNumber
+          in: path
+          description: Order code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productCode
+          in: path
+          description: Product code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderdetails'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Orderdetails
+      summary: Update fields of existing orderdetail
+      description: >-
+        Update some orderdetail specific fields, filter by orderNumber and
+        productCode keys
+      parameters:
+        - name: orderNumber
+          in: path
+          description: Order code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productCode
+          in: path
+          description: Product code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orderdetails_patch'
+        description: Orderdetail rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orderdetails'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Orderdetails
+      summary: Delete one orderdetail
+      description: Delete filtered orderdetail by its orderNumber and productCode keys
+      parameters:
+        - name: orderNumber
+          in: path
+          description: Orderdetail code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productCode
+          in: path
+          description: Orderdetail code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+  /payments/:
+    get:
+      tags:
+        - Payments
+      summary: Return all payment rows
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payments'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Payments
+      summary: Add new payment
+      description: One payment row added with all its fields
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payments'
+        description: Payment rows that needs to be added to store
+        required: true
+      responses:
+        '201':
+          description: Created Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payments'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/payments/{customerNumber}/{checkNumber}':
+    get:
+      tags:
+        - Payments
+      summary: Return one payment
+      description: >-
+        Return only one payment row filter by customerNumber and checkNumber
+        keys
+      parameters:
+        - name: customerNumber
+          in: path
+          description: Customer code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: checkNumber
+          in: path
+          description: Payment code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payments'
+        '404':
+          description: Not found Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Payments
+      summary: Update an existing payment
+      description: >-
+        Update all payment fields, the customer filter by customerNumber and
+        checkNumber keys
+      parameters:
+        - name: customerNumber
+          in: path
+          description: Customer code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: checkNumber
+          in: path
+          description: Payment code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payments'
+        description: Payment rows that needs to be updated in store
+        required: true
+      responses:
+        '200':
+          description: Updated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payments'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid field input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Payments
+      summary: Delete one payment
+      description: Delete filtered payment by customerNumber and checkNumber keys
+      parameters:
+        - name: customerNumber
+          in: path
+          description: Customer code that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: checkNumber
+          in: path
+          description: Payment code that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted Request
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    offices:
+      type: object
+      properties:
+        officeCode:
+          type: string
+          maxLength: 10
+          uniqueItems: true
+        city:
+          type: string
+          maxLength: 50
+        phone:
+          type: string
+          maxLength: 50
+        addressLine1:
+          type: string
+          maxLength: 50
+        addressLine2:
+          type: string
+          maxLength: 50
+          uniqueItems: true
+        state:
+          type: string
+          maxLength: 50
+          uniqueItems: true
+        country:
+          type: string
+          maxLength: 50
+        postalCode:
+          type: string
+          maxLength: 15
+        territory:
+          type: string
+          maxLength: 50
+    offices_patch:
+      type: object
+      properties:
+        officeCode:
+          type: string
+          maxLength: 10
+          uniqueItems: true
+        phone:
+          type: string
+          maxLength: 50
+        addressLine1:
+          type: string
+          maxLength: 50
+        addressLine2:
+          type: string
+          maxLength: 50
+          uniqueItems: true
+        postalCode:
+          type: string
+          maxLength: 15
+    employees:
+      type: object
+      properties:
+        employeeNumber:
+          type: integer
+          format: int64
+          uniqueItems: true
+        lastName:
+          type: string
+          maxLength: 50
+        firstName:
+          type: string
+          maxLength: 50
+        extension:
+          type: string
+          maxLength: 10
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        jobTitle:
+          type: string
+          maxLength: 50
+        officeCode:
+          type: string
+          maxLength: 10
+        reportsTo:
+          type: integer
+          format: int64
+          uniqueItems: true
+    employees_patch:
+      type: object
+      properties:
+        employeeNumber:
+          type: integer
+          format: int64
+          uniqueItems: true
+        extension:
+          type: string
+          maxLength: 10
+        jobTitle:
+          type: string
+          maxLength: 50
+        officeCode:
+          type: string
+          maxLength: 10
+        reportsTo:
+          type: integer
+          format: int64
+          uniqueItems: true
+    customers:
+      type: object
+      properties:
+        customerNumber:
+          type: integer
+          format: int64
+          uniqueItems: true
+        customerName:
+          type: string
+          maxLength: 50
+        contactLastName:
+          type: string
+          maxLength: 50
+        contactFirstName:
+          type: string
+          maxLength: 50
+        phone:
+          type: string
+          maxLength: 50
+        addressLine1:
+          type: string
+          maxLength: 50
+        addressLine2:
+          type: string
+          maxLength: 50
+          uniqueItems: true
+        city:
+          type: string
+          maxLength: 50
+        state:
+          type: string
+          maxLength: 50
+          uniqueItems: true
+        postalCode:
+          type: string
+          maxLength: 15
+          uniqueItems: true
+        country:
+          type: string
+          maxLength: 50
+        creditLimit:
+          type: number
+          format: float
+        salesRepEmployeeNumber:
+          type: integer
+          format: int64
+    customers_patch:
+      type: object
+      properties:
+        customerNumber:
+          type: integer
+          format: int64
+          uniqueItems: true
+        phone:
+          type: string
+          maxLength: 50
+        addressLine1:
+          type: string
+          maxLength: 50
+        addressLine2:
+          type: string
+          maxLength: 50
+          uniqueItems: true
+        postalCode:
+          type: string
+          maxLength: 15
+          uniqueItems: true
+    productlines:
+      type: object
+      properties:
+        productLine:
+          type: string
+          maxLength: 50
+          uniqueItems: true
+        textDescription:
+          type: string
+          maxLength: 4000
+          uniqueItems: true
+        htmlDescription:
+          type: string
+          maxLength: 200
+          uniqueItems: true
+          xml:
+            namespace: 'http://name.com/clasification/Nname'
+            prefix: Nname
+        image:
+          type: string
+          maxLength: 100
+          uniqueItems: true
+    productlines_patch:
+      type: object
+      properties:
+        productLine:
+          type: string
+          maxLength: 50
+          uniqueItems: true
+        textDescription:
+          type: string
+          maxLength: 4000
+          uniqueItems: true
+        htmlDescription:
+          type: string
+          maxLength: 200
+          uniqueItems: true
+          xml:
+            namespace: 'http://name.com/clasification/Nname'
+            prefix: Nname
+    products:
+      type: object
+      properties:
+        productCode:
+          type: string
+          maxLength: 15
+          uniqueItems: true
+        productName:
+          type: string
+          maxLength: 70
+        productLine:
+          type: string
+          maxLength: 50
+        productScale:
+          type: string
+          maxLength: 10
+        productVendor:
+          type: string
+          maxLength: 50
+        productDescription:
+          type: string
+          maxLength: 200
+        quantityInStock:
+          type: integer
+          format: int32
+          minimum: 0
+        buyPrice:
+          type: number
+          format: float
+        MSRP:
+          type: number
+          format: float
+    products_patch:
+      type: object
+      properties:
+        productCode:
+          type: string
+          maxLength: 15
+          uniqueItems: true
+        productVendor:
+          type: string
+          maxLength: 50
+        productDescription:
+          type: string
+          maxLength: 200
+          minimum: 0
+        buyPrice:
+          type: number
+          format: float
+    orders:
+      type: object
+      properties:
+        orderNumber:
+          type: integer
+          format: int64
+          uniqueItems: true
+        orderDate:
+          type: string
+          format: date-time
+        requiredDate:
+          type: string
+          format: date
+        shippedDate:
+          type: string
+          format: date
+          uniqueItems: true
+        status:
+          type: string
+          maxLength: 15
+        comments:
+          type: string
+          maxLength: 200
+          uniqueItems: true
+        customerNumber:
+          type: integer
+          format: int64
+    orders_patch:
+      type: object
+      properties:
+        orderNumber:
+          type: integer
+          format: int64
+          uniqueItems: true
+        requiredDate:
+          type: string
+          format: date
+        shippedDate:
+          type: string
+          format: date
+          uniqueItems: true
+        status:
+          type: string
+          maxLength: 15
+        comments:
+          type: string
+          maxLength: 200
+          uniqueItems: true
+    orderdetails:
+      type: object
+      properties:
+        orderNumber:
+          type: integer
+          format: int64
+          uniqueItems: true
+        productCode:
+          type: string
+          maxLength: 15
+          uniqueItems: true
+        quantityOrdered:
+          type: integer
+          format: int64
+        priceEach:
+          type: number
+          format: float
+        orderLineNumber:
+          type: integer
+          format: int32
+    orderdetails_patch:
+      type: object
+      properties:
+        orderNumber:
+          type: integer
+          format: int64
+          uniqueItems: true
+        productCode:
+          type: string
+          maxLength: 15
+          uniqueItems: true
+        quantityOrdered:
+          type: integer
+          format: int64
+    payments:
+      type: object
+      properties:
+        customerNumber:
+          type: integer
+          format: int64
+          uniqueItems: true
+        checkNumber:
+          type: string
+          maxLength: 50
+          uniqueItems: true
+        paymentDate:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: float
+    Error:
+      type: object
+      properties:
+        code:
+          description: http code
+          type: string
+        status:
+          description: http status
+          type: integer
+          format: int32
+        type:
+          type: string
+          description: Error type
+        message:
+          type: string
+          description: Generic error to imply an unexpected condition in server

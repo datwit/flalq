@@ -7,7 +7,7 @@
 ---
 ## Index
 
-- [API flalq: using Flask and SQLAlchemy](#api-flalq-using-flask-y-sqlalchemy)
+- [API flalq: using Flask and SQLAlchemy](#api-flalq-using-flask-and-sqlalchemy)
   - [Index](#index)
   - [Requirements](#requirements)
   - [Installation, Configuration and Usage](#installation-configuration-and-usage)
@@ -52,7 +52,7 @@ Once placed in the directory where you want to work your project, you have the o
 
         pip install -r requirements.txt
 
-* Or install separately what you need:
+* Or install separately what you need, for example:
 
         pip install marshmallow_sqlalchemy
 
@@ -118,11 +118,20 @@ This is a partial listing of the contents of this project:
 
 - `.gitignore` - file that defines the directories and files that should not be taken into account by Git.
 
+The following files (in docs folder) have been generated from the document.yaml file with the [swaggerhub](https://app.swaggerhub.com/search) tool. They are only demonstrative and they are as they have been generated, without editing anything in them:
+
+| File path  | Description | Instructional path on swaggerhub |
+|:--------------|:-------------:|--------------:|
+| `flalq-html-document-generated.zip` | A single print-friendly HTML page | Export / Documentation / html |
+| `flalq-html2-document-generated.zip` | A single HTML page with left-side navigation and tabbed code examples | Export / Documentation / html2 |
+| `flalq-dynamic-html-document-generated.zip` | Multiple HTML pages with left-side navigation | Export / Documentation / dynamic-html |
+| `flalq_document_yaml_covert_to_openapi.yaml` | .. | Save / Convert to OpenAPI 3.0 |
+
 
 ---
 ## Inside the aplication for a moment
 
-This is a small piece of code from an endpoint:
+This is a small code snippet from an endpoint:
 
     @office_routes.route('/offices/<string:officeCode>', methods=['GET'])
     def getoffice(officeCode):
