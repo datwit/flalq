@@ -1,0 +1,1523 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"_postman_id": "a9951a6f-63b6-4d66-a34b-df1fdc7992a5",
+		"name": "API flalq (Flask-SQLAlchemy)",
+		"description": "\"**API flalq** is a Python project with Flask, SQLAlchemy and Marshmallow using the [classicmodels](https://www.mysqltutorial.org/mysql-sample-database.aspx) database from the [Basic MySQL Tutorial](https://www.mysqltutorial.org/basic-mysql-tutorial.aspx). For more information see [API flalq](https://github.com/datwit/flalq/).\"",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /offices/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "44816851-e5de-44c9-aff2-93817c938ec8",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/offices/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"offices",
+						""
+					]
+				},
+				"description": "Read offices: Return all office rows"
+			},
+			"response": []
+		},
+		{
+			"name": "POST  /offices/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"officeCode\": \"OF6\",\r\n\t\"city\": \"Belgrade\",\r\n\t\"phone\": \"38011\",\r\n\t\"addressLine1\": \"Free\",\r\n\t\"addressLine2\": \"End\",\r\n\t\"state\": \"Belgrade\",\r\n\t\"country\": \"SERBIA\",\r\n\t\"postalCode\": \"0000\",\r\n\t\"territory\": \"Balcanes\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/offices/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"offices",
+						""
+					]
+				},
+				"description": "Add new office: One offices row added with all its fields"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /offices/officeCode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bcdbf7eb-fd6d-4b53-b19b-ce956652bb51",
+						"exec": [
+							"pm.test(\"Status Correcto (HTTP response: 200)\", function() {\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"var nombre = \"Success\";\r",
+							"\r",
+							"pm.test(\"El campo Message es \" + nombre, function() {\r",
+							"    pm.expect(pm.response.json().city).to.equal(\"Success\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/offices/OF3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"offices",
+						"OF3"
+					]
+				},
+				"description": "Read one office: Return only one office row filter by officeCode key"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /offices/officeCode",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"officeCode\": \"OF3\",\r\n\t\"city\": \"Belgrade\",\r\n\t\"phone\": \"555\",\r\n\t\"addressLine1\": \"Free\",\r\n\t\"addressLine2\": \"End\",\r\n\t\"state\": \"Belgrade\",\r\n\t\"country\": \"SERBIA\",\r\n\t\"postalCode\": \"0000\",\r\n\t\"territory\": \"Balcanes\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/offices/OF3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"offices",
+						"OF3"
+					]
+				},
+				"description": "Update an existing office: Update all office fields, the office filter by officeCode key"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /offices/officeCode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd3455b6-851a-4282-8de8-fdba29c61836",
+						"exec": [
+							"var schema = {\r",
+							"\t\"items\": {\r",
+							"\t\t\"type\": \"boolean\"\r",
+							"\t}\r",
+							"};\r",
+							"\r",
+							"var data1 = [true, false];\r",
+							"var data2 = [true, 123];\r",
+							"\r",
+							"pm.test('Schema is valid', function () {\r",
+							"\tpm.expect(tv4.validate(data1, schema)).to.be.true;\r",
+							"\tpm.expect(tv4.validate(data2, schema)).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"officeCode\": \"OF3\",\r\n\t\"phone\": \"8888\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/offices/OF3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"offices",
+						"OF3"
+					]
+				},
+				"description": "Update fields of existing office: Update some office specific fields, filter by officeCode key"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /offices/officeCode",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/offices/OF9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"offices",
+						"OF9"
+					]
+				},
+				"description": "Delete one office: Delete filtered office by its officeCode key"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /employees/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/employees/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"employees",
+						""
+					]
+				},
+				"description": "Read employees: Return all employee rows"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /employees/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"employeeNumber\": 2,\r\n\t\"lastName\": \"Employee\",\r\n\t\"firstName\": \"Second\",\r\n\t\"extension\": \"1000\",\r\n\t\"email\": \"sales@yahoo.es\",\r\n\t\"officeCode\": \"OF1\",\r\n\t\"reportsTo\": 1,\r\n\t\"jobTitle\": \"Shopman\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/employees/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"employees",
+						""
+					]
+				},
+				"description": "Add new employee: One employee row added with all its fields"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /employees/employeeNumber",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/employees/1002",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"employees",
+						"1002"
+					]
+				},
+				"description": "Return one employee: Return only one employee row filter by employeeNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /employees/employeeNumber",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"employeeNumber\": 2,\r\n\t\"lastName\": \"Employee\",\r\n\t\"firstName\": \"Second\",\r\n\t\"extension\": \"1111\",\r\n\t\"email\": \"sales@yahoo.es\",\r\n\t\"officeCode\": \"OF1\",\r\n\t\"reportsTo\": 1,\r\n\t\"jobTitle\": \"Shopman\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/employees/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"employees",
+						"2"
+					]
+				},
+				"description": "Update an existing employee: Update all employee fields, the employee filter by employeeNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /employees/employeeNumber",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"extension\": \"461\",\r\n\t\"officeCode\": \"OFmn\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/employees/1002",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"employees",
+						"1002"
+					]
+				},
+				"description": "Update fields of existing employee: Update some employee specific fields, filter by employeeNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /employees/employeeNumber",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/employees/1003",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"employees",
+						"1003"
+					]
+				},
+				"description": "Delete one employee: Delete filtered employee by its employeeNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /customers/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/customers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"customers",
+						""
+					]
+				},
+				"description": "Read customes: Return all customer rows"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /customers/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"addressLine1\": \"Liberty\",\r\n\t\"addressLine2\": \"River\",\r\n\t\"city\": \"Novi Sad\",\r\n\t\"contactFirstName\": \"Karell\",\r\n\t\"contactLastName\": \"Garces\",\r\n\t\"country\": \"Belgrade\",\r\n\t\"creditLimit\": 1000.0,\r\n\t\"customerName\": \"TALLER\",\r\n\t\"customerNumber\": 1,\r\n\t\"phone\": \"111\",\r\n\t\"postalCode\": \"5500\",\r\n\t\"salesRepEmployeeNumber\": 2,\r\n\t\"state\": \"BG\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/customers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"customers",
+						""
+					]
+				},
+				"description": "Add new customer: One customer row added with all its fields"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /customers/customerNumber",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/customers/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"customers",
+						"100"
+					]
+				},
+				"description": "Return one customer: Return only one customer row filter by customerNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /customers/customerNmber",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"addressLine1\": \"hollywood\",\r\n\t\"addressLine2\": \"line\",\r\n\t\"city\": \"ny\",\r\n\t\"contactFirstName\": \"Karell\",\r\n\t\"contactLastName\": \"garces\",\r\n\t\"country\": \"usa\",\r\n\t\"creditLimit\": 20.0,\r\n\t\"customerName\": \"TALLER\",\r\n\t\"customerNumber\": 100,\r\n\t\"phone\": \"1111\",\r\n\t\"postalCode\": \"5500\",\r\n\t\"salesRepEmployeeNumber\": 1000,\r\n\t\"state\": \"NY\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/customers/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"customers",
+						"100"
+					]
+				},
+				"description": "Update an existing customer: Update all customer fields, the customer filter by customerNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /customers/cstomerNmber",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"postalCode\": \"444400\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/customers/100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"customers",
+						"100"
+					]
+				},
+				"description": "Update fields of existing customer: Update some customer specific fields, filter by customerNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /customers/customerNmber",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"customerNumber\": \"003\",\r\n    \"customerName\": \"TALLER\",\r\n    \"contactLastName\": \"robles\",\r\n    \"contactFirstName\": \"Yurian\",\r\n    \"phone\": \"555666\",\r\n    \"addressLine1\": \"santiago\",\r\n    \"addressLine2\": \"\" ,\r\n    \"city\": \"ny\",\r\n    \"state\": \"NY\",\r\n\t\"postalCode\": \"10000\",\r\n\t\"country\": \"usa\",\r\n    \"salesRepEmployeeNumber\": \"101\",\r\n    \"creditLimit\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/customers/103",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"customers",
+						"103"
+					]
+				},
+				"description": "Delete one customer: Delete filtered customer by its customerNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /productlines/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/productlines/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"productlines",
+						""
+					]
+				},
+				"description": "Read productlines: Return all productline rows"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /productlines/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productLine\": \"Tools\",\r\n    \"textDescription\": \"mecanic tools\",\r\n    \"htmlDescription\": \"null\",\r\n    \"image\": \"null\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/productlines/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"productlines",
+						""
+					]
+				},
+				"description": "Add new productline: One productline row added with all its fields"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /productlines/productLine",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/productlines/Tools",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"productlines",
+						"Tools"
+					]
+				},
+				"description": "Return one productline: Return only one productline row filter by productLine key"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /productlines/productLine",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"htmlDescription\": \"http://localhost:5000/productline/\",\r\n\t\"image\": \"in file\",\r\n\t\"productLine\": \"Tools\",\r\n\t\"textDescription\": \"home tools\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/productlines/Tools",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"productlines",
+						"Tools"
+					]
+				},
+				"description": "Update an existing productline: Update all productline fields, the customer filter by productLine key"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /productlines/productLine",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"htmlDescription\": \"http://localhost:5000/productline/\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/productlines/Gumy",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"productlines",
+						"Gumy"
+					]
+				},
+				"description": "Update fields of existing productline: Update some productline specific fields, filter by productLine key"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /productlines/productLine",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/productlines/false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"productlines",
+						"false"
+					]
+				},
+				"description": "Delete one productline: Delete filtered productline by its productLine key"
+			},
+			"response": []
+		},
+		{
+			"name": "POST   /productlines/image/productLine:",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"description": "image description",
+							"type": "file",
+							"src": "BlackGrouse_ROW12084199212_1920x1080.jpg"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/productlines/image/Tools",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"productlines",
+						"image",
+						"Tools"
+					]
+				},
+				"description": "Add image to an existing productline: Insert path to image that correspond with an existing productline, requested by productLine key"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /products/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						""
+					]
+				},
+				"description": "Read products: Return all product rows"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /products/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productCode\": \"Key\",\r\n    \"productName\": \"Arlem Key\",\r\n    \"productLine\": \"Tools\",\r\n    \"productScale\": \"2\",\r\n    \"productVendor\": \"Bosh\",\r\n    \"productDescription\": \"busines mecanic tools\",\r\n    \"quantityInStock\": 30,\r\n    \"buyPrice\": 5.0,\r\n    \"MSRP\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						""
+					]
+				},
+				"description": "Add new product: One product row added with all its fields"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /products/productCode",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/falso",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"falso"
+					]
+				},
+				"description": "Return one product: Return only one product row filter by productCode key"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /products/productCode",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\t\"MSRP\": 5.0,\r\n\t\t\"buyPrice\": 1000.0,\r\n\t\t\"productCode\": \"falso\",\r\n\t\t\"productDescription\": \"line with supplies\",\r\n\t\t\"productLine\": \"Gumy\",\r\n\t\t\"productName\": \"Pneumatic Drill\",\r\n\t\t\"productScale\": \"15\",\r\n\t\t\"productVendor\": \"Bosh\",\r\n\t\t\"quantityInStock\": 15\r\n\t}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/falso",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"falso"
+					]
+				},
+				"description": "Update an existing product: Update all product fields, the customer filter by productCode key"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /products/productCode",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"productVendor\": \"tinkerbell\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/falso",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"falso"
+					]
+				},
+				"description": "Update fields of existing product: Update some product specific fields, filter by productCode key"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /products/productCode",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productCode\": \"FRTR03\",\r\n    \"productName\": \"Drill\",\r\n    \"productLine\": \"Tools\",\r\n    \"productScale\": \"10\",\r\n    \"productVendor\": \"Itachi\",\r\n    \"productDescription\": \"line with supplies\",\r\n    \"quantityInStock\": \"40\",\r\n    \"buyPrice\": \"60\",\r\n    \"MSRP\": \"10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/falso",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"falso"
+					]
+				},
+				"description": "Delete one product: Delete filtered product by its productCode key"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /orders/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/orders/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders",
+						""
+					]
+				},
+				"description": "Read orders: Return all order rows"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /orders/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"orderNumber\": 1,\r\n\t\"requiredDate\": \"2020-05-01\",\r\n\t\"status\": \"ordered\", \r\n\t\"comments\": \"\", \r\n\t\"customerNumber\": 1,\r\n\t\"shippedDate\": \"2020-05-01\",\r\n\t\"orderDate\": \"2020-05-01 10:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orders/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders",
+						""
+					]
+				},
+				"description": "Add new ordeR: One order row added with all its fields"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /orders/orderNumber",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orders/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders",
+						"3"
+					]
+				},
+				"description": "Return one order: Return only one order row filter by orderNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /orders/orderNmber",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\t\"comments\": \"prueba\",\r\n\t\t\"customerNumber\": 100,\r\n\t\t\"requiredDate\": \"2021-12-06\",\r\n\t\t\"orderNumber\": 4,\r\n\t\t\"status\": \"ordered\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orders/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders",
+						"4"
+					]
+				},
+				"description": "Update an existing order: Update all order fields, the customer filter by orderNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /orders/orderNumber",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"comments\": \"prueba probando\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orders/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders",
+						"4"
+					]
+				},
+				"description": "Update fields of existing order: Update some order specific fields, filter by orderNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /orders/orderNmber",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orders/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders",
+						"3"
+					]
+				},
+				"description": "Delete one order: Delete filtered order by its orderNumber key"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /orderdetails/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orderdetails/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orderdetails",
+						""
+					]
+				},
+				"description": "Read orderdetails: Return all order rows"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /orderdetails/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"orderNumber\": 1,\r\n\t\"productCode\": \"Key\", \r\n\t\"quantityOrdered\": 8, \r\n\t\"priceEach\": 5.0,\r\n\t\"orderLineNumber\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orderdetails/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orderdetails",
+						""
+					]
+				},
+				"description": "Add new orderdetail: One orderdetail row added with all its fields"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /orderdetails/orderNumber/productCode",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orderdetails/1/Drill",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orderdetails",
+						"1",
+						"Drill"
+					]
+				},
+				"description": "Return one orderdetail: Return only one orderdetail row filter by orderNumber and productCode keys"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /orderdetails/orderNumber/productCode",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"quantityOrdered\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orderdetails/1/Drill",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orderdetails",
+						"1",
+						"Drill"
+					]
+				},
+				"description": "Update fields of existing orderdetail: Update some orderdetail specific fields, filter by orderNumber and productCode keys"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /orderdetails/orderNumber/productCode",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/orderdetails/1/Key",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orderdetails",
+						"1",
+						"Key"
+					]
+				},
+				"description": "Delete one orderdetail: Delete filtered orderdetail by its orderNumber and productCode keys"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /payments/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/payments/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"payments",
+						""
+					]
+				},
+				"description": "Read payments: Return all payment rows"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /payments/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\t\"customerNumber\": 1,\r\n        \"checkNumber\": \"CM0001\", \r\n        \"paymentDate\": \"2020-12-04\", \r\n        \"amount\": 45.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/payments/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"payments",
+						""
+					]
+				},
+				"description": "Add new payment: One payment row added with all its fields"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /payments/customerNumber/checkNumber",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/payments/PB0001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"payments",
+						"PB0001"
+					]
+				},
+				"description": "Return one payment: Return only one payment row filter by orderNumber and checkNumber keys"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /payments/customerNumber/checkNumber",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"paymentDate\": \"2020-12-04\", \r\n        \"amount\": 60.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/payments/PB0001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"payments",
+						"PB0001"
+					]
+				},
+				"description": "Update an existing payment: Update all payment fields, the customer filter by orderNumber and checkNumber keys"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /payments/customerNumber/checkNumber",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"paymentDate\": \"2020-12-04\", \r\n        \"amount\": 60.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/payments/Pc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"payments",
+						"Pc"
+					]
+				},
+				"description": "Delete one payment: Delete filtered payment by its orderNumber and checkNumber keys"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "34b48f71-d2d9-4c60-b51c-562175547c9c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6f4a43ef-5379-44a2-8e71-94bf3725d3c3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

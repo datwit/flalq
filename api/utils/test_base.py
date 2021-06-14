@@ -12,10 +12,7 @@ from main import create_app
 from api.config.config import app_config
 from sqlalchemy import create_engine
 from api.utils.database import Base, session
-# from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy.orm import sessionmaker
 
-# Base = declarative_base()
 
 class BaseTestCase(unittest.TestCase):
     """A base test case"""

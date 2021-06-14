@@ -73,11 +73,11 @@ def postimageproductline(productLine):
                 if allowed_file(file.filename):
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(app_config.UPLOAD_FOLDER, filename))
-                    row = session.query(Productline).get(found)
-                    row.image = url_for('uploaded_file', filename=filename, _external=True)
-                    session.add(row)
+                    found.image = url_for('uploaded_file', filename=filename, _external=True)
+                    print(found.image)
+                    session.add(found)
                     session.commit()
-                    result = object_schema.dump(row)
+                    result = object_schema.dump(found)
                     return resp.response_with(resp.SUCCESS_201, value={"Inserted Data Image to": result}), resp.SUCCESS_201
             except Exception as e:
                 session.rollback()

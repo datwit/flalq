@@ -8,7 +8,6 @@ from sqlalchemy import create_engine
 from api.config.config import app_config
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import scoped_session
 
 
 # Create engine declarative, configure mysql connection
