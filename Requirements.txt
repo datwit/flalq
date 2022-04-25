@@ -7,7 +7,7 @@ Jinja2==2.11.2
 Werkzeug==1.0.1
 Flask==1.1.2
 six==1.15.0
-*click==7.1.2
+#click==7.1.2
 python-dateutil==2.8.1
 
 
@@ -72,24 +72,15 @@ pydantic==1.8.1
 multidict==4.7.6
 inflection==0.4.0
 
-
+# packs for doc
 Sphinx==3.5.4
-...
 sphinx_rtd_theme==0.5.2
 
 
-swagger_py_codegen==0.4.0
-*PyYAML==4.2b1
-jsonschema==2.6.0
+swagger_py_codegen
+PyYAML
+jsonschema
 swagger_spec_validator==2.7.3
 json_spec==0.10.1
 dpath==2.0.1
-*click==6.7
-
-
-
-
-
-
-
 
