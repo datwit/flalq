@@ -74,7 +74,7 @@ Having created and activated your project virtual environment, for install requi
   ```bash
   >mysql -u <server_user> -p
   Enter password: <password>
-    ```
+  ```
     
 3 - Load database into the **MySQL server** (*you need to have a mysql server installed*)
 
