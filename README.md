@@ -39,14 +39,16 @@ This project is developed with the Python 3.7 version and requires installing th
 
 ### Clone the repository
 
+Once placed in the directory where you want to work your project:
+
+    ```bash
     git clone https://github.com/datwit/flalq.git
-
-    cd flalq
-
+    cd <path_to_flalq>
+    ```
 
 ### Install dependencies
 
-Once placed in the directory where you want to work your project, you have the follow options:
+Having created and activated your project virtual environment, for install requirements, you have the follow options:
 
 * You can install from the _requirements.txt_ file
 
@@ -61,26 +63,52 @@ Once placed in the directory where you want to work your project, you have the f
   ```
 
 
-### Load the Sample Database into MySQL Server
+### Load the Sample Database into "MySQL Server"
 
-From the MySQL Tutorial you can download the [mysql basic database](https://www.mysqltutorial.org/wp-content/uploads/2018/03/mysqlsampledatabase.zip) in a zip file. Then extract the content (mysqlsampledatabase.sql) into a folder. Upload from your MySQL server:
+1 - From the MySQL Tutorial you can download the [mysql basic database](https://www.mysqltutorial.org/wp-content/uploads/2018/03/mysqlsampledatabase.zip), a zip file. Unzip the downloaded file into a temporary folder. *You can use any folder you want*. 
 
-    source c:\temp\mysqlsampledatabase\mysqlsampledatabase.sql
+    Example: c:\temp\mysqlsampledatabase\mysqlsampledatabase.sql
+    
+2 - Connect to the MySQL server, with the user and password entered in the mysql server installation:
+  
+    ```bash
+    >mysql -u <server_user> -p
+    Enter password: <password>
+    ```
+    
+3 - Load database into the **MySQL server** (*you need to have a mysql server installed*)
 
+    ```bash
+    mysql> source c:\temp\mysqlsampledatabase.sql
+    ```
+x - You can check if the dabase has been  loaded:
+
+    ```bash
+    mysql> show databases;
+    ```
+    
+    The output will look like:
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | classicmodels      |
+    | ...                |
+    +--------------------+
 
 ### Running the aplication
 
 Initially I have created 2 separate databases to run in development and testing environments respectively. But this can be done on your terms and reset in the `config.py` file.
 
-Having configured the variable *FLASK_ENV* in development mode in the activate.bat file of the environment as follows.
+Having configured the variable *FLASK_ENV* in development mode in the *activate.bat* file of the environment as follows:
 
-`set "FLASK_ENV=development"*`
+  Windows: `set "FLASK_ENV=development"*`
+
 
 Running on your console:
 
     python run.py
 
-The tables in the database will be created instantly.
+    >The tables in the database will be created instantly.
 
 
 ---
