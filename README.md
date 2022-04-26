@@ -41,10 +41,10 @@ This project is developed with the Python 3.7 version and requires installing th
 
 Once placed in the directory where you want to work your project:
 
-    ```bash
-    git clone https://github.com/datwit/flalq.git
-    cd <path_to_flalq>
-    ```
+  ```bash
+  git clone https://github.com/datwit/flalq.git
+  cd <path_to_flalq>
+  ```
 
 ### Install dependencies
 
@@ -71,21 +71,21 @@ Having created and activated your project virtual environment, for install requi
     
 2 - Connect to the MySQL server, with the user and password entered in the mysql server installation:
   
-    ```bash
-    >mysql -u <server_user> -p
-    Enter password: <password>
+  ```bash
+  >mysql -u <server_user> -p
+  Enter password: <password>
     ```
     
 3 - Load database into the **MySQL server** (*you need to have a mysql server installed*)
 
-    ```bash
-    mysql> source c:\temp\mysqlsampledatabase.sql
-    ```
+  ```bash
+  mysql> source c:\temp\mysqlsampledatabase.sql
+  ```
 x - You can check if the dabase has been  loaded:
 
-    ```bash
-    mysql> show databases;
-    ```
+  ```bash
+  mysql> show databases;
+  ```
     
     The output will look like:
     +--------------------+
