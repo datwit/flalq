@@ -1,7 +1,7 @@
 
 # API flalq: using Flask and SQLAlchemy
 
-**API flalq** uses the structure from the MySQL Basic [Tutorial]((https://www.mysqltutorial.org/basic-mysql-tutorial.aspx)) database. Developed with **Flask**, **SQLAlchemy** (not Flask_SQLAlchemy), **marshmallow**, **unittest** and **mysql** db. In this case, the application has been built with [SQLAlchemy ORM](http://docs.sqlalchemy.org/en/latest/orm/tutorial.html). Contains different data types and endpoints, trying to cover simple examples that can be useful to other projects.
+**API flalq** uses the structure from the MySQL Basic Tutorial database(https://www.mysqltutorial.org/). Developed with **Flask**, **SQLAlchemy** (not Flask_SQLAlchemy), **marshmallow**, **unittest** and **mysql** db. In this case, the application has been built with [SQLAlchemy ORM](http://docs.sqlalchemy.org/en/latest/orm/tutorial.html). Contains different data types and endpoints, trying to cover simple examples that can be useful to other projects.
 
 
 ---
@@ -26,9 +26,9 @@
 ## Requirements
 
 This project is developed with the Python 3.7 version and requires installing the libraries present in the file `requirements.txt`:
-* [**Klask**](http://flask.pocoo.org/) - minimalist framework written in Python that allows you to create web applications quickly and with a minimum number of lines of code.
+* [**Flask**](http://flask.pocoo.org/) - minimalist framework written in Python that allows you to create web applications quickly and with a code line minimum number.
 * [**SQLAlchemy**](https://www.sqlalchemy.org/) - open source SQL toolkit and object relational mapper for the programming language.
-* **Marshmallow** ([mashmallow Documentation](http://marshmallow.readthedocs.io/)) - is an ORM/ODM/framework-agnostic library for converting complex datatypes, such as objects, to and from native datatypes.
+* **Marshmallow** ([marshmallow Documentation](http://marshmallow.readthedocs.io/)) - is an ORM/ODM/framework-agnostic library for converting complex datatypes, such as objects, to and from native datatypes.
 * **marshmallow_sqlalchemy** ([marshmallow_sqlalchemy Documentation](https://marshmallow-sqlalchemy.readthedocs.io/en/latest/)) - SQLAlchemy integration with the marshmallow (de)serialization library.
 * [**Unittest2**](https://pypi.python.org/pypi/unittest2) - backport of the new features added to the unittest testing framework.
 
@@ -39,44 +39,76 @@ This project is developed with the Python 3.7 version and requires installing th
 
 ### Clone the repository
 
-    git clone https://github.com/datwit/flalq.git
+Once placed in the directory where you want to work your project:
 
-    cd flalq
-
+  ```bash
+  git clone https://github.com/datwit/flalq.git
+  cd <path_to_flalq>
+  ```
 
 ### Install dependencies
 
-Once placed in the directory where you want to work your project, you have the options of:
+Having created and activated your project virtual environment, for install requirements, you have the follow options:
 
-* Then you can install from the requirements.txt file
+* You can install from the _requirements.txt_ file
 
-        pip install -r requirements.txt
+  ```bash
+  pip install -r requirements.txt
+  ```
 
 * Or install separately what you need, for example:
 
-        pip install marshmallow_sqlalchemy
+  ```bash
+  pip install marshmallow_sqlalchemy
+  ```
 
 
-### Load the Sample Database into MySQL Server
+### Load the Sample Database into "MySQL Server"
 
-From the MySQL Tutorial you can download the [mysql basic database](https://sp.mysqltutorial.org/wp-content/uploads/2018/03/mysqlsampledatabase.zip) in a zip file. Then extract the content (mysqlsampledatabase.sql) into a folder. Upload from your MySQL server:
+1 - From the MySQL Tutorial you can download the [mysql basic database](https://www.mysqltutorial.org/wp-content/uploads/2018/03/mysqlsampledatabase.zip), a zip file. Unzip the downloaded file into a temporary folder. *You can use any folder you want*. 
 
-    source c:\temp\mysqlsampledatabase\mysqlsampledatabase.sql
+    Example: c:\temp\mysqlsampledatabase\mysqlsampledatabase.sql
+    
+2 - Connect to the MySQL server, with the user and password entered in the mysql server installation:
+  
+  ```bash
+  >mysql -u <server_user> -p
+  Enter password: <password>
+  ```
+    
+3 - Load database into the **MySQL server** (*you need to have a mysql server installed*)
 
+  ```bash
+  mysql> source c:\temp\mysqlsampledatabase.sql
+  ```
+x - You can check if the dabase has been  loaded:
+
+  ```bash
+  mysql> show databases;
+  ```
+    
+    The output will look like:
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | classicmodels      |
+    | ...                |
+    +--------------------+
 
 ### Running the aplication
 
 Initially I have created 2 separate databases to run in development and testing environments respectively. But this can be done on your terms and reset in the `config.py` file.
 
-Having configured the variable *FLASK_ENV* in development mode in the activate.bat file of the environment as follows.
+Having configured the variable *FLASK_ENV* in development mode in the *activate.bat* file of the environment as follows:
 
-`set "FLASK_ENV=development"*`
+  Windows: `set "FLASK_ENV=development"*`
+
 
 Running on your console:
 
     python run.py
 
-The tables in the database will be created instantly.
+    >The tables in the database will be created instantly.
 
 
 ---
